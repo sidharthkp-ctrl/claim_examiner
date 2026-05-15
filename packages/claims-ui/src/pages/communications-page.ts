@@ -1,60 +1,14 @@
-import { html, type TemplateResult } from 'lit'
+import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
 import { iconSlot } from '../lib/icon-slot.js'
-import type { BadgeVariant } from '../components/claims-badge.js'
-import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
+import '../components/claims-feed-item.js'
 
 @customElement('claims-communications-page')
 export class ClaimsCommunicationsPage extends LightDomElement {
-  private _communicationItem(opts: {
-    initials: string
-    bgColor: string
-    textColor: string
-    sender: string
-    type: string
-    typeVariant: BadgeVariant
-    timestamp: string
-    recipient?: string
-    content: string
-    isLast?: boolean
-  }): TemplateResult {
-    const {
-      initials,
-      bgColor,
-      textColor,
-      sender,
-      type,
-      typeVariant,
-      timestamp,
-      recipient,
-      content,
-      isLast,
-    } = opts
-    return html`
-      <div class="flex gap-2.5 py-2.5 ${!isLast ? 'border-b border-border' : ''}">
-        <div
-          class="w-7 h-7 min-w-[28px] rounded-full flex items-center justify-center text-[10px] font-medium"
-          style="background-color: ${bgColor}; color: ${textColor}"
-        >
-          ${initials}
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-[12px] font-medium">${sender}</span>
-            <claims-badge variant=${typeVariant} className="text-[10px]">${type}</claims-badge>
-            <span class="text-[11px] text-muted-foreground ml-auto">${timestamp}</span>
-          </div>
-          ${recipient ? html`<div class="text-[11px] text-muted-foreground">${recipient}</div>` : ''}
-          <div class="text-[12px] text-foreground mt-1 leading-relaxed">${content}</div>
-        </div>
-      </div>
-    `
-  }
-
   render() {
     return html`
       <div class="claims-page">
@@ -67,44 +21,41 @@ export class ClaimsCommunicationsPage extends LightDomElement {
         </div>
 
         <claims-card>
-          ${this._communicationItem({
-            initials: 'EX',
-            bgColor: '#E6F1FB',
-            textColor: '#185FA5',
-            sender: 'Sarah M. (Examiner)',
-            type: 'Outbound email',
-            typeVariant: 'info',
-            timestamp: '04/20/2026 11:30 AM',
-            recipient: 'To: jane.smith@email.com',
-            content:
-              'Sent initial acknowledgment letter and missing document request for Funeral Assignment Form. Advised 10-business-day response window. TX standard letter template used.',
-          })}
+          <claims-feed-item
+            initials="EX"
+            avatarBg="#E6F1FB"
+            avatarColor="#185FA5"
+            title="Sarah M. (Examiner)"
+            badgeLabel="Outbound email"
+            badgeVariant="info"
+            timestamp="04/20/2026 11:30 AM"
+            subtitle="To: jane.smith@email.com"
+            content="Sent initial acknowledgment letter and missing document request for Funeral Assignment Form. Advised 10-business-day response window. TX standard letter template used."
+          ></claims-feed-item>
 
-          ${this._communicationItem({
-            initials: 'JS',
-            bgColor: '#EEEDFE',
-            textColor: '#534AB7',
-            sender: 'Jane Smith (Claimant)',
-            type: 'Inbound phone',
-            typeVariant: 'neutral',
-            timestamp: '04/20/2026 02:15 PM — 8 min',
-            content:
-              'Claimant called re: timeline and assignment form. Confirmed form en route from Oakwood. Stated death was result of a fall — consistent with Accidental on certificate. No additional documents provided this call.',
-          })}
+          <claims-feed-item
+            initials="JS"
+            avatarBg="#EEEDFE"
+            avatarColor="#534AB7"
+            title="Jane Smith (Claimant)"
+            badgeLabel="Inbound phone"
+            badgeVariant="neutral"
+            timestamp="04/20/2026 02:15 PM — 8 min"
+            content="Claimant called re: timeline and assignment form. Confirmed form en route from Oakwood. Stated death was result of a fall — consistent with Accidental on certificate. No additional documents provided this call."
+          ></claims-feed-item>
 
-          ${this._communicationItem({
-            initials: 'EX',
-            bgColor: '#E6F1FB',
-            textColor: '#185FA5',
-            sender: 'Sarah M. (Examiner)',
-            type: 'Outbound email',
-            typeVariant: 'info',
-            timestamp: '04/19/2026 09:00 AM',
-            recipient: 'To: Austin Regional Clinic — medical records request',
-            content:
-              'Medical records request for John A. Smith. Requesting all records 03/15/2022 — 03/15/2024 per contestable review BOG 6.1. Authorization form enclosed.',
-            isLast: true,
-          })}
+          <claims-feed-item
+            initials="EX"
+            avatarBg="#E6F1FB"
+            avatarColor="#185FA5"
+            title="Sarah M. (Examiner)"
+            badgeLabel="Outbound email"
+            badgeVariant="info"
+            timestamp="04/19/2026 09:00 AM"
+            subtitle="To: Austin Regional Clinic — medical records request"
+            content="Medical records request for John A. Smith. Requesting all records 03/15/2022 — 03/15/2024 per contestable review BOG 6.1. Authorization form enclosed."
+            .bordered=${false}
+          ></claims-feed-item>
         </claims-card>
 
         <claims-card title="Log new communication">

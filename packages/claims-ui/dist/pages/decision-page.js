@@ -7,12 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
-import { cn } from '../lib/cn.js';
 import { Icons } from '../lib/icons.js';
 import { iconSlot } from '../lib/icon-slot.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
+import '../components/claims-decision-option.js';
 const decisionOptions = [
     {
         id: 'approve-pay',
@@ -55,47 +55,26 @@ let ClaimsDecisionPage = class ClaimsDecisionPage extends LightDomElement {
         super(...arguments);
         this.selectedDecision = 'approve-pay';
     }
-    _checklistItem(opts) {
-        const { label, status, statusVariant } = opts;
-        return html `
-      <div class="flex justify-between items-center py-1">
-        <span class="text-[11px]">${label}</span>
-        <claims-badge variant=${statusVariant} className="text-[10px]">${status}</claims-badge>
-      </div>
-    `;
+    _onDecisionSelect(e) {
+        this.selectedDecision = e.detail.id;
     }
     render() {
         return html `
       <div class="claims-page">
         <div class="grid grid-cols-[1fr_220px] gap-2.5">
           <div>
-            <claims-card title="Examiner recommendation">
+            <claims-card
+              title="Examiner recommendation"
+              @claims-select=${this._onDecisionSelect}
+            >
               ${iconSlot(Icons.gavel, '#185FA5')}
               ${decisionOptions.map((option) => html `
-                  <div
-                    @click=${() => {
-            this.selectedDecision = option.id;
-        }}
-                    class=${cn('border rounded-md p-3 mb-2 cursor-pointer transition-colors', this.selectedDecision === option.id
-            ? 'border-[#185FA5] border-2 bg-[#E6F1FB]'
-            : 'border-border')}
-                  >
-                    <div class="flex items-start gap-2">
-                      <input
-                        type="radio"
-                        name="decision"
-                        .checked=${this.selectedDecision === option.id}
-                        @change=${() => {
-            this.selectedDecision = option.id;
-        }}
-                        class="mt-0.5"
-                      />
-                      <div>
-                        <div class="text-[12px] font-medium">${option.title}</div>
-                        <div class="text-[11px] text-muted-foreground mt-0.5">${option.description}</div>
-                      </div>
-                    </div>
-                  </div>
+                  <claims-decision-option
+                    optionId=${option.id}
+                    title=${option.title}
+                    description=${option.description}
+                    .selected=${this.selectedDecision === option.id}
+                  ></claims-decision-option>
                 `)}
             </claims-card>
 
@@ -126,49 +105,37 @@ Manner discrepancy resolved — certificate shows Accidental confirmed. ADB ride
 
           <div>
             <div class="bg-secondary border border-border rounded-md p-3">
-              <div class="text-[11px] font-medium text-muted-foreground mb-1.5">Decision checklist</div>
-              ${this._checklistItem({
-            label: 'All review items resolved',
-            status: '3 pending',
-            statusVariant: 'warning',
-        })}
-              ${this._checklistItem({
-            label: 'State requirements verified',
-            status: 'Done',
-            statusVariant: 'success',
-        })}
-              ${this._checklistItem({
-            label: 'Benefit calculation confirmed',
-            status: 'Done',
-            statusVariant: 'success',
-        })}
-              ${this._checklistItem({
-            label: 'Contestable referral sent',
-            status: 'Pending Pru',
-            statusVariant: 'warning',
-        })}
-              ${this._checklistItem({
-            label: 'Funeral assignment validated',
-            status: 'Pending',
-            statusVariant: 'warning',
-        })}
-              ${this._checklistItem({
-            label: 'NRA / foreign payee cleared',
-            status: 'Done',
-            statusVariant: 'success',
-        })}
-              ${this._checklistItem({
-            label: 'Simultaneous death checked',
-            status: 'Done',
-            statusVariant: 'success',
-        })}
-              ${this._checklistItem({
-            label: 'Misstatement of age cleared',
-            status: 'Done — no discrepancy',
-            statusVariant: 'success',
-        })}
+              <div class="text-[11px] font-medium text-muted-foreground mb-1.5">
+                Decision checklist
+              </div>
+              <claims-field-row label="All review items resolved">
+                <claims-badge variant="warning">3 pending</claims-badge>
+              </claims-field-row>
+              <claims-field-row label="State requirements verified">
+                <claims-badge variant="success">Done</claims-badge>
+              </claims-field-row>
+              <claims-field-row label="Benefit calculation confirmed">
+                <claims-badge variant="success">Done</claims-badge>
+              </claims-field-row>
+              <claims-field-row label="Contestable referral sent">
+                <claims-badge variant="warning">Pending Pru</claims-badge>
+              </claims-field-row>
+              <claims-field-row label="Funeral assignment validated">
+                <claims-badge variant="warning">Pending</claims-badge>
+              </claims-field-row>
+              <claims-field-row label="NRA / foreign payee cleared">
+                <claims-badge variant="success">Done</claims-badge>
+              </claims-field-row>
+              <claims-field-row label="Simultaneous death checked">
+                <claims-badge variant="success">Done</claims-badge>
+              </claims-field-row>
+              <claims-field-row label="Misstatement of age cleared">
+                <claims-badge variant="success">Done — no discrepancy</claims-badge>
+              </claims-field-row>
 
-              <div class="text-[11px] font-medium text-muted-foreground mt-2.5 mb-1.5">TPA authority limits</div>
+              <div class="text-[11px] font-medium text-muted-foreground mt-2.5 mb-1.5">
+                TPA authority limits
+              </div>
               <div class="flex justify-between py-0.5">
                 <span class="text-[11px] text-muted-foreground">Death approve-pay</span>
                 <span class="text-[12px] font-medium">$100K aggregate</span>

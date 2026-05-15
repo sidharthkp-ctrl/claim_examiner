@@ -1,4 +1,4 @@
-import { html, type TemplateResult } from 'lit'
+import { html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { cn } from '../lib/cn.js'
@@ -6,70 +6,14 @@ import { Icons } from '../lib/icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
-
-type ReviewStatus = 'success' | 'warning' | 'danger' | 'purple'
-
-const statusBorderColors: Record<ReviewStatus, string> = {
-  success: '#97C459',
-  warning: '#EF9F27',
-  danger: '#E24B4A',
-  purple: '#AFA9EC',
-}
+import '../components/claims-review-item.js'
 
 @customElement('claims-worksheet-page')
 export class ClaimsWorksheetPage extends LightDomElement {
   @state() private activeTab: 'system' | 'examiner' = 'system'
 
-  private _reviewItem(opts: {
-    status: ReviewStatus
-    statusLabel: TemplateResult | string
-    title: string
-    titleMuted?: boolean
-    subtitle?: string
-    subtitleColor?: string
-    children?: TemplateResult
-    rightAction?: TemplateResult
-    collapsed?: boolean
-  }): TemplateResult {
-    const {
-      status,
-      statusLabel,
-      title,
-      titleMuted,
-      subtitle,
-      subtitleColor,
-      children,
-      rightAction,
-      collapsed,
-    } = opts
-    return html`
-      <div class="border border-border rounded-md mb-2 overflow-hidden">
-        <div
-          class="px-3 py-2 bg-card flex items-start gap-2"
-          style="border-left: 3px solid ${statusBorderColors[status]}"
-        >
-          <claims-badge variant=${status} className="text-[10px]">${statusLabel}</claims-badge>
-          <div class="flex-1 min-w-0">
-            <div class=${cn('text-[12px] font-medium', titleMuted && 'text-muted-foreground')}>
-              ${title}
-            </div>
-            ${subtitle
-              ? html`<div class="text-[11px] text-muted-foreground" style=${subtitleColor ? `color: ${subtitleColor}` : ''}>
-                  ${subtitle}
-                </div>`
-              : ''}
-          </div>
-          ${rightAction ?? ''}
-        </div>
-        ${!collapsed && children
-          ? html`<div class="px-3 py-2.5 bg-secondary border-t border-border">${children}</div>`
-          : ''}
-      </div>
-    `
-  }
-
-  private _systemAssessmentTab(): TemplateResult {
-    return html`
+  render() {
+    const systemAssessment = html`
       <claims-ai-box className="mb-4">
         <span slot="title" class="flex items-center gap-1.5 w-full">
           ${Icons.sparkles()}
@@ -138,10 +82,8 @@ export class ClaimsWorksheetPage extends LightDomElement {
         </claims-card>
       </div>
     `
-  }
 
-  private _examinerReviewTab(): TemplateResult {
-    return html`
+    const examinerReview = html`
       <div class="grid grid-cols-[1fr_220px] gap-2.5">
         <div>
           <div class="flex items-center justify-between mb-1.5">
@@ -152,12 +94,7 @@ export class ClaimsWorksheetPage extends LightDomElement {
             Each item requires an action before the case can proceed to Decision.
           </p>
 
-          ${this._reviewItem({
-            status: 'warning',
-            statusLabel: 'Pending',
-            title: 'Manner of death validation (D-08)',
-            subtitle: 'Claimant declared Natural — certificate states Accidental',
-            children: html`
+          <claims-review-item status="warning" title="Manner of death validation (D-08)" statusLabel="Pending" subtitle="Claimant declared Natural — certificate states Accidental">
               <div class="grid grid-cols-2 gap-1.5 mb-2">
                 <div>
                   <div class="text-[10px] text-muted-foreground mb-0.5">DECLARED BY CLAIMANT</div>
@@ -185,15 +122,9 @@ export class ClaimsWorksheetPage extends LightDomElement {
                 ></textarea>
                 <claims-button variant="primary" className="text-[11px]">Resolve</claims-button>
               </div>
-            `,
-          })}
+            </claims-review-item>
 
-          ${this._reviewItem({
-            status: 'warning',
-            statusLabel: 'Pending',
-            title: 'Funeral home assignment (D-12)',
-            subtitle: 'Validate form, verify TIN, approve payment split',
-            children: html`
+          <claims-review-item status="warning" title="Funeral home assignment (D-12)" statusLabel="Pending" subtitle="Validate form, verify TIN, approve payment split">
               <div class="grid grid-cols-2 gap-1.5 mb-2">
                 <div>
                   <div class="text-[11px] text-muted-foreground">Assignee</div>
@@ -216,43 +147,15 @@ export class ClaimsWorksheetPage extends LightDomElement {
                 </label>
                 <claims-button variant="success" className="ml-auto text-[11px]">Approve split</claims-button>
               </div>
-            `,
-          })}
+            </claims-review-item>
 
-          ${this._reviewItem({
-            status: 'danger',
-            statusLabel: 'Blocked',
-            title: 'Document completeness',
-            subtitle: 'Missing: Funeral Assignment Form',
-            subtitleColor: '#A32D2D',
-            rightAction: html`<claims-button variant="danger" className="text-[11px]">Escalate</claims-button>`,
-            collapsed: true,
-          })}
+          <claims-review-item status="danger" title="Document completeness" statusLabel="Blocked" subtitle="Missing: Funeral Assignment Form" subtitleColor="#A32D2D" collapsed><span slot="action"><claims-button variant="danger" className="text-[11px]">Escalate</claims-button></span></claims-review-item>
 
-          ${this._reviewItem({
-            status: 'success',
-            statusLabel: html`${Icons.check()} Resolved`,
-            title: 'Name discrepancy resolution (D-05)',
-            titleMuted: true,
-            rightAction: html`<span class="text-[11px] text-[#185FA5] cursor-pointer">View details</span>`,
-            collapsed: true,
-          })}
+          <claims-review-item status="success" title="Name discrepancy resolution (D-05)" titleMuted collapsed><span slot="status">${Icons.check()} Resolved</span><span slot="action"><span class="text-[11px] text-[#185FA5] cursor-pointer">View details</span></span></claims-review-item>
 
-          ${this._reviewItem({
-            status: 'success',
-            statusLabel: html`${Icons.check()} Resolved`,
-            title: 'ADB rider accidental verification (D-21)',
-            titleMuted: true,
-            rightAction: html`<span class="text-[11px] text-[#185FA5] cursor-pointer">View details</span>`,
-            collapsed: true,
-          })}
+          <claims-review-item status="success" title="ADB rider accidental verification (D-21)" titleMuted collapsed><span slot="status">${Icons.check()} Resolved</span><span slot="action"><span class="text-[11px] text-[#185FA5] cursor-pointer">View details</span></span></claims-review-item>
 
-          ${this._reviewItem({
-            status: 'danger',
-            statusLabel: 'Pending',
-            title: 'NRA / foreign payee check (D-15)',
-            subtitle: 'Beneficiary citizenship — W-8BEN required if NRA',
-            children: html`
+          <claims-review-item status="danger" title="NRA / foreign payee check (D-15)" statusLabel="Pending" subtitle="Beneficiary citizenship — W-8BEN required if NRA">
               <claims-field-row label="Beneficiary citizenship"
                 ><claims-badge variant="success">US Citizen confirmed</claims-badge></claims-field-row
               >
@@ -263,23 +166,16 @@ export class ClaimsWorksheetPage extends LightDomElement {
                 ><claims-badge variant="success">None</claims-badge></claims-field-row
               >
               <claims-button variant="success" className="mt-2 text-[11px]">Mark resolved</claims-button>
-            `,
-          })}
+            </claims-review-item>
 
-          ${this._reviewItem({
-            status: 'purple',
-            statusLabel: 'Info',
-            title: 'Simultaneous death check (D-17)',
-            subtitle: 'Confirm insured and beneficiary did not die in same event',
-            children: html`
+          <claims-review-item status="purple" title="Simultaneous death check (D-17)" statusLabel="Info" subtitle="Confirm insured and beneficiary did not die in same event">
               <claims-field-row label="Beneficiary alive"
                 ><claims-badge variant="success">Yes — confirmed</claims-badge></claims-field-row
               >
               <claims-field-row label="Simultaneous death triggered"
                 ><claims-badge variant="success">No</claims-badge></claims-field-row
               >
-            `,
-          })}
+            </claims-review-item>
         </div>
 
         <div>
@@ -319,9 +215,7 @@ export class ClaimsWorksheetPage extends LightDomElement {
         </div>
       </div>
     `
-  }
 
-  render() {
     return html`
       <div class="flex flex-col flex-1 overflow-hidden">
         <div class="bg-card border-b border-border px-4 flex gap-0">
@@ -356,7 +250,7 @@ export class ClaimsWorksheetPage extends LightDomElement {
         </div>
 
         <div class="claims-page">
-          ${this.activeTab === 'system' ? this._systemAssessmentTab() : this._examinerReviewTab()}
+          ${this.activeTab === 'system' ? systemAssessment : examinerReview}
         </div>
       </div>
     `

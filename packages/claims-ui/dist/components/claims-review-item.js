@@ -76,7 +76,7 @@ let ClaimsReviewItem = class ClaimsReviewItem extends LitElement {
         return html `
       <div class="shell">
         <div class="header" style="border-left: 3px solid ${statusBorderColors[this.status]}">
-          <claims-badge variant=${this.status}>${this.statusLabel}</claims-badge>
+          <claims-badge variant=${this.status}><slot name="status">${this.statusLabel}</slot></claims-badge>
           <div class="main">
             <div class=${cn('title', this.titleMuted && 'title--muted')}>${this.title}</div>
             ${this.subtitle
