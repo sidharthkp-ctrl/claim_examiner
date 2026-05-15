@@ -5,7 +5,11 @@ import { cn } from '../lib/cn.js'
 const styles = css`
   :host {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  :host(:last-child) {
+    margin-bottom: 0;
   }
 
   .option {

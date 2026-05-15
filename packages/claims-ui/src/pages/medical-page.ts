@@ -2,7 +2,7 @@ import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
-import { iconSlot } from '../lib/icon-slot.js'
+import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
@@ -14,8 +14,7 @@ export class ClaimsMedicalPage extends LightDomElement {
       <div class="claims-page">
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <claims-card title="Medical records request (D-18)">
-              ${iconSlot(Icons.stethoscope, '#185FA5')}
+            <claims-card title="Medical records request (D-18)" icon=${MaterialIcons.stethoscope}>
               <claims-field-row label="Contestable period">
                 <claims-badge variant="warning">Active — 23 months</claims-badge>
               </claims-field-row>
@@ -31,8 +30,7 @@ export class ClaimsMedicalPage extends LightDomElement {
               </claims-info-box>
             </claims-card>
 
-            <claims-card title="Medical history summary">
-              ${iconSlot(Icons.fileText, '#534AB7')}
+            <claims-card title="Medical history summary" icon=${MaterialIcons.fileText}>
               <claims-field-row label="Pre-existing conditions">
                 <claims-badge variant="warning">Under review</claims-badge>
               </claims-field-row>
@@ -47,8 +45,7 @@ export class ClaimsMedicalPage extends LightDomElement {
           </div>
 
           <div>
-            <claims-card title="Contestable investigation (D-19)">
-              ${iconSlot(Icons.alertTriangle, '#D85A30')}
+            <claims-card title="Contestable investigation (D-19)" icon=${MaterialIcons.alertTriangle}>
               <claims-field-row label="Investigation status">
                 <claims-badge variant="info">In progress</claims-badge>
               </claims-field-row>
@@ -72,8 +69,7 @@ Hypertension disclosed on application. Awaiting medical records to verify no add
               </div>
             </claims-card>
 
-            <claims-card title="MRX results">
-              ${iconSlot(Icons.stethoscope, '#1D9E75')}
+            <claims-card title="MRX results" icon=${MaterialIcons.stethoscope}>
               <claims-field-row label="MRX check run">04/20/2026</claims-field-row>
               <claims-field-row label="Prescription history">No red flags</claims-field-row>
               <claims-field-row label="Hospital admissions">None found in period</claims-field-row>

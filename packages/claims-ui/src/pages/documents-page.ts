@@ -2,10 +2,11 @@ import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
-import { iconSlot } from '../lib/icon-slot.js'
+import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
+import '../components/claims-icon.js'
 
 @customElement('claims-documents-page')
 export class ClaimsDocumentsPage extends LightDomElement {
@@ -15,13 +16,12 @@ export class ClaimsDocumentsPage extends LightDomElement {
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4 min-w-0">
           <span class="text-[15px] font-semibold text-[#0C447C]">Claim documents</span>
           <claims-button className="text-[11px]">
-            ${Icons.upload()}
+            <claims-icon slot="icon" name=${MaterialIcons.upload} size="sm"></claims-icon>
             Upload document
           </claims-button>
         </div>
 
-        <claims-card title="AI extraction — death certificate" .ai=${true} className="mb-4">
-          ${iconSlot(Icons.bot, '#534AB7')}
+        <claims-card title="AI extraction — death certificate" .ai=${true} className="mb-4" icon=${MaterialIcons.bot}>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <claims-mini-field label="Insured name">
               John Alan Smith
@@ -42,8 +42,7 @@ export class ClaimsDocumentsPage extends LightDomElement {
           </div>
         </claims-card>
 
-        <claims-card title="Uploaded documents">
-          ${iconSlot(Icons.files, '#185FA5')}
+        <claims-card title="Uploaded documents" icon=${MaterialIcons.files}>
           <div class="overflow-x-auto">
             <table class="w-full border-collapse text-left">
               <thead>
@@ -132,8 +131,7 @@ export class ClaimsDocumentsPage extends LightDomElement {
           </div>
         </claims-card>
 
-        <claims-card title="Out-of-channel document upload (D-02)">
-          ${iconSlot(Icons.upload, '#854F0B')}
+        <claims-card title="Out-of-channel document upload (D-02)" icon=${MaterialIcons.upload}>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
             <div>
               <label class="text-[11px] text-muted-foreground">Document type</label>

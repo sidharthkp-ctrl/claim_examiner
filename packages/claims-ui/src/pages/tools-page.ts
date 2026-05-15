@@ -2,10 +2,11 @@ import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
-import { iconSlot } from '../lib/icon-slot.js'
+import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
+import '../components/claims-icon.js'
 
 @customElement('claims-tools-page')
 export class ClaimsToolsPage extends LightDomElement {
@@ -13,8 +14,7 @@ export class ClaimsToolsPage extends LightDomElement {
     return html`
       <div class="claims-page">
         <div class="grid grid-cols-2 gap-2.5">
-          <claims-card title="Child support lien — CSLN (D-13)">
-            ${iconSlot(Icons.building, '#185FA5')}
+          <claims-card title="Child support lien — CSLN (D-13)" icon=${MaterialIcons.building}>
             <claims-field-row label="State trigger">TX (issue state)</claims-field-row>
             <claims-field-row label="CSLN result"
               ><claims-badge variant="success">No lien found</claims-badge></claims-field-row
@@ -24,13 +24,12 @@ export class ClaimsToolsPage extends LightDomElement {
               CA: 24-hour rule applies. MA: separate process outside CSLN.
             </claims-info-box>
             <claims-button className="w-full mt-2 text-[11px]">
-              ${Icons.refreshCw()}
+              <claims-icon slot="icon" name=${MaterialIcons.refreshCw} size="sm"></claims-icon>
               Recheck CSLN
             </claims-button>
           </claims-card>
 
-          <claims-card title="IRS lien / federal levy (D-14)">
-            ${iconSlot(Icons.receipt, '#854F0B')}
+          <claims-card title="IRS lien / federal levy (D-14)" icon=${MaterialIcons.receipt}>
             <claims-field-row label="IRS lien flag"
               ><claims-badge variant="success">No lien</claims-badge></claims-field-row
             >
@@ -41,8 +40,7 @@ export class ClaimsToolsPage extends LightDomElement {
             <claims-button className="w-full mt-2 text-[11px]">Run IRS check</claims-button>
           </claims-card>
 
-          <claims-card title="Identity verification — Accurint (D-05)">
-            ${iconSlot(Icons.userSearch, '#534AB7')}
+          <claims-card title="Identity verification — Accurint (D-05)" icon=${MaterialIcons.userSearch}>
             <claims-field-row label="Search criteria">SSN + DOB + DOD</claims-field-row>
             <claims-field-row label="Result"
               ><claims-badge variant="success">Identity confirmed</claims-badge></claims-field-row
@@ -52,8 +50,7 @@ export class ClaimsToolsPage extends LightDomElement {
             <claims-button className="w-full mt-2 text-[11px]">View Accurint report</claims-button>
           </claims-card>
 
-          <claims-card title="Benefit calculation (D-24)">
-            ${iconSlot(Icons.calculator, '#1D9E75')}
+          <claims-card title="Benefit calculation (D-24)" icon=${MaterialIcons.calculator}>
             <claims-field-row label="Face value">$500,000.00</claims-field-row>
             <claims-field-row label="Funeral assignment deduction">− $8,500.00</claims-field-row>
             <claims-field-row label="DCI (HORD → settlement)">+ $1,250.00</claims-field-row>
@@ -67,8 +64,7 @@ export class ClaimsToolsPage extends LightDomElement {
             <claims-field-row label="DCI rate applied">Higher of company rate or state rate</claims-field-row>
           </claims-card>
 
-          <claims-card title="SSDI death verification (D-29)">
-            ${iconSlot(Icons.globe, '#185FA5')}
+          <claims-card title="SSDI death verification (D-29)" icon=${MaterialIcons.globe}>
             <claims-field-row label="SSDI result"
               ><claims-badge variant="success">Death confirmed</claims-badge></claims-field-row
             >
@@ -81,8 +77,7 @@ export class ClaimsToolsPage extends LightDomElement {
             >
           </claims-card>
 
-          <claims-card title="State requirements check (D-23)">
-            ${iconSlot(Icons.mapPin, '#D85A30')}
+          <claims-card title="State requirements check (D-23)" icon=${MaterialIcons.mapPin}>
             <claims-field-row label="Issue state">TX</claims-field-row>
             <claims-field-row label="IL 45-day letter"
               ><claims-badge variant="neutral">N/A — not IL</claims-badge></claims-field-row
@@ -101,8 +96,7 @@ export class ClaimsToolsPage extends LightDomElement {
             >
           </claims-card>
 
-          <claims-card title="ADB investigation (D-21)">
-            ${iconSlot(Icons.settings, '#534AB7')}
+          <claims-card title="ADB investigation (D-21)" icon=${MaterialIcons.settings}>
             <claims-field-row label="ADB rider present"
               ><claims-badge variant="success">Yes</claims-badge></claims-field-row
             >
@@ -121,8 +115,7 @@ export class ClaimsToolsPage extends LightDomElement {
             </claims-info-box>
           </claims-card>
 
-          <claims-card title="Quote recalculation — TI only (T-22)">
-            ${iconSlot(Icons.refreshCw, '#1D9E75')}
+          <claims-card title="Quote recalculation — TI only (T-22)" icon=${MaterialIcons.refreshCw}>
             <claims-field-row label="Claim type"
               ><claims-badge variant="neutral">Death claim — N/A</claims-badge></claims-field-row
             >

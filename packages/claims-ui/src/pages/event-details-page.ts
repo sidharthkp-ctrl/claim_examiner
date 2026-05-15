@@ -2,7 +2,7 @@ import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
-import { iconSlot } from '../lib/icon-slot.js'
+import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-card.js'
 
@@ -13,8 +13,7 @@ export class ClaimsEventDetailsPage extends LightDomElement {
       <div class="claims-page">
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <claims-card title="Death event">
-              ${iconSlot(Icons.fileText, '#185FA5')}
+            <claims-card title="Death event" icon=${MaterialIcons.fileText}>
               <claims-field-row label="Date of death">02/28/2026</claims-field-row>
               <claims-field-row label="Place of death">Austin, TX — Domestic</claims-field-row>
               <claims-field-row label="Foreign death flag"
@@ -34,8 +33,7 @@ export class ClaimsEventDetailsPage extends LightDomElement {
               >
             </claims-card>
 
-            <claims-card title="Key dates & contestability">
-              ${iconSlot(Icons.calendar, '#854F0B')}
+            <claims-card title="Key dates & contestability" icon=${MaterialIcons.calendar}>
               <claims-field-row label="Policy issue date">03/15/2024</claims-field-row>
               <claims-field-row label="Date of death">02/28/2026</claims-field-row>
               <claims-field-row label="Months since issue">23 months</claims-field-row>
@@ -48,8 +46,7 @@ export class ClaimsEventDetailsPage extends LightDomElement {
           </div>
 
           <div>
-            <claims-card title="Manner discrepancy (D-08)">
-              ${iconSlot(Icons.alertTriangle, '#D85A30')}
+            <claims-card title="Manner discrepancy (D-08)" icon=${MaterialIcons.alertTriangle}>
               <claims-info-box variant="danger" className="mb-2">
                 <div class="font-medium text-[#A32D2D]">Mismatch — examiner action required</div>
                 <div class="mt-1 text-[#791F1F]">
@@ -72,8 +69,7 @@ export class ClaimsEventDetailsPage extends LightDomElement {
               </div>
             </claims-card>
 
-            <claims-card title="Special manner handling">
-              ${iconSlot(Icons.gavel, '#534AB7')}
+            <claims-card title="Special manner handling" icon=${MaterialIcons.gavel}>
               <claims-field-row label="Homicide review (D-08)"
                 ><claims-badge variant="neutral">N/A — not homicide</claims-badge></claims-field-row
               >
@@ -92,8 +88,7 @@ export class ClaimsEventDetailsPage extends LightDomElement {
               </claims-info-box>
             </claims-card>
 
-            <claims-card title="Foreign death (D-11)">
-              ${iconSlot(Icons.globe, '#1D9E75')}
+            <claims-card title="Foreign death (D-11)" icon=${MaterialIcons.globe}>
               <claims-field-row label="Death location">Austin, TX — USA</claims-field-row>
               <claims-field-row label="Foreign death triggered"
                 ><claims-badge variant="success">No</claims-badge></claims-field-row

@@ -4,7 +4,8 @@ import { LightDomElement } from '../lib/light-dom.js'
 import { cn } from '../lib/cn.js'
 import { Icons } from '../lib/icons.js'
 import { NAV_ITEMS } from '../lib/nav.js'
-import { NAV_ICONS } from '../lib/nav-icons.js'
+import { MaterialIcons, NAV_MATERIAL_ICONS } from '../lib/material-icons.js'
+import '../components/claims-icon.js'
 
 @customElement('claims-sidebar')
 export class ClaimsSidebar extends LightDomElement {
@@ -39,7 +40,7 @@ export class ClaimsSidebar extends LightDomElement {
           class="shrink-0 px-4 py-4 border-b border-border flex items-center gap-2.5 bg-gradient-to-r from-[#E6F1FB] to-white"
         >
           <span class="text-[#185FA5] flex items-center justify-center w-8 h-8 rounded-lg bg-white shadow-sm border border-border">
-            ${Icons.shieldCheck('w-4 h-4')}
+            <claims-icon name=${MaterialIcons.shieldCheck} size="sm"></claims-icon>
           </span>
           <div>
             <div class="font-semibold text-[13px] text-[#0C447C] leading-tight">Neutrinos</div>
@@ -57,7 +58,7 @@ export class ClaimsSidebar extends LightDomElement {
                   ${section}
                 </div>
                 ${items.map((item) => {
-                  const icon = NAV_ICONS[item.id] ?? Icons.info
+                  const iconName = NAV_MATERIAL_ICONS[item.id] ?? MaterialIcons.info
                   const active = this.activePage === item.id
                   return html`
                     <button
@@ -76,7 +77,7 @@ export class ClaimsSidebar extends LightDomElement {
                           active ? 'bg-white text-[#185FA5] shadow-sm' : 'text-[#6b7c8f]'
                         )}
                       >
-                        ${icon('w-4 h-4')}
+                        <claims-icon name=${iconName} size="sm"></claims-icon>
                       </span>
                       <span class="truncate">${item.label}</span>
                     </button>

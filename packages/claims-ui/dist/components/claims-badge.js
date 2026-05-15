@@ -59,6 +59,16 @@ const badgeStyles = css `
     width: 0.875rem;
     height: 0.875rem;
     flex-shrink: 0;
+    display: block;
+  }
+
+  ::slotted(claims-icon),
+  ::slotted(.material-symbols-outlined),
+  ::slotted(.material-symbols),
+  ::slotted(.material-symbols-rounded) {
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    line-height: 1;
   }
 `;
 let ClaimsBadge = class ClaimsBadge extends LitElement {

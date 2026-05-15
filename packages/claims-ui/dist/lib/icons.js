@@ -1,14 +1,30 @@
 import { html } from 'lit';
+const sizeClassPx = {
+    'w-3 h-3': 12,
+    'w-3.5 h-3.5': 14,
+    'w-4 h-4': 16,
+};
+function sizeFromClass(className) {
+    for (const [key, px] of Object.entries(sizeClassPx)) {
+        if (className.includes(key))
+            return px;
+    }
+    return 16;
+}
 function svg(className, content) {
+    const px = sizeFromClass(className);
     return html `<svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
+    width="${px}"
+    height="${px}"
     fill="none"
     stroke="currentColor"
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
     class="${className}"
+    aria-hidden="true"
   >
     ${content}
   </svg>`;

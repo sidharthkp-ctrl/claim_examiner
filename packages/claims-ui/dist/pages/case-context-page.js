@@ -7,8 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
-import { Icons } from '../lib/icons.js';
-import { iconSlot } from '../lib/icon-slot.js';
+import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
@@ -31,8 +30,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
           <claims-stat-card label="Flags active" value="4" color="#A32D2D"></claims-stat-card>
         </div>
 
-        <claims-card title="AI confidence summary" .ai=${true} className="mb-4">
-          ${iconSlot(Icons.bot, '#534AB7')}
+        <claims-card title="AI confidence summary" .ai=${true} className="mb-4" icon=${MaterialIcons.bot}>
           <div class="claims-fields-grid">
             <claims-field-row label="Death certificate"
               ><claims-badge variant="success">94%</claims-badge></claims-field-row
@@ -54,8 +52,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 min-w-0">
           <div>
-            <claims-card title="Claim summary">
-              ${iconSlot(Icons.info, '#185FA5')}
+            <claims-card title="Claim summary" icon=${MaterialIcons.info}>
               <div class="claims-fields-grid--2">
               <claims-field-row label="Claim ID">CLM-20260420-00123</claims-field-row>
               <claims-field-row label="Claim type">Death Claim</claims-field-row>
@@ -73,8 +70,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
               </div>
             </claims-card>
 
-            <claims-card title="Insured / claimant">
-              ${iconSlot(Icons.user, '#534AB7')}
+            <claims-card title="Insured / claimant" icon=${MaterialIcons.user}>
               <div class="claims-fields-grid--2">
               <claims-field-row label="Insured">John A. Smith</claims-field-row>
               <claims-field-row label="Date of death">02/28/2026</claims-field-row>
@@ -89,8 +85,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
               </div>
             </claims-card>
 
-            <claims-card title="Activity timeline">
-              ${iconSlot(Icons.activity, '#1D9E75')}
+            <claims-card title="Activity timeline" icon=${MaterialIcons.activity}>
               <claims-timeline-item
                 color="#639922"
                 title="Claim received and verified"
@@ -116,8 +111,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
           </div>
 
           <div>
-            <claims-card title="Active flags">
-              ${iconSlot(Icons.flag, '#D85A30')}
+            <claims-card title="Active flags" icon=${MaterialIcons.flag}>
               <div class="claims-fields-grid--2">
               <claims-field-row label="Contestable period"
                 ><claims-badge variant="warning">Active — 23 months</claims-badge></claims-field-row
@@ -155,8 +149,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
               </div>
             </claims-card>
 
-            <claims-card title="Communication log summary">
-              ${iconSlot(Icons.messageCircle, '#185FA5')}
+            <claims-card title="Communication log summary" icon=${MaterialIcons.messageCircle}>
               <claims-field-row label="Last contact">04/20/2026 — Phone (claimant)</claims-field-row>
               <claims-field-row label="Total interactions">3</claims-field-row>
               <claims-field-row label="Outstanding outreach"

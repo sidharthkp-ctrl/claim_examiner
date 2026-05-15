@@ -2,7 +2,7 @@ import { html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
-import { iconSlot } from '../lib/icon-slot.js'
+import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
@@ -68,9 +68,9 @@ export class ClaimsDecisionPage extends LightDomElement {
           <div>
             <claims-card
               title="Examiner recommendation"
+              icon=${MaterialIcons.gavel}
               @claims-select=${this._onDecisionSelect}
             >
-              ${iconSlot(Icons.gavel, '#185FA5')}
               ${decisionOptions.map(
                 (option) => html`
                   <claims-decision-option
@@ -83,8 +83,7 @@ export class ClaimsDecisionPage extends LightDomElement {
               )}
             </claims-card>
 
-            <claims-card title="Decision summary & notes">
-              ${iconSlot(Icons.fileText, '#534AB7')}
+            <claims-card title="Decision summary & notes" icon=${MaterialIcons.fileText}>
               <claims-field-row label="Net payable amount">
                 <span class="text-[#1D9E75]">$492,750.00</span>
               </claims-field-row>

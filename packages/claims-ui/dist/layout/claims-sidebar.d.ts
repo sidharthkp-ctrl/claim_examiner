@@ -1,4 +1,5 @@
 import { LightDomElement } from '../lib/light-dom.js';
+import '../components/claims-icon.js';
 export declare class ClaimsSidebar extends LightDomElement {
     activePage: string;
     private get groupedItems();

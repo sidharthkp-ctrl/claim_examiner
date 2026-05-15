@@ -16,7 +16,11 @@ const statusBorderColors: Record<ReviewStatus, string> = {
 const styles = css`
   :host {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  :host(:last-child) {
+    margin-bottom: 0;
   }
 
   .shell {

@@ -7,8 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
-import { Icons } from '../lib/icons.js';
-import { iconSlot } from '../lib/icon-slot.js';
+import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
@@ -18,8 +17,7 @@ let ClaimsReferralPage = class ClaimsReferralPage extends LightDomElement {
       <div class="claims-page">
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <claims-card title="Prudential referral status">
-              ${iconSlot(Icons.send, '#185FA5')}
+            <claims-card title="Prudential referral status" icon=${MaterialIcons.send}>
               <claims-field-row label="Referral required">
                 <claims-badge variant="warning">Yes — over TPA limit</claims-badge>
               </claims-field-row>
@@ -40,8 +38,7 @@ let ClaimsReferralPage = class ClaimsReferralPage extends LightDomElement {
               </claims-info-box>
             </claims-card>
 
-            <claims-card title="Referral package checklist">
-              ${iconSlot(Icons.fileText, '#534AB7')}
+            <claims-card title="Referral package checklist" icon=${MaterialIcons.fileText}>
               <div class="space-y-2">
                 <label class="flex items-center gap-2 text-[12px]">
                   <input type="checkbox" checked class="rounded" />
@@ -78,15 +75,13 @@ let ClaimsReferralPage = class ClaimsReferralPage extends LightDomElement {
           </div>
 
           <div>
-            <claims-card title="Referral history">
-              ${iconSlot(Icons.clock, '#854F0B')}
+            <claims-card title="Referral history" icon=${MaterialIcons.clock}>
               <div class="text-[12px] text-muted-foreground text-center py-4">
                 No previous referrals for this claim.
               </div>
             </claims-card>
 
-            <claims-card title="Examiner recommendation">
-              ${iconSlot(Icons.fileText, '#1D9E75')}
+            <claims-card title="Examiner recommendation" icon=${MaterialIcons.gavel}>
               <div class="mb-2">
                 <label class="text-[11px] text-muted-foreground">Recommendation</label>
                 <select class="w-full mt-1 border border-border rounded-md p-1.5 text-[12px]">

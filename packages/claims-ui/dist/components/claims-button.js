@@ -98,9 +98,27 @@ const buttonStyles = css `
     font-size: 11px;
   }
 
-  ::slotted(svg) {
+  ::slotted([slot='icon']),
+  ::slotted(claims-icon) {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ::slotted(svg),
+  ::slotted([slot='icon']) svg {
     width: 1rem;
     height: 1rem;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  ::slotted(.material-symbols-outlined),
+  ::slotted(.material-symbols),
+  ::slotted(.material-symbols-rounded) {
+    font-size: 1.125rem;
+    line-height: 1;
     flex-shrink: 0;
   }
 `;
@@ -117,6 +135,7 @@ let ClaimsButton = class ClaimsButton extends LitElement {
     render() {
         return html `
       <button type="button" class=${cn(this.variant, this.size === 'sm' && 'sm', this.push && 'push', this.className)}>
+        <slot name="icon"></slot>
         <slot></slot>
       </button>
     `;

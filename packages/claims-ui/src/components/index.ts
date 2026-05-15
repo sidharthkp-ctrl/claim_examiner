@@ -1,4 +1,5 @@
 /** Reusable Lit building blocks */
+export { ClaimsIcon } from './claims-icon.js'
 export { ClaimsBadge, type BadgeVariant } from './claims-badge.js'
 export { ClaimsButton, ClaimsActionBar, type ButtonVariant } from './claims-button.js'
 export {

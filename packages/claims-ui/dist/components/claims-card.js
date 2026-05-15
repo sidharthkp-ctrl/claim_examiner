@@ -11,6 +11,11 @@ const cardStyles = css `
   :host {
     display: block;
     max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  :host(:last-child) {
+    margin-bottom: 0;
   }
 
   .claims-card-shell {
@@ -68,16 +73,51 @@ const cardStyles = css `
     padding: 1rem;
   }
 
-  ::slotted([slot='icon']) {
+  ::slotted([slot='icon']),
+  ::slotted(claims-icon) {
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+  }
+
+  ::slotted([slot='icon']) svg,
+  ::slotted(claims-icon) svg {
+    width: 1rem;
+    height: 1rem;
+    display: block;
+  }
+
+  ::slotted([slot='icon']) .material-symbols-outlined,
+  ::slotted(claims-icon) .material-symbols-outlined {
+    font-size: 1.125rem;
+    line-height: 1;
+  }
+
+  .header-icon {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.125rem;
+    line-height: 1;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+    user-select: none;
   }
 `;
 let ClaimsCard = class ClaimsCard extends LitElement {
     constructor() {
         super(...arguments);
         this.title = '';
+        this.icon = '';
         this.className = '';
         this.ai = false;
     }
@@ -90,7 +130,9 @@ let ClaimsCard = class ClaimsCard extends LitElement {
               <div
                 class=${cn('claims-card-header', this.ai && 'claims-card-header--ai')}
               >
-                <slot name="icon"></slot>
+                ${this.icon
+                ? html `<span class="header-icon" aria-hidden="true">${this.icon}</span>`
+                : html `<slot name="icon"></slot>`}
                 <span class="claims-card-title">${this.title}</span>
                 ${this.ai ? html `<span class="claims-ai-pill">AI Powered</span>` : ''}
               </div>
@@ -106,6 +148,9 @@ let ClaimsCard = class ClaimsCard extends LitElement {
 __decorate([
     property({ type: String })
 ], ClaimsCard.prototype, "title", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsCard.prototype, "icon", void 0);
 __decorate([
     property({ type: String })
 ], ClaimsCard.prototype, "className", void 0);
@@ -190,6 +235,11 @@ export { ClaimsFieldRow };
 const statCardStyles = css `
   :host {
     display: block;
+    margin-bottom: 1rem;
+  }
+
+  :host(:last-child) {
+    margin-bottom: 0;
   }
 
   .tile {
@@ -249,6 +299,7 @@ export { ClaimsStatCard };
 const infoBoxStyles = css `
   :host {
     display: block;
+    margin-bottom: 0.75rem;
   }
 
   .box {
@@ -324,6 +375,20 @@ const aiBoxStyles = css `
     align-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+  }
+
+  ::slotted([slot='title']) svg,
+  ::slotted(claims-icon) svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  ::slotted([slot='title']) .material-symbols-outlined,
+  ::slotted([slot='title']) claims-icon .material-symbols-outlined {
+    font-size: 1.125rem;
+    line-height: 1;
   }
 
   .content {

@@ -1,4 +1,5 @@
 /** Reusable Lit building blocks */
+export { ClaimsIcon } from './claims-icon.js';
 export { ClaimsBadge } from './claims-badge.js';
 export { ClaimsButton, ClaimsActionBar } from './claims-button.js';
 export { ClaimsCard, ClaimsFieldRow, ClaimsStatCard, ClaimsInfoBox, ClaimsAiBox, ClaimsMiniField, } from './claims-card.js';

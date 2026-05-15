@@ -1,5 +1,4 @@
-import type { Icons } from './icons.js';
-type IconFn = (typeof Icons)[keyof typeof Icons];
-export declare function iconSlot(icon: IconFn, color: string): import("lit-html").TemplateResult<1>;
-export {};
+/** @deprecated Use `icon={MaterialIcons.*}` on `<claims-card>` and `<claims-icon>` instead. */
+export { MaterialIcons, NAV_MATERIAL_ICONS } from './material-icons.js';
+export type { MaterialIconKey } from './material-icons.js';
 //# sourceMappingURL=icon-slot.d.ts.map

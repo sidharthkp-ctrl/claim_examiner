@@ -2,10 +2,11 @@ import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
-import { iconSlot } from '../lib/icon-slot.js'
+import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
 import '../components/claims-feed-item.js'
+import '../components/claims-icon.js'
 
 @customElement('claims-communications-page')
 export class ClaimsCommunicationsPage extends LightDomElement {
@@ -15,7 +16,7 @@ export class ClaimsCommunicationsPage extends LightDomElement {
         <div class="flex items-center justify-between mb-2.5">
           <span class="text-[13px] font-medium text-foreground">External communications</span>
           <claims-button variant="primary" className="text-[11px]">
-            ${Icons.plus()}
+            <claims-icon slot="icon" name=${MaterialIcons.plus} size="sm"></claims-icon>
             Log communication
           </claims-button>
         </div>
@@ -58,8 +59,7 @@ export class ClaimsCommunicationsPage extends LightDomElement {
           ></claims-feed-item>
         </claims-card>
 
-        <claims-card title="Log new communication">
-          ${iconSlot(Icons.mail, '#185FA5')}
+        <claims-card title="Log new communication" icon=${MaterialIcons.mail}>
           <div class="grid grid-cols-2 gap-2 mb-2">
             <div>
               <label class="text-[11px] text-muted-foreground">Communication type</label>

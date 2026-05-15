@@ -2,6 +2,7 @@ import { LitElement } from 'lit';
 export declare class ClaimsCard extends LitElement {
     static styles: import("lit").CSSResult;
     title: string;
+    icon: string;
     className: string;
     ai: boolean;
     render(): import("lit-html").TemplateResult<1>;

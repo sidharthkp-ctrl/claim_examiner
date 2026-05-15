@@ -1,8 +1,3 @@
-import { html } from 'lit'
-import type { Icons } from './icons.js'
-
-type IconFn = (typeof Icons)[keyof typeof Icons]
-
-export function iconSlot(icon: IconFn, color: string) {
-  return html`<span slot="icon" style="color: ${color}">${icon()}</span>`
-}
+/** @deprecated Use `icon={MaterialIcons.*}` on `<claims-card>` and `<claims-icon>` instead. */
+export { MaterialIcons, NAV_MATERIAL_ICONS } from './material-icons.js'
+export type { MaterialIconKey } from './material-icons.js'

@@ -6,5 +6,5 @@ export { ClaimsSlaBanner } from './layout/claims-sla-banner.js';
 export { ClaimsClaimHeader } from './layout/claims-claim-header.js';
 export { PAGE_LABELS, NAV_ITEMS } from './lib/nav.js';
 export { Icons } from './lib/icons.js';
-export { iconSlot } from './lib/icon-slot.js';
+export { MaterialIcons, NAV_MATERIAL_ICONS } from './lib/material-icons.js';
 import './claims-workbench.js';

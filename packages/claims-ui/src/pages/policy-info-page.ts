@@ -2,7 +2,7 @@ import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
-import { iconSlot } from '../lib/icon-slot.js'
+import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-card.js'
 
@@ -13,8 +13,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
       <div class="claims-page">
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <claims-card title="Policy details">
-              ${iconSlot(Icons.dollarSign, '#185FA5')}
+            <claims-card title="Policy details" icon=${MaterialIcons.dollarSign}>
               <claims-field-row label="Policy number">TL12345</claims-field-row>
               <claims-field-row label="Product">20-year term life</claims-field-row>
               <claims-field-row label="Face value"
@@ -36,8 +35,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
               <claims-field-row label="Last premium paid">02/01/2026</claims-field-row>
             </claims-card>
 
-            <claims-card title="Riders & benefits">
-              ${iconSlot(Icons.shield, '#D85A30')}
+            <claims-card title="Riders & benefits" icon=${MaterialIcons.shield}>
               <claims-field-row label="ADB rider"
                 ><claims-badge variant="info">Present — under review</claims-badge></claims-field-row
               >
@@ -57,8 +55,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
           </div>
 
           <div>
-            <claims-card title="Misstatement of age (D-06)">
-              ${iconSlot(Icons.clock, '#854F0B')}
+            <claims-card title="Misstatement of age (D-06)" icon=${MaterialIcons.clock}>
               <claims-field-row label="DOB on policy">09/04/1978</claims-field-row>
               <claims-field-row label="DOB on death certificate">09/04/1978</claims-field-row>
               <claims-field-row label="Discrepancy"
@@ -80,8 +77,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
               >
             </claims-card>
 
-            <claims-card title="Beneficiary & special designations">
-              ${iconSlot(Icons.users, '#534AB7')}
+            <claims-card title="Beneficiary & special designations" icon=${MaterialIcons.users}>
               <claims-field-row label="Primary beneficiary">Jane Smith — 100%</claims-field-row>
               <claims-field-row label="Contingent beneficiary">Michael Smith (son)</claims-field-row>
               <claims-field-row label="Irrevocable beneficiary"
@@ -104,8 +100,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
               >
             </claims-card>
 
-            <claims-card title="Funeral home assignment (D-12)">
-              ${iconSlot(Icons.building, '#1D9E75')}
+            <claims-card title="Funeral home assignment (D-12)" icon=${MaterialIcons.building}>
               <claims-field-row label="Assignee">Oakwood Funeral Services</claims-field-row>
               <claims-field-row label="Assignment amount">$8,500.00</claims-field-row>
               <claims-field-row label="W-9 / TIN verified"
