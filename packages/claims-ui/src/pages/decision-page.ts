@@ -64,7 +64,7 @@ export class ClaimsDecisionPage extends LightDomElement {
   render() {
     return html`
       <div class="claims-page">
-        <div class="grid grid-cols-[1fr_220px] gap-2.5">
+        <div class="grid grid-cols-[1fr_minmax(280px,320px)] gap-2.5">
           <div>
             <claims-card
               title="Examiner recommendation"
