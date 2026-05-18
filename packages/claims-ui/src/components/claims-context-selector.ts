@@ -1,15 +1,5 @@
-import { html, css } from 'lit'
+import { html, css, LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
-// ✅ FIX 1: extend LightDomElement instead of LitElement
-// LightDomElement renders into the regular DOM so your app's global CSS
-// (including Material Symbols font, Tailwind, CSS vars) all apply normally.
-// All other claims-* components use LightDomElement for the same reason.
-import { LightDomElement } from '../lib/light-dom.js'
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface ClaimsPolicy {
   id: string
   label: string
@@ -36,36 +26,38 @@ export interface PolicyChangedDetail {
 // Styles
 // ---------------------------------------------------------------------------
 
-// ✅ FIX 2: styles go on the host element class (light DOM approach)
-// since there is no shadow root, we inject a <style> tag via the component
 const styles = css`
-  claims-context-selector {
+  :host {
     display: block;
     background: var(--card, #ffffff);
     border-bottom: 1px solid var(--border, #d8e2ec);
     box-shadow: 0 1px 4px rgba(24, 95, 165, 0.06);
   }
 
-  claims-context-selector .cs-bar {
+  .cs-bar {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     padding: 0 1.25rem;
-    height: 2.75rem;
+    min-height: 2.75rem;
     flex-wrap: wrap;
   }
 
-  claims-context-selector .cs-folder-icon {
+  .cs-folder-icon {
     font-family: 'Material Symbols Outlined';
     font-size: 1.125rem;
     line-height: 1;
     color: var(--primary, #185fa5);
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
     user-select: none;
     flex-shrink: 0;
   }
 
-  claims-context-selector .cs-label {
+  .cs-label {
     font-size: 11px;
     font-weight: 600;
     color: var(--muted-foreground, #5c6b7a);
@@ -75,52 +67,61 @@ const styles = css`
     flex-shrink: 0;
   }
 
-  claims-context-selector .cs-sep {
+  .cs-sep {
     color: var(--border, #d8e2ec);
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1;
     flex-shrink: 0;
     user-select: none;
   }
 
-  claims-context-selector .cs-sel-wrap {
+  .cs-sel-wrap {
     position: relative;
     display: inline-flex;
     align-items: center;
+    min-width: 0;
   }
 
-  claims-context-selector .cs-sel-wrap select {
+  .cs-sel-wrap select {
     appearance: none;
     -webkit-appearance: none;
     background: var(--secondary, #f4f7fb);
     border: 1px solid var(--border, #d8e2ec);
     border-radius: 0.375rem;
-    padding: 0.25rem 1.75rem 0.25rem 0.625rem;
+    padding: 0.375rem 2rem 0.375rem 0.75rem;
     font-size: 12px;
     font-weight: 600;
     color: var(--primary-dark, #0c447c);
     cursor: pointer;
     outline: none;
     min-width: 220px;
+    max-width: 320px;
     font-family: inherit;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
   }
 
-  claims-context-selector .cs-sel-wrap select:focus {
+  .cs-sel-wrap select:focus {
     border-color: var(--primary, #185fa5);
     box-shadow: 0 0 0 2px rgba(24, 95, 165, 0.15);
   }
 
-  claims-context-selector .cs-caret {
+  .cs-sel-wrap select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .cs-caret {
     position: absolute;
-    right: 0.5rem;
+    right: 0.75rem;
     pointer-events: none;
     color: var(--primary, #185fa5);
     font-size: 11px;
     line-height: 1;
   }
 
-  claims-context-selector .cs-policy-tag {
+  .cs-policy-tag {
     display: inline-flex;
     align-items: center;
     background: var(--info-bg, #e6f1fb);
@@ -129,7 +130,7 @@ const styles = css`
     border-radius: 0.25rem;
     font-size: 11px;
     font-weight: 600;
-    padding: 0.125rem 0.5rem;
+    padding: 0.2rem 0.55rem;
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -140,7 +141,7 @@ const styles = css`
 // ---------------------------------------------------------------------------
 
 @customElement('claims-context-selector')
-export class ClaimsContextSelector extends LightDomElement {
+export class ClaimsContextSelector extends LitElement {
   // ✅ FIX 3: LightDomElement uses createRenderRoot() = this, so styles are
   // injected into the light DOM. We declare them here so Lit picks them up.
   static styles = styles
@@ -148,6 +149,8 @@ export class ClaimsContextSelector extends LightDomElement {
   @property({ type: Array }) claims: ClaimsSelectorItem[] = []
   @property({ type: String }) selectedClaimId = ''
   @property({ type: String }) selectedPolicyId = ''
+
+
 
   @state() private _activePolicies: ClaimsPolicy[] = []
 

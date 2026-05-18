@@ -171,29 +171,30 @@ import type {
   PolicyChangedDetail,
 } from '../../claims-ui/src/components/claims-context-selector.js'
 
+import './components/claims-context-selector.js'
 // ✅ Clean CLM- and POL- prefixed IDs
 const DEFAULT_CLAIMS: ClaimsSelectorItem[] = [
   {
     id: 'CLM-001',
     personName: 'John A. Smith',
     policies: [
-      { id: 'POL-001', label: 'Whole Life — $500,000' },
-      { id: 'POL-002', label: 'Term 20 — $250,000' },
+      { id: 'POL-001', label: 'Life — $500,000' },
+      { id: 'POL-002', label: 'Term — $250,000' },
     ],
   },
   {
     id: 'CLM-002',
     personName: 'Maria J. Torres',
     policies: [
-      { id: 'POL-003', label: 'Universal Life — $750,000' },
+      { id: 'POL-003', label: 'Life — $750,000' },
     ],
   },
   {
     id: 'CLM-003',
     personName: 'Robert K. Chen',
     policies: [
-      { id: 'POL-004', label: 'Term 30 — $1,000,000' },
-      { id: 'POL-005', label: 'Whole Life — $300,000' },
+      { id: 'POL-004', label: 'Term — $1,000,000' },
+      { id: 'POL-005', label: 'Life — $300,000' },
       { id: 'POL-006', label: 'Accidental Death — $200,000' },
     ],
   },
