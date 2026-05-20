@@ -14,8 +14,14 @@ import './pages/worksheet-page.js';
 import './pages/tools-page.js';
 import './pages/communications-page.js';
 import './pages/decision-page.js';
+import './components/claims-context-selector.js';
 export declare class ClaimsWorkbench extends LightDomElement {
     private activePage;
+    private claims;
+    private selectedClaimId;
+    private selectedPolicyId;
+    private _handleClaimChanged;
+    private _handlePolicyChanged;
     connectedCallback(): void;
     disconnectedCallback(): void;
     private _onPageChange;
