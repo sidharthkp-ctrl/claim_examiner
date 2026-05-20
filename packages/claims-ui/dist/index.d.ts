@@ -1,0 +1,11 @@
+export { ClaimsWorkbench } from './claims-workbench.js';
+export * from './components/index.js';
+export { ClaimsSidebar } from './layout/claims-sidebar.js';
+export { ClaimsTopbar } from './layout/claims-topbar.js';
+export { ClaimsSlaBanner } from './layout/claims-sla-banner.js';
+export { ClaimsClaimHeader } from './layout/claims-claim-header.js';
+export { PAGE_LABELS, NAV_ITEMS } from './lib/nav.js';
+export { Icons } from './lib/icons.js';
+export { MaterialIcons, NAV_MATERIAL_ICONS } from './lib/material-icons.js';
+import './claims-workbench.js';
+//# sourceMappingURL=index.d.ts.map

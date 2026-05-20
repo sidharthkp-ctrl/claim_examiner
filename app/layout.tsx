@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Neutrinos Claims Workbench',
@@ -35,8 +34,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className="font-sans antialiased bg-background">
+    <html lang="en" className="h-full overflow-hidden bg-background">
+      <body
+        className={`${geist.className} h-full overflow-hidden font-sans antialiased bg-background`}
+      >
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
