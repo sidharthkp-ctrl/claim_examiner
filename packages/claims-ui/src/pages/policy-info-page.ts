@@ -111,6 +111,25 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
               >
               <claims-field-row label="Payment split">FH $8,500 · Bene $491,500</claims-field-row>
             </claims-card>
+
+            <claims-card title="State requirements check (D-23)" icon=${MaterialIcons.mapPin}>
+              <claims-field-row label="Issue state">TX</claims-field-row>
+              <claims-field-row label="IL 45-day letter"
+                ><claims-badge variant="neutral">N/A — not IL</claims-badge></claims-field-row
+              >
+              <claims-field-row label="CA Fair Claim"
+                ><claims-badge variant="neutral">N/A — not CA</claims-badge></claims-field-row
+              >
+              <claims-field-row label="DOI notice states trigger"
+                ><claims-badge variant="success">Not triggered</claims-badge></claims-field-row
+              >
+              <claims-field-row label="NY 5-day acknowledgment"
+                ><claims-badge variant="neutral">N/A — not NY</claims-badge></claims-field-row
+              >
+              <claims-field-row label="TX standard rules apply"
+                ><claims-badge variant="success">Confirmed</claims-badge></claims-field-row
+              >
+            </claims-card>
           </div>
         </div>
       </div>

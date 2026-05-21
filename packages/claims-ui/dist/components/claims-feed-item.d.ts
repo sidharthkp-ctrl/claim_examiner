@@ -15,7 +15,7 @@ export declare class ClaimsFeedItem extends LitElement {
     badgeLabel: string;
     badgeVariant: BadgeVariant;
     bordered: boolean;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

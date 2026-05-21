@@ -37,6 +37,7 @@ export const MaterialIcons = {
 export const NAV_MATERIAL_ICONS = {
     'case-context': MaterialIcons.info,
     'event-details': MaterialIcons.fileText,
+    'claimant-details': MaterialIcons.user,
     'policy-info': MaterialIcons.dollarSign,
     documents: MaterialIcons.files,
     integrations: MaterialIcons.globe,

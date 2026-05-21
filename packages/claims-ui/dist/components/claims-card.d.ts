@@ -5,35 +5,35 @@ export declare class ClaimsCard extends LitElement {
     icon: string;
     className: string;
     ai: boolean;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 export declare class ClaimsFieldRow extends LitElement {
     static styles: import("lit").CSSResult;
     label: string;
     className: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 export declare class ClaimsStatCard extends LitElement {
     static styles: import("lit").CSSResult;
     label: string;
     value: string;
     color: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 export declare class ClaimsInfoBox extends LitElement {
     static styles: import("lit").CSSResult;
     variant: 'info' | 'warning' | 'danger';
     className: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 export declare class ClaimsAiBox extends LitElement {
     static styles: import("lit").CSSResult;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 export declare class ClaimsMiniField extends LitElement {
     static styles: import("lit").CSSResult;
     label: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

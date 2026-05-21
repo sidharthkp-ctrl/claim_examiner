@@ -1,5 +1,5 @@
 import { html } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
 import { MaterialIcons } from '../lib/material-icons.js'
@@ -7,12 +7,21 @@ import '../components/claims-button.js'
 import '../components/claims-card.js'
 import '../components/claims-feed-item.js'
 import '../components/claims-icon.js'
+import '../components/claims-scope-banner.js'
 
 @customElement('claims-communications-page')
 export class ClaimsCommunicationsPage extends LightDomElement {
+  @property({ type: String }) claimId = ''
+
   render() {
     return html`
       <div class="claims-page">
+        <claims-scope-banner
+          scope="claim"
+          title="Communication trail"
+          description="Logged outreach and correspondence for this claim filing."
+          .entityId=${this.claimId}
+        ></claims-scope-banner>
         <div class="flex items-center justify-between mb-2.5">
           <span class="text-[13px] font-medium text-foreground">External communications</span>
           <claims-button variant="primary" className="text-[11px]">

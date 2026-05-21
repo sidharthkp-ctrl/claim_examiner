@@ -5,17 +5,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
 import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
 import '../components/claims-feed-item.js';
 import '../components/claims-icon.js';
+import '../components/claims-scope-banner.js';
 let ClaimsCommunicationsPage = class ClaimsCommunicationsPage extends LightDomElement {
+    constructor() {
+        super(...arguments);
+        this.claimId = '';
+    }
     render() {
         return html `
       <div class="claims-page">
+        <claims-scope-banner
+          scope="claim"
+          title="Communication trail"
+          description="Logged outreach and correspondence for this claim filing."
+          .entityId=${this.claimId}
+        ></claims-scope-banner>
         <div class="flex items-center justify-between mb-2.5">
           <span class="text-[13px] font-medium text-foreground">External communications</span>
           <claims-button variant="primary" className="text-[11px]">
@@ -116,6 +127,9 @@ let ClaimsCommunicationsPage = class ClaimsCommunicationsPage extends LightDomEl
     `;
     }
 };
+__decorate([
+    property({ type: String })
+], ClaimsCommunicationsPage.prototype, "claimId", void 0);
 ClaimsCommunicationsPage = __decorate([
     customElement('claims-communications-page')
 ], ClaimsCommunicationsPage);

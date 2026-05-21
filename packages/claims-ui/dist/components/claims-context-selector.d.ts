@@ -1,13 +1,6 @@
 import { LitElement } from 'lit';
-export interface ClaimsPolicy {
-    id: string;
-    label: string;
-}
-export interface ClaimsSelectorItem {
-    id: string;
-    personName: string;
-    policies: ClaimsPolicy[];
-}
+import type { ClaimsPolicy, ClaimsSelectorItem } from '../lib/case-data.js';
+export type { ClaimsCaseContext, ClaimsPolicy, ClaimsSelectorItem } from '../lib/case-data.js';
 export interface ClaimChangedDetail {
     claimId: string;
     claim: ClaimsSelectorItem;
@@ -19,6 +12,9 @@ export interface PolicyChangedDetail {
 }
 export declare class ClaimsContextSelector extends LitElement {
     static styles: import("lit").CSSResult;
+    /** Fixed case for this workbench session (set by host when opening the case). */
+    caseId: string;
+    caseInsuredName: string;
     claims: ClaimsSelectorItem[];
     selectedClaimId: string;
     selectedPolicyId: string;
@@ -28,7 +24,7 @@ export declare class ClaimsContextSelector extends LitElement {
     private _emitPolicyChanged;
     private _onClaimChange;
     private _onPolicyChange;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

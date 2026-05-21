@@ -1,16 +1,25 @@
 import { html } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
 import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-card.js'
+import '../components/claims-scope-banner.js'
 
 @customElement('claims-event-details-page')
 export class ClaimsEventDetailsPage extends LightDomElement {
+  @property({ type: String }) caseId = ''
+
   render() {
     return html`
       <div class="claims-page">
+        <claims-scope-banner
+          scope="case"
+          title="Event details"
+          description="Death event information shared by all claims in this case."
+          .entityId=${this.caseId}
+        ></claims-scope-banner>
         <div class="grid grid-cols-2 gap-2.5">
           <div>
             <claims-card title="Death event" icon=${MaterialIcons.fileText}>

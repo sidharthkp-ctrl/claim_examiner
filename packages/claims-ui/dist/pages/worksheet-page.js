@@ -9,14 +9,58 @@ import { customElement, state } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
 import { cn } from '../lib/cn.js';
 import { Icons } from '../lib/icons.js';
+import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
 import '../components/claims-review-item.js';
+import '../components/claims-decision-option.js';
+import '../components/claims-icon.js';
+const decisionOptions = [
+    {
+        id: 'approve-pay',
+        title: 'Approve — Pay (D-24)',
+        description: 'All checks pass. DCI from HORD to settlement. Route to Payment Process. Within TPA authority for amounts up to $100K aggregate — this claim requires Pru referral first.',
+    },
+    {
+        id: 'approve-suicide',
+        title: 'Approve — Pay suicide provision (D-25)',
+        description: 'Suicide confirmed within contestable period. Payment = return of premiums paid to DOD (not face value). State-specific language applies.',
+    },
+    {
+        id: 'deny-tpa',
+        title: 'Deny — within TPA authority (D-26)',
+        description: 'Very limited scenarios. Prepare denial letter with appeal language for CA IL NE NH NJ RI TN WA WV. Most death denials require Pru referral first.',
+    },
+    {
+        id: 'deny-ti-life',
+        title: 'Deny — TI life expectancy (T-26)',
+        description: 'TI only. Life expectancy does not meet threshold (>6 months, or >12 months CA). TPA denial authority — does not require Pru approval.',
+    },
+    {
+        id: 'deny-ti-other',
+        title: 'Deny — other reasons, Pru required (T-27)',
+        description: 'TI non-life-expectancy denials — $0 TPA authority. Refer to Pru for approval before sending denial letter.',
+    },
+    {
+        id: 'refer-pru',
+        title: 'Refer to Prudential for decision (D-27)',
+        description: 'Over TPA authority, complex cases, most denials, rescission recommendations. Assemble referral package with recommendation and supporting documents.',
+    },
+    {
+        id: 'rescission',
+        title: 'Recommend rescission (D-28)',
+        description: 'Material misrepresentation found. Complete Contestable Claim Summary Form. Send to Pru for approval. Upon approval draft rescission letter, send to Pru for review, then send final to policy owner.',
+    },
+];
 let ClaimsWorksheetPage = class ClaimsWorksheetPage extends LightDomElement {
     constructor() {
         super(...arguments);
         this.activeTab = 'system';
+        this.selectedDecision = 'approve-pay';
+    }
+    _onDecisionSelect(e) {
+        this.selectedDecision = e.detail.id;
     }
     render() {
         const systemAssessment = html `
@@ -220,36 +264,225 @@ let ClaimsWorksheetPage = class ClaimsWorksheetPage extends LightDomElement {
         </div>
       </div>
     `;
-        return html `
-      <div class="flex flex-col flex-1 overflow-hidden">
-        <div class="bg-card border-b border-border px-4 flex gap-0">
-          <button
-            type="button"
-            @click=${() => {
-            this.activeTab = 'system';
-        }}
-            class=${cn('px-3.5 py-2.5 text-[12px] cursor-pointer border-b-2 border-transparent', this.activeTab === 'system'
-            ? 'text-[#185FA5] border-b-[#185FA5] font-medium'
-            : 'text-muted-foreground hover:text-foreground')}
+        const claimTools = html `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+        <claims-card title="Child support lien — CSLN (D-13)" icon=${MaterialIcons.building}>
+          <claims-field-row label="State trigger">TX (issue state)</claims-field-row>
+          <claims-field-row label="CSLN result"
+            ><claims-badge variant="success">No lien found</claims-badge></claims-field-row
           >
-            System Assessment
-          </button>
-          <button
-            type="button"
-            @click=${() => {
-            this.activeTab = 'examiner';
-        }}
-            class=${cn('px-3.5 py-2.5 text-[12px] cursor-pointer border-b-2 border-transparent', this.activeTab === 'examiner'
-            ? 'text-[#185FA5] border-b-[#185FA5] font-medium'
-            : 'text-muted-foreground hover:text-foreground')}
+          <claims-field-row label="Checked on">04/20/2026</claims-field-row>
+          <claims-info-box variant="info" className="mt-1.5">
+            CA: 24-hour rule applies. MA: separate process outside CSLN.
+          </claims-info-box>
+          <claims-button className="w-full mt-2 text-[11px]">
+            <claims-icon slot="icon" name=${MaterialIcons.refreshCw} size="sm"></claims-icon>
+            Recheck CSLN
+          </claims-button>
+        </claims-card>
+
+        <claims-card title="IRS lien / federal levy (D-14)" icon=${MaterialIcons.receipt}>
+          <claims-field-row label="IRS lien flag"
+            ><claims-badge variant="success">No lien</claims-badge></claims-field-row
           >
-            Examiner Review
-          </button>
+          <claims-field-row label="Federal tax levy"
+            ><claims-badge variant="success">None</claims-badge></claims-field-row
+          >
+          <claims-field-row label="Checked on">04/20/2026</claims-field-row>
+          <claims-button className="w-full mt-2 text-[11px]">Run IRS check</claims-button>
+        </claims-card>
+
+        <claims-card title="Identity verification — Accurint (D-05)" icon=${MaterialIcons.userSearch}>
+          <claims-field-row label="Search criteria">SSN + DOB + DOD</claims-field-row>
+          <claims-field-row label="Result"
+            ><claims-badge variant="success">Identity confirmed</claims-badge></claims-field-row
+          >
+          <claims-field-row label="Name variants found">John A. Smith, John Alan Smith</claims-field-row>
+          <claims-field-row label="Resolution applied">Policy name accepted</claims-field-row>
+          <claims-button className="w-full mt-2 text-[11px]">View Accurint report</claims-button>
+        </claims-card>
+
+        <claims-card title="Benefit calculation (D-24)" icon=${MaterialIcons.calculator}>
+          <claims-field-row label="Face value">$500,000.00</claims-field-row>
+          <claims-field-row label="Funeral assignment deduction">− $8,500.00</claims-field-row>
+          <claims-field-row label="DCI (HORD → settlement)">+ $1,250.00</claims-field-row>
+          <claims-field-row label="IRS / CSLN deductions">$0.00</claims-field-row>
+          <claims-field-row label="Net payable to beneficiary">
+            <span class="text-[#1D9E75] text-[14px]">$492,750.00</span>
+          </claims-field-row>
+          <claims-field-row label="ADB benefit (separate check)"
+            ><claims-badge variant="warning">Pending manner confirm</claims-badge></claims-field-row
+          >
+          <claims-field-row label="DCI rate applied">Higher of company rate or state rate</claims-field-row>
+        </claims-card>
+
+        <claims-card title="SSDI death verification (D-29)" icon=${MaterialIcons.globe}>
+          <claims-field-row label="SSDI result"
+            ><claims-badge variant="success">Death confirmed</claims-badge></claims-field-row
+          >
+          <claims-field-row label="SSN match"
+            ><claims-badge variant="success">Confirmed</claims-badge></claims-field-row
+          >
+          <claims-field-row label="DOD in SSDI">02/28/2026</claims-field-row>
+          <claims-field-row label="Obituary / funeral home check"
+            ><claims-badge variant="success">Confirmed</claims-badge></claims-field-row
+          >
+        </claims-card>
+
+        <claims-card title="ADB investigation (D-21)" icon=${MaterialIcons.settings}>
+          <claims-field-row label="ADB rider present"
+            ><claims-badge variant="success">Yes</claims-badge></claims-field-row
+          >
+          <claims-field-row label="Certificate manner">Accidental — confirmed</claims-field-row>
+          <claims-field-row label="ADB rider conditions met"
+            ><claims-badge variant="success">Yes — covered accident</claims-badge></claims-field-row
+          >
+          <claims-field-row label="ADB exclusions"
+            ><claims-badge variant="success">None apply</claims-badge></claims-field-row
+          >
+          <claims-field-row label="Contractual death benefit">Check 1 — pay first</claims-field-row>
+          <claims-field-row label="ADB benefit">Check 2 — separate payment</claims-field-row>
+          <claims-info-box variant="info" className="mt-1.5">
+            Two separate payment checks required. Contractual death benefit issued first; ADB issued
+            separately.
+          </claims-info-box>
+        </claims-card>
+
+        <claims-card title="Quote recalculation — TI only (T-22)" icon=${MaterialIcons.refreshCw}>
+          <claims-field-row label="Claim type"
+            ><claims-badge variant="neutral">Death claim — N/A</claims-badge></claims-field-row
+          >
+          <claims-info-box variant="info" className="mt-1.5">
+            For TI claims only: if original quote is over 30 days old at claim form receipt, trigger
+            recalculation. If reduced, obtain new signed Claimant Statement before payment.
+          </claims-info-box>
+        </claims-card>
+      </div>
+    `;
+        const finalDecision = html `
+      <div class="grid grid-cols-1 xl:grid-cols-[1fr_minmax(280px,320px)] gap-2.5">
+        <div>
+          <claims-card
+            title="Examiner recommendation"
+            icon=${MaterialIcons.gavel}
+            @claims-select=${this._onDecisionSelect}
+          >
+            ${decisionOptions.map((option) => html `
+                <claims-decision-option
+                  optionId=${option.id}
+                  title=${option.title}
+                  description=${option.description}
+                  .selected=${this.selectedDecision === option.id}
+                ></claims-decision-option>
+              `)}
+          </claims-card>
+
+          <claims-card title="Decision summary & notes" icon=${MaterialIcons.fileText}>
+            <claims-field-row label="Net payable amount">
+              <span class="text-[#1D9E75]">$492,750.00</span>
+            </claims-field-row>
+            <claims-field-row label="Payment to">Jane Smith + Oakwood Funeral</claims-field-row>
+            <claims-field-row label="ADB check (separate)">
+              <claims-badge variant="warning">Pending manner confirm</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="Contestable review status">
+              <claims-badge variant="warning">Pending Pru direction</claims-badge>
+            </claims-field-row>
+            <div class="mt-2">
+              <textarea
+                class="w-full border border-border rounded-md p-2 text-[12px] min-h-[80px] resize-y"
+              >
+Manner discrepancy resolved — certificate shows Accidental confirmed. ADB rider conditions met, no exclusion applies. Contestable investigation initiated per BOG 6.1 — hypertension materiality inconclusive, referring to Pru. Recommend Approve-Pay pending Pru contestable clearance. Two separate checks required.</textarea
+              >
+            </div>
+            <div class="mt-2 flex gap-2">
+              <claims-button>Save draft</claims-button>
+              <claims-button variant="primary">Submit decision</claims-button>
+            </div>
+          </claims-card>
         </div>
 
-        <div class="claims-page">
-          ${this.activeTab === 'system' ? systemAssessment : examinerReview}
+        <div>
+          <div class="bg-secondary border border-border rounded-md p-3">
+            <div class="text-[11px] font-medium text-muted-foreground mb-1.5">Decision checklist</div>
+            <claims-field-row label="All review items resolved">
+              <claims-badge variant="warning">3 pending</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="State requirements verified">
+              <claims-badge variant="success">Done</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="Benefit calculation confirmed">
+              <claims-badge variant="success">Done</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="Contestable referral sent">
+              <claims-badge variant="warning">Pending Pru</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="Funeral assignment validated">
+              <claims-badge variant="warning">Pending</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="NRA / foreign payee cleared">
+              <claims-badge variant="success">Done</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="Simultaneous death checked">
+              <claims-badge variant="success">Done</claims-badge>
+            </claims-field-row>
+            <claims-field-row label="Misstatement of age cleared">
+              <claims-badge variant="success">Done — no discrepancy</claims-badge>
+            </claims-field-row>
+
+            <div class="text-[11px] font-medium text-muted-foreground mt-2.5 mb-1.5">
+              TPA authority limits
+            </div>
+            <div class="flex justify-between py-0.5">
+              <span class="text-[11px] text-muted-foreground">Death approve-pay</span>
+              <span class="text-[12px] font-medium">$100K aggregate</span>
+            </div>
+            <div class="flex justify-between py-0.5">
+              <span class="text-[11px] text-muted-foreground">TI approve-pay</span>
+              <span class="text-[12px] font-medium">$50K / $101K aggregate</span>
+            </div>
+            <div class="flex justify-between py-0.5">
+              <span class="text-[11px] text-muted-foreground">This claim</span>
+              <span class="text-[12px] font-medium text-[#A32D2D]">$492.7K — Pru required</span>
+            </div>
+            <div class="flex justify-between py-0.5">
+              <span class="text-[11px] text-muted-foreground">TI other deny</span>
+              <span class="text-[12px] font-medium">$0 — always Pru</span>
+            </div>
+          </div>
         </div>
+      </div>
+    `;
+        const tabContent = this.activeTab === 'system'
+            ? systemAssessment
+            : this.activeTab === 'examiner'
+                ? examinerReview
+                : this.activeTab === 'tools'
+                    ? claimTools
+                    : finalDecision;
+        const tabBtn = (tab, label) => html `
+      <button
+        type="button"
+        @click=${() => {
+            this.activeTab = tab;
+        }}
+        class=${cn('px-3.5 py-2.5 text-[12px] cursor-pointer border-b-2 border-transparent whitespace-nowrap', this.activeTab === tab
+            ? 'text-[#185FA5] border-b-[#185FA5] font-medium'
+            : 'text-muted-foreground hover:text-foreground')}
+      >
+        ${label}
+      </button>
+    `;
+        return html `
+      <div class="flex flex-col flex-1 overflow-hidden">
+        <div class="bg-card border-b border-border px-4 flex gap-0 overflow-x-auto">
+          ${tabBtn('system', 'System Assessment')}
+          ${tabBtn('examiner', 'Examiner Review')}
+          ${tabBtn('tools', 'Claim Tools')}
+          ${tabBtn('decision', 'Final Decision')}
+        </div>
+
+        <div class="claims-page">${tabContent}</div>
       </div>
     `;
     }
@@ -257,6 +490,9 @@ let ClaimsWorksheetPage = class ClaimsWorksheetPage extends LightDomElement {
 __decorate([
     state()
 ], ClaimsWorksheetPage.prototype, "activeTab", void 0);
+__decorate([
+    state()
+], ClaimsWorksheetPage.prototype, "selectedDecision", void 0);
 ClaimsWorksheetPage = __decorate([
     customElement('claims-worksheet-page')
 ], ClaimsWorksheetPage);

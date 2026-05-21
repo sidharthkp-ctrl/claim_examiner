@@ -3,8 +3,10 @@ import '../components/claims-button.js';
 import '../components/claims-card.js';
 import '../components/claims-feed-item.js';
 import '../components/claims-icon.js';
+import '../components/claims-scope-banner.js';
 export declare class ClaimsCommunicationsPage extends LightDomElement {
-    render(): import("lit-html").TemplateResult<1>;
+    claimId: string;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

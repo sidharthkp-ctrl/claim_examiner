@@ -1,11 +1,16 @@
 import { LightDomElement } from '../lib/light-dom.js';
+import type { ClaimsSelectorItem } from '../lib/case-data.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
-import '../components/claims-timeline-item.js';
+import '../components/claims-scope-banner.js';
 export declare class ClaimsCaseContextPage extends LightDomElement {
-    private _handleContinue;
-    render(): import("lit-html").TemplateResult<1>;
+    caseId: string;
+    insuredName: string;
+    dateOfDeath: string;
+    claimsInCase: ClaimsSelectorItem[];
+    private _openClaim;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

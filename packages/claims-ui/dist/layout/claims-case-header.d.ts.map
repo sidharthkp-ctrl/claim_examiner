@@ -1,0 +1,1 @@
+{"version":3,"file":"claims-case-header.d.ts","sourceRoot":"","sources":["../../src/layout/claims-case-header.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,eAAe,EAAE,MAAM,qBAAqB,CAAA;AAErD,qBACa,gBAAiB,SAAQ,eAAe;IACvB,MAAM,SAAK;IACX,WAAW,SAAK;IAChB,WAAW,SAAK;IAChB,UAAU,SAAI;IAE1C,MAAM;CAiCP;AAED,OAAO,CAAC,MAAM,CAAC;IACb,UAAU,qBAAqB;QAC7B,oBAAoB,EAAE,gBAAgB,CAAA;KACvC;CACF"}

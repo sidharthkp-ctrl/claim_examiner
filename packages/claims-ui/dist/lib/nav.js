@@ -1,26 +1,38 @@
 export const PAGE_LABELS = {
-    'case-context': 'Case Context',
+    'case-context': 'Case Overview',
     'event-details': 'Event Details',
-    'policy-info': 'Policy Info',
-    documents: 'Documents',
-    integrations: 'External Integrations',
-    medical: 'Medical Review',
+    'claimant-details': 'Claimant Details',
+    'case-documents': 'Case Documents',
+    'claim-overview': 'Claim Overview',
+    'policy-info': 'Policy Details',
+    'claim-documents': 'Claim Documents',
     referral: 'Referral',
     worksheet: 'Worksheet',
-    tools: 'Tools',
-    comms: 'External Communications',
-    decision: 'Decision',
+    comms: 'Communication Trail',
 };
-export const NAV_ITEMS = [
-    { id: 'case-context', label: 'Case Context', section: 'Case' },
-    { id: 'event-details', label: 'Event Details', section: 'Case' },
-    { id: 'policy-info', label: 'Policy Info', section: 'Policy' },
-    { id: 'documents', label: 'Documents', section: 'Documents' },
-    { id: 'integrations', label: 'External Integrations', section: 'Integrations' },
-    { id: 'medical', label: 'Medical Review', section: 'Medical' },
-    { id: 'referral', label: 'Referral', section: 'Referral' },
-    { id: 'worksheet', label: 'Worksheet', section: 'Worksheet' },
-    { id: 'tools', label: 'Tools', section: 'Tools' },
-    { id: 'comms', label: 'External Communications', section: 'Communications' },
-    { id: 'decision', label: 'Decision', section: 'Decision' },
+/** Sidebar section headers — Case block then Claim block. */
+export const NAV_SECTIONS = [
+    'Case',
+    'Claim',
+    'Policy Details',
+    'Documents',
+    'Referral',
+    'Decision',
+    'Communications',
 ];
+export const NAV_ITEMS = [
+    { id: 'case-context', label: 'Overview', section: 'Case', scope: 'case' },
+    { id: 'event-details', label: 'Event Details', section: 'Case', scope: 'case' },
+    { id: 'claimant-details', label: 'Claimant Details', section: 'Case', scope: 'case' },
+    { id: 'case-documents', label: 'Case Documents', section: 'Documents', scope: 'case' },
+    { id: 'claim-overview', label: 'Overview', section: 'Claim', scope: 'claim' },
+    { id: 'policy-info', label: 'Policy Details', section: 'Policy Details', scope: 'claim' },
+    { id: 'claim-documents', label: 'Claim Documents', section: 'Documents', scope: 'claim' },
+    { id: 'referral', label: 'Referral', section: 'Referral', scope: 'claim' },
+    { id: 'worksheet', label: 'Worksheet', section: 'Decision', scope: 'claim' },
+    { id: 'comms', label: 'Communication Trail', section: 'Communications', scope: 'claim' },
+];
+export function isClaimScopedPage(pageId) {
+    const item = NAV_ITEMS.find((n) => n.id === pageId);
+    return item?.scope === 'claim';
+}

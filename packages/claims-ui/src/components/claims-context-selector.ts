@@ -1,15 +1,8 @@
 import { html, css, LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
-export interface ClaimsPolicy {
-  id: string
-  label: string
-}
+import type { ClaimsPolicy, ClaimsSelectorItem } from '../lib/case-data.js'
 
-export interface ClaimsSelectorItem {
-  id: string
-  personName: string
-  policies: ClaimsPolicy[]
-}
+export type { ClaimsCaseContext, ClaimsPolicy, ClaimsSelectorItem } from '../lib/case-data.js'
 
 export interface ClaimChangedDetail {
   claimId: string
@@ -21,10 +14,6 @@ export interface PolicyChangedDetail {
   policyId: string
   policy: ClaimsPolicy
 }
-
-// ---------------------------------------------------------------------------
-// Styles
-// ---------------------------------------------------------------------------
 
 const styles = css`
   :host {
@@ -65,6 +54,26 @@ const styles = css`
     letter-spacing: 0.04em;
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  .cs-case-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--secondary, #f4f7fb);
+    border: 1px solid var(--border, #d8e2ec);
+    border-radius: 0.375rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-dark, #0c447c);
+    white-space: nowrap;
+  }
+
+  .cs-case-meta {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted-foreground, #5c6b7a);
   }
 
   .cs-sep {
@@ -136,21 +145,17 @@ const styles = css`
   }
 `
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
 @customElement('claims-context-selector')
 export class ClaimsContextSelector extends LitElement {
-  // ✅ FIX 3: LightDomElement uses createRenderRoot() = this, so styles are
-  // injected into the light DOM. We declare them here so Lit picks them up.
   static styles = styles
+
+  /** Fixed case for this workbench session (set by host when opening the case). */
+  @property({ type: String }) caseId = ''
+  @property({ type: String }) caseInsuredName = ''
 
   @property({ type: Array }) claims: ClaimsSelectorItem[] = []
   @property({ type: String }) selectedClaimId = ''
   @property({ type: String }) selectedPolicyId = ''
-
-
 
   @state() private _activePolicies: ClaimsPolicy[] = []
 
@@ -198,9 +203,7 @@ export class ClaimsContextSelector extends LitElement {
     const newClaim = this.claims.find((c) => c.id === select.value)
     this.selectedPolicyId = newClaim?.policies[0]?.id ?? ''
     this._emitClaimChanged(this.selectedClaimId)
-    if (this.selectedPolicyId) {
-      this._emitPolicyChanged(this.selectedPolicyId)
-    }
+    if (this.selectedPolicyId) this._emitPolicyChanged(this.selectedPolicyId)
   }
 
   private _onPolicyChange(e: Event) {
@@ -214,23 +217,22 @@ export class ClaimsContextSelector extends LitElement {
 
     return html`
       <div class="cs-bar" role="toolbar" aria-label="Claim and policy selector">
-
         <span class="cs-folder-icon" aria-hidden="true">folder_open</span>
+
+        <span class="cs-case-chip" title="Case is fixed for this session">
+          ${this.caseId}
+          <span class="cs-case-meta">· ${this.caseInsuredName}</span>
+        </span>
+
+        <span class="cs-sep" aria-hidden="true">|</span>
 
         <span class="cs-label">Claim</span>
         <div class="cs-sel-wrap">
-          <!-- ✅ FIX 4: removed .value binding — ?selected on each option is
-               sufficient and correct. .value binding on <select> in Lit
-               overrides the browser's own selection before options render. -->
-          <select
-            id="claim-select"
-            aria-label="Select claim"
-            @change=${this._onClaimChange}
-          >
+          <select id="claim-select" aria-label="Select claim" @change=${this._onClaimChange}>
             ${this.claims.map(
               (c) => html`
                 <option value=${c.id} ?selected=${c.id === this.selectedClaimId}>
-                  ${c.id} — ${c.personName}
+                  ${c.id} — ${c.type}
                 </option>
               `
             )}
@@ -259,10 +261,7 @@ export class ClaimsContextSelector extends LitElement {
           <span class="cs-caret" aria-hidden="true">▾</span>
         </div>
 
-        ${activePolicy
-          ? html`<span class="cs-policy-tag">${activePolicy.id}</span>`
-          : ''}
-
+        ${activePolicy ? html`<span class="cs-policy-tag">${activePolicy.id}</span>` : ''}
       </div>
     `
   }

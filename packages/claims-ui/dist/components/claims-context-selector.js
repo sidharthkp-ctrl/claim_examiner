@@ -6,9 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { html, css, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-// ---------------------------------------------------------------------------
-// Styles
-// ---------------------------------------------------------------------------
 const styles = css `
   :host {
     display: block;
@@ -48,6 +45,26 @@ const styles = css `
     letter-spacing: 0.04em;
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  .cs-case-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--secondary, #f4f7fb);
+    border: 1px solid var(--border, #d8e2ec);
+    border-radius: 0.375rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-dark, #0c447c);
+    white-space: nowrap;
+  }
+
+  .cs-case-meta {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted-foreground, #5c6b7a);
   }
 
   .cs-sep {
@@ -118,19 +135,17 @@ const styles = css `
     flex-shrink: 0;
   }
 `;
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 let ClaimsContextSelector = class ClaimsContextSelector extends LitElement {
     constructor() {
         super(...arguments);
+        /** Fixed case for this workbench session (set by host when opening the case). */
+        this.caseId = '';
+        this.caseInsuredName = '';
         this.claims = [];
         this.selectedClaimId = '';
         this.selectedPolicyId = '';
         this._activePolicies = [];
     }
-    // ✅ FIX 3: LightDomElement uses createRenderRoot() = this, so styles are
-    // injected into the light DOM. We declare them here so Lit picks them up.
     static { this.styles = styles; }
     willUpdate(changed) {
         if (changed.has('claims') || changed.has('selectedClaimId')) {
@@ -168,9 +183,8 @@ let ClaimsContextSelector = class ClaimsContextSelector extends LitElement {
         const newClaim = this.claims.find((c) => c.id === select.value);
         this.selectedPolicyId = newClaim?.policies[0]?.id ?? '';
         this._emitClaimChanged(this.selectedClaimId);
-        if (this.selectedPolicyId) {
+        if (this.selectedPolicyId)
             this._emitPolicyChanged(this.selectedPolicyId);
-        }
     }
     _onPolicyChange(e) {
         const select = e.target;
@@ -181,22 +195,21 @@ let ClaimsContextSelector = class ClaimsContextSelector extends LitElement {
         const activePolicy = this._activePolicies.find((p) => p.id === this.selectedPolicyId);
         return html `
       <div class="cs-bar" role="toolbar" aria-label="Claim and policy selector">
-
         <span class="cs-folder-icon" aria-hidden="true">folder_open</span>
+
+        <span class="cs-case-chip" title="Case is fixed for this session">
+          ${this.caseId}
+          <span class="cs-case-meta">· ${this.caseInsuredName}</span>
+        </span>
+
+        <span class="cs-sep" aria-hidden="true">|</span>
 
         <span class="cs-label">Claim</span>
         <div class="cs-sel-wrap">
-          <!-- ✅ FIX 4: removed .value binding — ?selected on each option is
-               sufficient and correct. .value binding on <select> in Lit
-               overrides the browser's own selection before options render. -->
-          <select
-            id="claim-select"
-            aria-label="Select claim"
-            @change=${this._onClaimChange}
-          >
+          <select id="claim-select" aria-label="Select claim" @change=${this._onClaimChange}>
             ${this.claims.map((c) => html `
                 <option value=${c.id} ?selected=${c.id === this.selectedClaimId}>
-                  ${c.id} — ${c.personName}
+                  ${c.id} — ${c.type}
                 </option>
               `)}
           </select>
@@ -222,14 +235,17 @@ let ClaimsContextSelector = class ClaimsContextSelector extends LitElement {
           <span class="cs-caret" aria-hidden="true">▾</span>
         </div>
 
-        ${activePolicy
-            ? html `<span class="cs-policy-tag">${activePolicy.id}</span>`
-            : ''}
-
+        ${activePolicy ? html `<span class="cs-policy-tag">${activePolicy.id}</span>` : ''}
       </div>
     `;
     }
 };
+__decorate([
+    property({ type: String })
+], ClaimsContextSelector.prototype, "caseId", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsContextSelector.prototype, "caseInsuredName", void 0);
 __decorate([
     property({ type: Array })
 ], ClaimsContextSelector.prototype, "claims", void 0);

@@ -5,15 +5,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
 import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-badge.js';
 import '../components/claims-card.js';
+import '../components/claims-scope-banner.js';
 let ClaimsEventDetailsPage = class ClaimsEventDetailsPage extends LightDomElement {
+    constructor() {
+        super(...arguments);
+        this.caseId = '';
+    }
     render() {
         return html `
       <div class="claims-page">
+        <claims-scope-banner
+          scope="case"
+          title="Event details"
+          description="Death event information shared by all claims in this case."
+          .entityId=${this.caseId}
+        ></claims-scope-banner>
         <div class="grid grid-cols-2 gap-2.5">
           <div>
             <claims-card title="Death event" icon=${MaterialIcons.fileText}>
@@ -107,6 +118,9 @@ let ClaimsEventDetailsPage = class ClaimsEventDetailsPage extends LightDomElemen
     `;
     }
 };
+__decorate([
+    property({ type: String })
+], ClaimsEventDetailsPage.prototype, "caseId", void 0);
 ClaimsEventDetailsPage = __decorate([
     customElement('claims-event-details-page')
 ], ClaimsEventDetailsPage);

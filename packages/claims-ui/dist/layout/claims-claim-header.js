@@ -5,24 +5,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
-const FIELDS = [
-    { label: 'Claim ID', value: 'CLM-20260420-00123' },
-    { label: 'Claim type', value: 'Death Claim' },
-    { label: 'Source', value: 'BAU — Portal' },
-    { label: 'Status', value: 'In Review', color: '#BA7517' },
-    { label: 'Verification', value: 'Verified', color: '#3B6D11' },
-    { label: 'SLA remaining', value: '8 days', color: '#3B6D11' },
-    { label: 'Affected person', value: 'John A. Smith' },
-];
 let ClaimsClaimHeader = class ClaimsClaimHeader extends LightDomElement {
+    constructor() {
+        super(...arguments);
+        this.claimId = '';
+        this.claimType = '';
+        this.claimStatus = '';
+        this.policyId = '';
+        this.policyLabel = '';
+    }
     render() {
+        const fields = [
+            { label: 'Claim ID', value: this.claimId || '—' },
+            { label: 'Claim type', value: this.claimType || '—' },
+            { label: 'Policy', value: this.policyId ? `${this.policyId}` : '—' },
+            { label: 'Coverage', value: this.policyLabel || '—' },
+            { label: 'Status', value: this.claimStatus || '—', color: '#BA7517' },
+            { label: 'Source', value: 'BAU — Portal' },
+            { label: 'Verification', value: 'Verified', color: '#3B6D11' },
+        ];
         return html `
       <div
         class="bg-card border-b border-border px-4 md:px-5 py-3 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-5 gap-y-2 shadow-sm"
       >
-        ${FIELDS.map((field) => html `
+        ${fields.map((field) => html `
             <div class="flex flex-col gap-0.5 min-w-0">
               <span class="text-[10px] font-medium text-muted-foreground uppercase tracking-wide"
                 >${field.label}</span
@@ -39,6 +47,21 @@ let ClaimsClaimHeader = class ClaimsClaimHeader extends LightDomElement {
     `;
     }
 };
+__decorate([
+    property({ type: String })
+], ClaimsClaimHeader.prototype, "claimId", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsClaimHeader.prototype, "claimType", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsClaimHeader.prototype, "claimStatus", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsClaimHeader.prototype, "policyId", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsClaimHeader.prototype, "policyLabel", void 0);
 ClaimsClaimHeader = __decorate([
     customElement('claims-claim-header')
 ], ClaimsClaimHeader);
