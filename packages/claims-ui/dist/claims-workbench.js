@@ -7,8 +7,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { LightDomElement } from './lib/light-dom.js';
-import { DEFAULT_CASE, findClaimInCase, } from './lib/case-data.js';
-import { PAGE_LABELS, isClaimScopedPage } from './lib/nav.js';
+import { defaultCaseForProduct, DEFAULT_DEATH_CASE, findClaimInCase, } from './lib/case-data.js';
+import { claimProductFromAttr, CLAIM_PRODUCT_LABELS, } from './lib/claim-product.js';
+import { PAGE_LABELS, isClaimScopedPage, navItemsForProduct } from './lib/nav.js';
 import './layout/claims-sidebar.js';
 import './layout/claims-topbar.js';
 import './layout/claims-sla-banner.js';
@@ -21,22 +22,22 @@ import './pages/case-documents-page.js';
 import './pages/claim-overview-page.js';
 import './pages/policy-info-page.js';
 import './pages/claim-documents-page.js';
+import './pages/medical-page.js';
 import './pages/referral-page.js';
 import './pages/worksheet-page.js';
 import './pages/communications-page.js';
 import './components/claims-context-selector.js';
 /**
- * Workbench for one open case. The host app selects the case before navigation;
- * users only switch claim / policy inside this view.
+ * Examiner workbench for one open case. Host app selects product (death | ti) and case before navigation.
  */
 let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
     constructor() {
         super(...arguments);
-        /** Case loaded when the user opened this screen (not switchable in-app). */
-        this.caseContext = DEFAULT_CASE;
+        this.claimProduct = 'death';
         this.activePage = 'case-context';
-        this.selectedClaimId = DEFAULT_CASE.claims[0].id;
-        this.selectedPolicyId = DEFAULT_CASE.claims[0].policies[0].id;
+        this.caseContext = defaultCaseForProduct('death');
+        this.selectedClaimId = DEFAULT_DEATH_CASE.claims[0].id;
+        this.selectedPolicyId = DEFAULT_DEATH_CASE.claims[0].policies[0].id;
         this._onPageChange = (e) => {
             const detail = e.detail;
             if (detail?.page)
@@ -51,6 +52,12 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
             this.selectedPolicyId = claim?.policies[0]?.id ?? this.selectedPolicyId;
             this.activePage = detail.page ?? 'claim-overview';
         };
+        this._onPortalHome = () => {
+            window.location.href = '/';
+        };
+    }
+    get _product() {
+        return claimProductFromAttr(this.claimProduct);
     }
     get _activeClaim() {
         return findClaimInCase(this.caseContext, this.selectedClaimId);
@@ -60,13 +67,28 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
     }
     connectedCallback() {
         super.connectedCallback();
+        this._initCase();
         this.addEventListener('page-change', this._onPageChange);
         this.addEventListener('open-claim', this._onOpenClaim);
+        this.addEventListener('portal-home', this._onPortalHome);
     }
     disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('page-change', this._onPageChange);
         this.removeEventListener('open-claim', this._onOpenClaim);
+        this.removeEventListener('portal-home', this._onPortalHome);
+    }
+    updated(changed) {
+        if (changed.has('claimProduct')) {
+            this._initCase();
+        }
+    }
+    _initCase() {
+        const ctx = defaultCaseForProduct(this._product);
+        this.caseContext = ctx;
+        this.selectedClaimId = ctx.claims[0]?.id ?? '';
+        this.selectedPolicyId = ctx.claims[0]?.policies[0]?.id ?? '';
+        this.activePage = 'case-context';
     }
     _handleClaimChanged(e) {
         this.selectedClaimId = e.detail.claimId;
@@ -79,47 +101,68 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
         const caseItem = this.caseContext;
         const claim = this._activeClaim;
         const policy = this._activePolicy;
+        const product = this._product;
         switch (this.activePage) {
             case 'case-context':
                 return html `<claims-case-context-page
           .caseId=${caseItem.id}
           .insuredName=${caseItem.insuredName}
-          .dateOfDeath=${caseItem.dateOfDeath}
+          .eventDate=${caseItem.eventDate}
+          .eventDateLabel=${caseItem.eventDateLabel}
           .claimsInCase=${caseItem.claims}
+          claim-product=${product}
         ></claims-case-context-page>`;
             case 'event-details':
-                return html `<claims-event-details-page .caseId=${caseItem.id}></claims-event-details-page>`;
+                return html `<claims-event-details-page
+          .caseId=${caseItem.id}
+          claim-product=${product}
+        ></claims-event-details-page>`;
             case 'claimant-details':
-                return html `<claims-claimant-details-page .caseId=${caseItem.id}></claims-claimant-details-page>`;
+                return html `<claims-claimant-details-page
+          .caseId=${caseItem.id}
+          claim-product=${product}
+        ></claims-claimant-details-page>`;
             case 'case-documents':
-                return html `<claims-case-documents-page .caseId=${caseItem.id}></claims-case-documents-page>`;
+                return html `<claims-case-documents-page
+          .caseId=${caseItem.id}
+          claim-product=${product}
+        ></claims-case-documents-page>`;
             case 'claim-overview':
                 return html `<claims-claim-overview-page
           .caseId=${caseItem.id}
           .claimId=${claim?.id ?? ''}
           .claimType=${claim?.type ?? ''}
           .policyId=${policy?.id ?? ''}
+          claim-product=${product}
         ></claims-claim-overview-page>`;
             case 'policy-info':
-                return html `<claims-policy-info-page></claims-policy-info-page>`;
+                return html `<claims-policy-info-page claim-product=${product}></claims-policy-info-page>`;
             case 'claim-documents':
                 return html `<claims-claim-documents-page
           .caseId=${caseItem.id}
           .claimId=${claim?.id ?? ''}
           .policyId=${policy?.id ?? ''}
+          claim-product=${product}
         ></claims-claim-documents-page>`;
+            case 'medical':
+                return html `<claims-medical-page claim-product=${product}></claims-medical-page>`;
             case 'referral':
-                return html `<claims-referral-page></claims-referral-page>`;
+                return html `<claims-referral-page claim-product=${product}></claims-referral-page>`;
             case 'worksheet':
-                return html `<claims-worksheet-page></claims-worksheet-page>`;
+                return html `<claims-worksheet-page claim-product=${product}></claims-worksheet-page>`;
             case 'comms':
-                return html `<claims-communications-page .claimId=${claim?.id ?? ''}></claims-communications-page>`;
+                return html `<claims-communications-page
+          .claimId=${claim?.id ?? ''}
+          claim-product=${product}
+        ></claims-communications-page>`;
             default:
                 return html `<claims-case-context-page
           .caseId=${caseItem.id}
           .insuredName=${caseItem.insuredName}
-          .dateOfDeath=${caseItem.dateOfDeath}
+          .eventDate=${caseItem.eventDate}
+          .eventDateLabel=${caseItem.eventDateLabel}
           .claimsInCase=${caseItem.claims}
+          claim-product=${product}
         ></claims-case-context-page>`;
         }
     }
@@ -129,27 +172,38 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
         const claim = this._activeClaim;
         const policy = this._activePolicy;
         const showClaimHeader = isClaimScopedPage(this.activePage);
+        const product = this._product;
+        const portalLabel = CLAIM_PRODUCT_LABELS[product];
         return html `
       <div class="flex h-full max-h-full min-h-0 bg-[#eef3f8] text-[13px] font-sans antialiased overflow-hidden">
-        <claims-sidebar .activePage=${this.activePage}></claims-sidebar>
+        <claims-sidebar
+          .activePage=${this.activePage}
+          .navItems=${navItemsForProduct(product)}
+          .portalTitle=${portalLabel}
+          claim-product=${product}
+        ></claims-sidebar>
         <main class="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
           <div class="shrink-0 min-w-0">
-            <claims-topbar .breadcrumbLabel=${label}></claims-topbar>
+            <claims-topbar
+              .breadcrumbLabel=${label}
+              .portalLabel=${portalLabel}
+              .showHomeLink=${true}
+            ></claims-topbar>
             <claims-context-selector
               .caseId=${caseItem.id}
               .caseInsuredName=${caseItem.insuredName}
               .claims=${caseItem.claims}
               .selectedClaimId=${this.selectedClaimId}
               .selectedPolicyId=${this.selectedPolicyId}
-              @claims-claim-changed=${this._handleClaimChanged}
-              @claims-policy-changed=${this._handlePolicyChanged}
             ></claims-context-selector>
-            <claims-sla-banner></claims-sla-banner>
+            <claims-sla-banner claim-product=${product}></claims-sla-banner>
             <claims-case-header
               .caseId=${caseItem.id}
               .insuredName=${caseItem.insuredName}
-              .dateOfDeath=${caseItem.dateOfDeath}
+              .eventDate=${caseItem.eventDate}
+              .eventDateLabel=${caseItem.eventDateLabel}
               .claimCount=${caseItem.claims.length}
+              claim-product=${product}
             ></claims-case-header>
             ${showClaimHeader
             ? html `<claims-claim-header
@@ -168,11 +222,14 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
     }
 };
 __decorate([
-    property({ type: Object })
-], ClaimsWorkbench.prototype, "caseContext", void 0);
+    property({ type: String, attribute: 'claim-product' })
+], ClaimsWorkbench.prototype, "claimProduct", void 0);
 __decorate([
     state()
 ], ClaimsWorkbench.prototype, "activePage", void 0);
+__decorate([
+    state()
+], ClaimsWorkbench.prototype, "caseContext", void 0);
 __decorate([
     state()
 ], ClaimsWorkbench.prototype, "selectedClaimId", void 0);

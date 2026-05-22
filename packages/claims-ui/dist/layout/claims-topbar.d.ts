@@ -1,7 +1,10 @@
 import { LightDomElement } from '../lib/light-dom.js';
 export declare class ClaimsTopbar extends LightDomElement {
     breadcrumbLabel: string;
-    render(): import("lit").TemplateResult<1>;
+    portalLabel: string;
+    showHomeLink: boolean;
+    private _goHome;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

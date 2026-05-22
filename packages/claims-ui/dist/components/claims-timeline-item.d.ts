@@ -6,7 +6,7 @@ export declare class ClaimsTimelineItem extends LitElement {
     time: string;
     active: boolean;
     pending: boolean;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

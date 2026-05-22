@@ -7,23 +7,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
+import { claimProductFromAttr } from '../lib/claim-product.js';
 let ClaimsCaseHeader = class ClaimsCaseHeader extends LightDomElement {
     constructor() {
         super(...arguments);
         this.caseId = '';
         this.insuredName = '';
-        this.dateOfDeath = '';
+        this.eventDate = '';
+        this.eventDateLabel = 'Date of death';
         this.claimCount = 0;
+        this.claimProduct = 'death';
     }
     render() {
+        const product = claimProductFromAttr(this.claimProduct);
         const fields = [
             { label: 'Case ID', value: this.caseId || '—' },
             { label: 'Insured', value: this.insuredName || '—' },
-            { label: 'Date of death', value: this.dateOfDeath || '—' },
+            { label: this.eventDateLabel, value: this.eventDate || '—' },
             { label: 'Claims in case', value: String(this.claimCount), color: '#185FA5' },
-            { label: 'Case status', value: 'Open — multi-claim', color: '#BA7517' },
+            {
+                label: 'Portal',
+                value: product === 'ti' ? 'Terminal Illness' : 'Death',
+                color: product === 'ti' ? '#534AB7' : '#0C447C',
+            },
             { label: 'Assigned examiner', value: 'Sarah M.' },
-            { label: 'SLA (case)', value: '8 days', color: '#3B6D11' },
+            { label: 'SLA (case)', value: product === 'ti' ? 'Ack pending' : '8 days', color: '#3B6D11' },
         ];
         return html `
       <div
@@ -54,10 +62,16 @@ __decorate([
 ], ClaimsCaseHeader.prototype, "insuredName", void 0);
 __decorate([
     property({ type: String })
-], ClaimsCaseHeader.prototype, "dateOfDeath", void 0);
+], ClaimsCaseHeader.prototype, "eventDate", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsCaseHeader.prototype, "eventDateLabel", void 0);
 __decorate([
     property({ type: Number })
 ], ClaimsCaseHeader.prototype, "claimCount", void 0);
+__decorate([
+    property({ type: String, attribute: 'claim-product' })
+], ClaimsCaseHeader.prototype, "claimProduct", void 0);
 ClaimsCaseHeader = __decorate([
     customElement('claims-case-header')
 ], ClaimsCaseHeader);

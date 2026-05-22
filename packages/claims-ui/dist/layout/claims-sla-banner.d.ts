@@ -1,7 +1,9 @@
 import { LightDomElement } from '../lib/light-dom.js';
+import { type ClaimProduct } from '../lib/claim-product.js';
 import '../components/claims-badge.js';
 export declare class ClaimsSlaBanner extends LightDomElement {
-    render(): import("lit").TemplateResult<1>;
+    claimProduct: ClaimProduct;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

@@ -5,80 +5,119 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
+import { claimProductFromAttr } from '../lib/claim-product.js';
 import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
+import '../components/claims-scope-banner.js';
 let ClaimsMedicalPage = class ClaimsMedicalPage extends LightDomElement {
+    constructor() {
+        super(...arguments);
+        this.claimProduct = 'ti';
+    }
     render() {
+        const product = claimProductFromAttr(this.claimProduct);
+        if (product === 'death') {
+            return html `
+        <div class="claims-page">
+          <claims-info-box variant="info">
+            Medical review for death claims is handled under Referral → Contestable investigation (D-19).
+            Open the Death Claim Examiner portal worksheet for manner and document review.
+          </claims-info-box>
+        </div>
+      `;
+        }
         return html `
       <div class="claims-page">
+        <claims-scope-banner
+          scope="claim"
+          title="Medical review"
+          description="Mandatory on all TI claims (T-07). No fast track."
+        ></claims-scope-banner>
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <claims-card title="Medical records request (D-18)" icon=${MaterialIcons.stethoscope}>
-              <claims-field-row label="Contestable period">
-                <claims-badge variant="warning">Active — 23 months</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Records requested">Austin Regional Clinic</claims-field-row>
-              <claims-field-row label="Date range requested">03/15/2022 — 03/15/2024</claims-field-row>
-              <claims-field-row label="Request sent">04/19/2026</claims-field-row>
-              <claims-field-row label="Status">
-                <claims-badge variant="warning">Pending response</claims-badge>
-              </claims-field-row>
+            <claims-card title="Medical expert referral (T-07)" icon=${MaterialIcons.stethoscope}>
+              <claims-field-row label="Status"
+                ><claims-badge variant="warning">In medical expert queue</claims-badge></claims-field-row
+              >
+              <claims-field-row label="Referred on">05/20/2026</claims-field-row>
+              <claims-field-row label="Package included"
+                >Physician Statement, Claim Form, Authorization, medical records</claims-field-row
+              >
               <claims-info-box variant="info" className="mt-2">
-                Per BOG 6.1: For contestable claims, request medical records for 2 years prior to policy
-                issue date to check for material misrepresentation.
+                BOG requires medical expert review on all TI claims without exception.
               </claims-info-box>
             </claims-card>
 
-            <claims-card title="Medical history summary" icon=${MaterialIcons.fileText}>
-              <claims-field-row label="Pre-existing conditions">
-                <claims-badge variant="warning">Under review</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Application disclosures">Hypertension disclosed</claims-field-row>
-              <claims-field-row label="Undisclosed conditions">
-                <claims-badge variant="warning">Pending records</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Materiality assessment">
-                <claims-badge variant="warning">Pending</claims-badge>
-              </claims-field-row>
+            <claims-card title="Physician Statement extraction" .ai=${true} icon=${MaterialIcons.bot}>
+              <claims-field-row label="Attending physician">Dr. Maria Chen, MD</claims-field-row>
+              <claims-field-row label="Life expectancy">6 months or less</claims-field-row>
+              <claims-field-row label="Diagnosis">Stage IV pancreatic cancer</claims-field-row>
+              <claims-field-row label="Mental capacity (Q9)"
+                ><claims-badge variant="success">Capable</claims-badge></claims-field-row
+              >
+              <claims-field-row label="AI confidence"
+                ><claims-badge variant="success">92%</claims-badge></claims-field-row
+              >
+            </claims-card>
+
+            <claims-card title="Physician qualifications (T-11)" icon=${MaterialIcons.shield}>
+              <claims-field-row label="Licensed in U.S."
+                ><claims-badge variant="success">Yes</claims-badge></claims-field-row
+              >
+              <claims-field-row label="Currently practicing"
+                ><claims-badge variant="success">Yes</claims-badge></claims-field-row
+              >
+              <claims-field-row label="Treating for terminal illness"
+                ><claims-badge variant="success">Yes</claims-badge></claims-field-row
+              >
+              <claims-field-row label="Family relationship"
+                ><claims-badge variant="success">None</claims-badge></claims-field-row
+              >
             </claims-card>
           </div>
 
           <div>
-            <claims-card title="Contestable investigation (D-19)" icon=${MaterialIcons.alertTriangle}>
-              <claims-field-row label="Investigation status">
-                <claims-badge variant="info">In progress</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Assigned investigator">Medical Review Team</claims-field-row>
-              <claims-field-row label="Target completion">05/04/2026</claims-field-row>
-
-              <div class="mt-3">
-                <div class="text-[11px] text-muted-foreground mb-1">Investigation notes</div>
-                <textarea
-                  class="w-full border border-border rounded-md p-2 text-[12px] min-h-[80px] resize-y"
-                  placeholder="Document investigation findings..."
-                >
-Hypertension disclosed on application. Awaiting medical records to verify no additional undisclosed conditions. Will assess materiality once records received.</textarea>
-              </div>
-
-              <div class="mt-2 flex gap-2">
-                <claims-button className="text-[11px]">Save notes</claims-button>
-                <claims-button variant="primary" className="text-[11px]"
-                  >Request additional records</claims-button
-                >
-              </div>
+            <claims-card title="Medical expert findings (T-08)" icon=${MaterialIcons.fileText}>
+              <claims-field-row label="Determination"
+                ><claims-badge variant="warning">Pending</claims-badge></claims-field-row
+              >
+              <claims-field-row label="Life expectancy assessment">—</claims-field-row>
+              <claims-field-row label="Additional records needed"
+                ><claims-badge variant="neutral">TBD by expert</claims-badge></claims-field-row
+              >
+              <textarea
+                class="w-full mt-2 border border-border rounded-md p-2 text-[12px] min-h-[80px]"
+                placeholder="Document medical expert findings when received (T-08)..."
+              ></textarea>
             </claims-card>
 
-            <claims-card title="MRX results" icon=${MaterialIcons.stethoscope}>
-              <claims-field-row label="MRX check run">04/20/2026</claims-field-row>
-              <claims-field-row label="Prescription history">No red flags</claims-field-row>
-              <claims-field-row label="Hospital admissions">None found in period</claims-field-row>
-              <claims-field-row label="Specialist visits">
-                <claims-badge variant="warning">1 cardiology visit — reviewing</claims-badge>
-              </claims-field-row>
+            <claims-card title="Physician phone verification (T-10)" icon=${MaterialIcons.messageCircle}>
+              <claims-field-row label="Independent verification"
+                ><claims-badge variant="warning">Scheduled</claims-badge></claims-field-row
+              >
+              <claims-field-row label="Office contacted">Austin Oncology Associates</claims-field-row>
+              <claims-button className="mt-2 text-[11px]">Log verification outcome</claims-button>
+            </claims-card>
+
+            <claims-card title="Contestable investigation (T-19)" icon=${MaterialIcons.alertTriangle}>
+              <claims-field-row label="Contestable period"
+                ><claims-badge variant="warning">Active</claims-badge></claims-field-row
+              >
+              <claims-field-row label="Parallel reviews"
+                >Contestable clinical + insured eligibility clinical</claims-field-row
+              >
+              <claims-field-row label="Records lookback">2 years prior to policy date</claims-field-row>
+            </claims-card>
+
+            <claims-card title="Additional records (T-09)" icon=${MaterialIcons.upload}>
+              <claims-field-row label="Expert requested records"
+                ><claims-badge variant="neutral">None yet</claims-badge></claims-field-row
+              >
+              <claims-button variant="primary" className="text-[11px]">Order records</claims-button>
             </claims-card>
           </div>
         </div>
@@ -86,6 +125,9 @@ Hypertension disclosed on application. Awaiting medical records to verify no add
     `;
     }
 };
+__decorate([
+    property({ type: String, attribute: 'claim-product' })
+], ClaimsMedicalPage.prototype, "claimProduct", void 0);
 ClaimsMedicalPage = __decorate([
     customElement('claims-medical-page')
 ], ClaimsMedicalPage);

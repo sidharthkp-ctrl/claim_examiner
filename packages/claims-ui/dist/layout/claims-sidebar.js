@@ -8,18 +8,24 @@ import { html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
 import { cn } from '../lib/cn.js';
+import { claimProductFromAttr } from '../lib/claim-product.js';
+import { NAV_SECTIONS } from '../lib/nav.js';
+import { navItemsForProduct } from '../lib/nav.js';
 import { MaterialIcons } from '../lib/material-icons.js';
-import { NAV_ITEMS, NAV_SECTIONS } from '../lib/nav.js';
 import '../components/claims-icon.js';
 let ClaimsSidebar = class ClaimsSidebar extends LightDomElement {
     constructor() {
         super(...arguments);
         this.activePage = 'case-context';
+        this.navItems = navItemsForProduct('death');
+        this.portalTitle = 'Death Claim Examiner';
+        this.claimProduct = 'death';
         this.expandedSections = Object.fromEntries(NAV_SECTIONS.map((s) => [s, true]));
     }
     get groupedItems() {
+        const items = this.navItems.length ? this.navItems : navItemsForProduct(this.claimProduct);
         const acc = {};
-        for (const item of NAV_ITEMS) {
+        for (const item of items) {
             if (!acc[item.section])
                 acc[item.section] = [];
             acc[item.section].push(item);
@@ -32,6 +38,9 @@ let ClaimsSidebar = class ClaimsSidebar extends LightDomElement {
             bubbles: true,
             composed: true,
         }));
+    }
+    goHome() {
+        window.location.href = '/';
     }
     toggleSection(section) {
         this.expandedSections = {
@@ -59,6 +68,8 @@ let ClaimsSidebar = class ClaimsSidebar extends LightDomElement {
     }
     render() {
         const grouped = this.groupedItems;
+        const product = claimProductFromAttr(this.claimProduct);
+        const accent = product === 'ti' ? '#534AB7' : '#185FA5';
         return html `
       <aside
         class="w-[200px] min-w-[200px] max-w-[200px] shrink-0 bg-[#f8f9fb] border-r border-[#e2e8f0] flex flex-col h-full min-h-0 overflow-hidden"
@@ -68,19 +79,31 @@ let ClaimsSidebar = class ClaimsSidebar extends LightDomElement {
           class="shrink-0 px-4 py-4 border-b border-[#e2e8f0] flex items-center gap-2.5 bg-gradient-to-r from-[#E6F1FB] to-[#f8f9fb]"
         >
           <span
-            class="text-[#185FA5] flex items-center justify-center w-8 h-8 rounded-lg bg-white shadow-sm border border-[#e2e8f0]"
+            class="flex items-center justify-center w-8 h-8 rounded-lg bg-white shadow-sm border border-[#e2e8f0]"
+            style="color: ${accent}"
           >
             <claims-icon name=${MaterialIcons.shieldCheck} size="sm"></claims-icon>
           </span>
-          <div>
-            <div class="font-semibold text-[13px] text-[#0C447C] leading-tight" style="font-family: inherit;">
+          <div class="min-w-0">
+            <div class="font-semibold text-[13px] leading-tight" style="color: ${accent}; font-family: inherit;">
               Neutrinos
             </div>
-            <div class="text-[10px] text-[#718096]" style="font-family: inherit;">Claims Workbench</div>
+            <div class="text-[10px] text-[#718096] truncate" style="font-family: inherit;" title=${this.portalTitle}>
+              ${this.portalTitle}
+            </div>
           </div>
         </div>
 
-        <nav class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-3">
+        <button
+          type="button"
+          @click=${this.goHome}
+          class="mx-3 mt-2 mb-1 text-[11px] text-left text-[#185FA5] hover:underline"
+          style="font-family: inherit;"
+        >
+          ← All portals
+        </button>
+
+        <nav class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-2">
           ${NAV_SECTIONS.map((section) => {
             const items = grouped[section] ?? [];
             if (!items.length)
@@ -125,6 +148,15 @@ let ClaimsSidebar = class ClaimsSidebar extends LightDomElement {
 __decorate([
     property({ type: String })
 ], ClaimsSidebar.prototype, "activePage", void 0);
+__decorate([
+    property({ type: Array })
+], ClaimsSidebar.prototype, "navItems", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsSidebar.prototype, "portalTitle", void 0);
+__decorate([
+    property({ type: String, attribute: 'claim-product' })
+], ClaimsSidebar.prototype, "claimProduct", void 0);
 __decorate([
     state()
 ], ClaimsSidebar.prototype, "expandedSections", void 0);

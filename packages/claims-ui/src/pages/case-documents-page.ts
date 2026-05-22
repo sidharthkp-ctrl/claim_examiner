@@ -1,5 +1,6 @@
 import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
 import { MaterialIcons } from '../lib/material-icons.js'
@@ -14,14 +15,18 @@ import '../components/claims-scope-banner.js'
 @customElement('claims-case-documents-page')
 export class ClaimsCaseDocumentsPage extends LightDomElement {
   @property({ type: String }) caseId = ''
+  @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
 
   render() {
+    const product = claimProductFromAttr(this.claimProduct)
     return html`
       <div class="claims-page">
         <claims-scope-banner
           scope="case"
           title="Case documents"
-          description="Shared documents for all claims under this case (death certificate, authorization, etc.)."
+          .description=${product === 'ti'
+            ? 'Shared TI case documents (Physician Statement, authorization, medical records).'
+            : 'Shared death case documents (death certificate, authorization, etc.).'}
           .entityId=${this.caseId}
         ></claims-scope-banner>
 
@@ -33,7 +38,12 @@ export class ClaimsCaseDocumentsPage extends LightDomElement {
           </claims-button>
         </div>
 
-        <claims-card title="AI extraction — death certificate" .ai=${true} className="mb-4" icon=${MaterialIcons.bot}>
+        <claims-card
+          title=${product === 'ti' ? "AI extraction — Physician's Statement" : 'AI extraction — death certificate'}
+          .ai=${true}
+          className="mb-4"
+          icon=${MaterialIcons.bot}
+        >
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <claims-mini-field label="Insured name">
               John Alan Smith

@@ -7,7 +7,7 @@ export declare class ClaimsDecisionOption extends LitElement {
     description: string;
     selected: boolean;
     private _select;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

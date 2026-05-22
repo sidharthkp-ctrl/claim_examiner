@@ -1,5 +1,5 @@
 import { LightDomElement } from './lib/light-dom.js';
-import { type ClaimsCaseContext } from './lib/case-data.js';
+import { type ClaimProduct } from './lib/claim-product.js';
 import './layout/claims-sidebar.js';
 import './layout/claims-topbar.js';
 import './layout/claims-sla-banner.js';
@@ -12,30 +12,34 @@ import './pages/case-documents-page.js';
 import './pages/claim-overview-page.js';
 import './pages/policy-info-page.js';
 import './pages/claim-documents-page.js';
+import './pages/medical-page.js';
 import './pages/referral-page.js';
 import './pages/worksheet-page.js';
 import './pages/communications-page.js';
 import './components/claims-context-selector.js';
 /**
- * Workbench for one open case. The host app selects the case before navigation;
- * users only switch claim / policy inside this view.
+ * Examiner workbench for one open case. Host app selects product (death | ti) and case before navigation.
  */
 export declare class ClaimsWorkbench extends LightDomElement {
-    /** Case loaded when the user opened this screen (not switchable in-app). */
-    caseContext: ClaimsCaseContext;
+    claimProduct: ClaimProduct;
     private activePage;
+    private caseContext;
     private selectedClaimId;
     private selectedPolicyId;
+    private get _product();
     private get _activeClaim();
     private get _activePolicy();
     connectedCallback(): void;
     disconnectedCallback(): void;
+    updated(changed: Map<string, unknown>): void;
+    private _initCase;
     private _onPageChange;
     private _onOpenClaim;
+    private _onPortalHome;
     private _handleClaimChanged;
     private _handlePolicyChanged;
     private _renderPage;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

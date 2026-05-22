@@ -7,6 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
+import { claimProductFromAttr } from '../lib/claim-product.js';
+import { activitiesForProduct } from '../lib/examiner-activities.js';
 import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
@@ -17,8 +19,10 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
         super(...arguments);
         this.caseId = '';
         this.insuredName = '';
-        this.dateOfDeath = '';
+        this.eventDate = '';
+        this.eventDateLabel = 'Date of death';
         this.claimsInCase = [];
+        this.claimProduct = 'death';
     }
     _openClaim(claimId) {
         this.dispatchEvent(new CustomEvent('open-claim', {
@@ -28,6 +32,8 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
         }));
     }
     render() {
+        const product = claimProductFromAttr(this.claimProduct);
+        const activities = activitiesForProduct(product);
         return html `
       <div class="flex flex-col flex-1 min-h-0 overflow-hidden">
         <div class="claims-page">
@@ -48,7 +54,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
             <div class="claims-fields-grid--2">
               <claims-field-row label="Case ID">${this.caseId}</claims-field-row>
               <claims-field-row label="Insured">${this.insuredName}</claims-field-row>
-              <claims-field-row label="Date of death">${this.dateOfDeath}</claims-field-row>
+              <claims-field-row label=${this.eventDateLabel}>${this.eventDate}</claims-field-row>
               <claims-field-row label="Assigned examiner">Sarah M.</claims-field-row>
               <claims-field-row label="Case source"
                 ><claims-badge variant="info">BAU</claims-badge></claims-field-row
@@ -89,38 +95,86 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
             </div>
           </claims-card>
 
-          <claims-card title="Case document confidence (shared)" .ai=${true} icon=${MaterialIcons.bot}>
-            <div class="claims-fields-grid">
-              <claims-field-row label="Death certificate"
-                ><claims-badge variant="success">94%</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Authorization to release"
-                ><claims-badge variant="success">91%</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Identity / SSDI"
-                ><claims-badge variant="success">Verified</claims-badge></claims-field-row
-              >
-            </div>
-            <claims-info-box variant="info" className="mt-2">
-              Death certificate and authorization apply to the whole case. Per-claim forms are on Claim
-              Documents.
-            </claims-info-box>
-          </claims-card>
+          ${product === 'ti'
+            ? html `
+                <claims-card title="Case document confidence (shared)" .ai=${true} icon=${MaterialIcons.bot}>
+                  <div class="claims-fields-grid">
+                    <claims-field-row label="Physician's Statement"
+                      ><claims-badge variant="success">92%</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Authorization to release medical"
+                      ><claims-badge variant="success">89%</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Claim form (digital)"
+                      ><claims-badge variant="success">96%</claims-badge></claims-field-row
+                    >
+                  </div>
+                </claims-card>
 
-          <claims-card title="Case-level flags (all claims)" icon=${MaterialIcons.flag}>
-            <div class="claims-fields-grid--2">
-              <claims-field-row label="Foreign death"
-                ><claims-badge variant="success">Cleared</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Manner discrepancy (event)"
-                ><claims-badge variant="danger">Refer — certificate vs declaration</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Simultaneous death"
-                ><claims-badge variant="neutral">Not triggered</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Disappearance"
-                ><claims-badge variant="neutral">N/A</claims-badge></claims-field-row
-              >
+                <claims-card title="Case-level flags (TI)" icon=${MaterialIcons.flag}>
+                  <div class="claims-fields-grid--2">
+                    <claims-field-row label="Mandatory medical review (T-07)"
+                      ><claims-badge variant="warning">Required</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Quote validity"
+                      ><claims-badge variant="success">Valid — 29 days</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="POA / representative"
+                      ><claims-badge variant="success">Policy owner — N/A</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Contestable"
+                      ><claims-badge variant="warning">Active</claims-badge></claims-field-row
+                    >
+                  </div>
+                </claims-card>
+              `
+            : html `
+                <claims-card title="Case document confidence (shared)" .ai=${true} icon=${MaterialIcons.bot}>
+                  <div class="claims-fields-grid">
+                    <claims-field-row label="Death certificate"
+                      ><claims-badge variant="success">94%</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Authorization to release"
+                      ><claims-badge variant="success">91%</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Identity / SSDI"
+                      ><claims-badge variant="success">Verified</claims-badge></claims-field-row
+                    >
+                  </div>
+                </claims-card>
+
+                <claims-card title="Case-level flags (Death)" icon=${MaterialIcons.flag}>
+                  <div class="claims-fields-grid--2">
+                    <claims-field-row label="Foreign death"
+                      ><claims-badge variant="success">Cleared</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Manner discrepancy"
+                      ><claims-badge variant="danger">Refer</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Funeral assignment (S8)"
+                      ><claims-badge variant="warning">Pending docs</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Simultaneous death"
+                      ><claims-badge variant="neutral">Not triggered</claims-badge></claims-field-row
+                    >
+                  </div>
+                </claims-card>
+              `}
+
+          <claims-card title="Examiner activity scope" icon=${MaterialIcons.fileText}>
+            <p class="text-[11px] text-muted-foreground mb-2">
+              ${product === 'ti'
+            ? 'T-01 through T-29 — all TI claims route here with mandatory medical review.'
+            : 'D-01 through D-31 — includes death verification and APO when applicable.'}
+            </p>
+            <div class="max-h-[140px] overflow-y-auto text-[11px] space-y-1">
+              ${activities.slice(0, 8).map((a) => html `
+                  <div class="flex gap-2">
+                    <span class="font-medium text-[#185FA5] shrink-0">${a.id}</span>
+                    <span>${a.activity}</span>
+                  </div>
+                `)}
+              <span class="text-muted-foreground">… and ${activities.length - 8} more</span>
             </div>
           </claims-card>
         </div>
@@ -136,10 +190,16 @@ __decorate([
 ], ClaimsCaseContextPage.prototype, "insuredName", void 0);
 __decorate([
     property({ type: String })
-], ClaimsCaseContextPage.prototype, "dateOfDeath", void 0);
+], ClaimsCaseContextPage.prototype, "eventDate", void 0);
+__decorate([
+    property({ type: String })
+], ClaimsCaseContextPage.prototype, "eventDateLabel", void 0);
 __decorate([
     property({ type: Array })
 ], ClaimsCaseContextPage.prototype, "claimsInCase", void 0);
+__decorate([
+    property({ type: String, attribute: 'claim-product' })
+], ClaimsCaseContextPage.prototype, "claimProduct", void 0);
 ClaimsCaseContextPage = __decorate([
     customElement('claims-case-context-page')
 ], ClaimsCaseContextPage);

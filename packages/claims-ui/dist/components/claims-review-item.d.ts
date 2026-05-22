@@ -10,7 +10,7 @@ export declare class ClaimsReviewItem extends LitElement {
     subtitle: string;
     subtitleColor: string;
     collapsed: boolean;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

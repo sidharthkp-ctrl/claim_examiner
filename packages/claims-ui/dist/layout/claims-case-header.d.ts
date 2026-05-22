@@ -1,10 +1,13 @@
 import { LightDomElement } from '../lib/light-dom.js';
+import { type ClaimProduct } from '../lib/claim-product.js';
 export declare class ClaimsCaseHeader extends LightDomElement {
     caseId: string;
     insuredName: string;
-    dateOfDeath: string;
+    eventDate: string;
+    eventDateLabel: string;
     claimCount: number;
-    render(): import("lit").TemplateResult<1>;
+    claimProduct: ClaimProduct;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

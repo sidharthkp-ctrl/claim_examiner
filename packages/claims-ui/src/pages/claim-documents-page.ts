@@ -1,5 +1,6 @@
 import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { Icons } from '../lib/icons.js'
 import { MaterialIcons } from '../lib/material-icons.js'
@@ -16,8 +17,10 @@ export class ClaimsClaimDocumentsPage extends LightDomElement {
   @property({ type: String }) caseId = ''
   @property({ type: String }) claimId = ''
   @property({ type: String }) policyId = ''
+  @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
 
   render() {
+    const product = claimProductFromAttr(this.claimProduct)
     return html`
       <div class="claims-page">
         <claims-scope-banner
@@ -64,20 +67,43 @@ export class ClaimsClaimDocumentsPage extends LightDomElement {
                   <td class="p-2"><claims-badge variant="success">Verified</claims-badge></td>
                   <td class="p-2"><claims-button size="sm">View</claims-button></td>
                 </tr>
-                <tr>
-                  <td class="p-2 text-[12px]">
-                    <span class="font-medium flex items-center gap-1">
-                      ${Icons.fileWarning('w-4 h-4 text-[#E24B4A]')}
-                      Funeral assignment form
-                    </span>
-                  </td>
-                  <td class="p-2"><claims-badge variant="purple">Claim</claims-badge></td>
-                  <td class="p-2 text-[12px]">${this.claimId}</td>
-                  <td class="p-2 text-[12px]">—</td>
-                  <td class="p-2"><claims-badge variant="neutral">—</claims-badge></td>
-                  <td class="p-2"><claims-badge variant="danger">Missing</claims-badge></td>
-                  <td class="p-2"><claims-button variant="danger" size="sm">Request</claims-button></td>
-                </tr>
+                ${product === 'ti'
+                  ? html`
+                      <tr class="border-b border-border">
+                        <td class="p-2 text-[12px] font-medium">Physician's Statement</td>
+                        <td class="p-2"><claims-badge variant="purple">Claim</claims-badge></td>
+                        <td class="p-2 text-[12px]">${this.claimId}</td>
+                        <td class="p-2 text-[12px]">05/20/2026</td>
+                        <td class="p-2"><claims-badge variant="success">92%</claims-badge></td>
+                        <td class="p-2"><claims-badge variant="success">Verified</claims-badge></td>
+                        <td class="p-2"><claims-button size="sm">View</claims-button></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 text-[12px] font-medium">Authorization to release medical</td>
+                        <td class="p-2"><claims-badge variant="purple">Claim</claims-badge></td>
+                        <td class="p-2 text-[12px]">${this.claimId}</td>
+                        <td class="p-2 text-[12px]">05/20/2026</td>
+                        <td class="p-2"><claims-badge variant="success">89%</claims-badge></td>
+                        <td class="p-2"><claims-badge variant="success">Verified</claims-badge></td>
+                        <td class="p-2"><claims-button size="sm">View</claims-button></td>
+                      </tr>
+                    `
+                  : html`
+                      <tr>
+                        <td class="p-2 text-[12px]">
+                          <span class="font-medium flex items-center gap-1">
+                            ${Icons.fileWarning('w-4 h-4 text-[#E24B4A]')}
+                            Funeral assignment form
+                          </span>
+                        </td>
+                        <td class="p-2"><claims-badge variant="purple">Claim</claims-badge></td>
+                        <td class="p-2 text-[12px]">${this.claimId}</td>
+                        <td class="p-2 text-[12px]">—</td>
+                        <td class="p-2"><claims-badge variant="neutral">—</claims-badge></td>
+                        <td class="p-2"><claims-badge variant="danger">Missing</claims-badge></td>
+                        <td class="p-2"><claims-button variant="danger" size="sm">Request</claims-button></td>
+                      </tr>
+                    `}
               </tbody>
             </table>
           </div>

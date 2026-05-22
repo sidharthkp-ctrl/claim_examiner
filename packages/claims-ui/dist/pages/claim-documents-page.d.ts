@@ -1,3 +1,4 @@
+import { type ClaimProduct } from '../lib/claim-product.js';
 import { LightDomElement } from '../lib/light-dom.js';
 import '../components/claims-badge.js';
 import '../components/claims-button.js';
@@ -10,7 +11,8 @@ export declare class ClaimsClaimDocumentsPage extends LightDomElement {
     caseId: string;
     claimId: string;
     policyId: string;
-    render(): import("lit").TemplateResult<1>;
+    claimProduct: ClaimProduct;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

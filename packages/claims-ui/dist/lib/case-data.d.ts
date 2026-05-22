@@ -1,3 +1,4 @@
+import type { ClaimProduct } from './claim-product.js';
 /** A policy attached to a claim filing. */
 export interface ClaimsPolicy {
     id: string;
@@ -18,10 +19,17 @@ export interface ClaimsSelectorItem {
 export interface ClaimsCaseContext {
     id: string;
     insuredName: string;
-    dateOfDeath: string;
+    /** Death: date of death. TI: date of diagnosis (submission portal Event Details). */
+    eventDate: string;
+    eventDateLabel: string;
     claims: ClaimsSelectorItem[];
 }
-/** Demo case opened by the host app (e.g. route / case queue). */
+/** Demo death case — aligns with death claim submission portal (S1–S15). */
+export declare const DEFAULT_DEATH_CASE: ClaimsCaseContext;
+/** Demo TI case — aligns with TI submission portal (C1–C14). */
+export declare const DEFAULT_TI_CASE: ClaimsCaseContext;
+export declare function defaultCaseForProduct(product: ClaimProduct): ClaimsCaseContext;
+/** @deprecated Use defaultCaseForProduct */
 export declare const DEFAULT_CASE: ClaimsCaseContext;
 export declare function findClaimInCase(caseContext: ClaimsCaseContext | undefined, claimId: string): ClaimsSelectorItem | undefined;
 /** @deprecated Use ClaimsCaseContext */

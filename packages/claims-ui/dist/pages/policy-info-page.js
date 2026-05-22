@@ -5,13 +5,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { LightDomElement } from '../lib/light-dom.js';
+import { claimProductFromAttr } from '../lib/claim-product.js';
 import { MaterialIcons } from '../lib/material-icons.js';
 import '../components/claims-badge.js';
 import '../components/claims-card.js';
 let ClaimsPolicyInfoPage = class ClaimsPolicyInfoPage extends LightDomElement {
+    constructor() {
+        super(...arguments);
+        this.claimProduct = 'death';
+    }
     render() {
+        const product = claimProductFromAttr(this.claimProduct);
         return html `
       <div class="claims-page">
         <div class="grid grid-cols-2 gap-2.5">
@@ -39,25 +45,67 @@ let ClaimsPolicyInfoPage = class ClaimsPolicyInfoPage extends LightDomElement {
             </claims-card>
 
             <claims-card title="Riders & benefits" icon=${MaterialIcons.shield}>
-              <claims-field-row label="ADB rider"
-                ><claims-badge variant="info">Present — under review</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Terminal illness rider"
-                ><claims-badge variant="neutral">Not present</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Waiver of premium"
-                ><claims-badge variant="neutral">Not present</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Prior TI claim paid"
-                ><claims-badge variant="success">None</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Prior death claim"
-                ><claims-badge variant="success">None</claims-badge></claims-field-row
-              >
+              ${product === 'ti'
+            ? html `
+                    <claims-field-row label="Terminal illness rider"
+                      ><claims-badge variant="success">Present</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Quoted accelerated benefit">$42,000.00</claims-field-row>
+                    <claims-field-row label="Prior TI claim paid (T-16)"
+                      ><claims-badge variant="success">None</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Policy termination on pay"
+                      ><claims-badge variant="warning">Yes</claims-badge></claims-field-row
+                    >
+                  `
+            : html `
+                    <claims-field-row label="ADB rider"
+                      ><claims-badge variant="info">Present — under review</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Terminal illness rider"
+                      ><claims-badge variant="neutral">Not present</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Prior TI claim paid"
+                      ><claims-badge variant="success">None</claims-badge></claims-field-row
+                    >
+                  `}
             </claims-card>
           </div>
 
           <div>
+            ${product === 'ti'
+            ? html `
+                  <claims-card title="TI eligibility (T-04)" icon=${MaterialIcons.shield}>
+                    <claims-field-row label="TI rider verified"
+                      ><claims-badge variant="success">Yes</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Grace period default"
+                      ><claims-badge variant="success">No</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Irrevocable bene Section 4 (T-14)"
+                      ><claims-badge variant="success">N/A</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Reinstated within 2 years (T-15)"
+                      ><claims-badge variant="success">No</claims-badge></claims-field-row
+                    >
+                  </claims-card>
+
+                  <claims-card title="Quote on file (C4)" icon=${MaterialIcons.dollarSign}>
+                    <claims-field-row label="Quote reference">TIQ-20260518-00042</claims-field-row>
+                    <claims-field-row label="Days remaining">29</claims-field-row>
+                    <claims-field-row label="Recalculation (T-22)"
+                      ><claims-badge variant="success">Not required</claims-badge></claims-field-row
+                    >
+                  </claims-card>
+
+                  <claims-card title="Beneficiary designations" icon=${MaterialIcons.users}>
+                    <claims-field-row label="Primary beneficiary">Jane Smith</claims-field-row>
+                    <claims-field-row label="Irrevocable beneficiary"
+                      ><claims-badge variant="neutral">No</claims-badge></claims-field-row
+                    >
+                  </claims-card>
+                `
+            : html `
             <claims-card title="Misstatement of age (D-06)" icon=${MaterialIcons.clock}>
               <claims-field-row label="DOB on policy">09/04/1978</claims-field-row>
               <claims-field-row label="DOB on death certificate">09/04/1978</claims-field-row>
@@ -120,25 +168,20 @@ let ClaimsPolicyInfoPage = class ClaimsPolicyInfoPage extends LightDomElement {
               <claims-field-row label="IL 45-day letter"
                 ><claims-badge variant="neutral">N/A — not IL</claims-badge></claims-field-row
               >
-              <claims-field-row label="CA Fair Claim"
-                ><claims-badge variant="neutral">N/A — not CA</claims-badge></claims-field-row
-              >
-              <claims-field-row label="DOI notice states trigger"
-                ><claims-badge variant="success">Not triggered</claims-badge></claims-field-row
-              >
-              <claims-field-row label="NY 5-day acknowledgment"
-                ><claims-badge variant="neutral">N/A — not NY</claims-badge></claims-field-row
-              >
               <claims-field-row label="TX standard rules apply"
                 ><claims-badge variant="success">Confirmed</claims-badge></claims-field-row
               >
             </claims-card>
+                `}
           </div>
         </div>
       </div>
     `;
     }
 };
+__decorate([
+    property({ type: String, attribute: 'claim-product' })
+], ClaimsPolicyInfoPage.prototype, "claimProduct", void 0);
 ClaimsPolicyInfoPage = __decorate([
     customElement('claims-policy-info-page')
 ], ClaimsPolicyInfoPage);

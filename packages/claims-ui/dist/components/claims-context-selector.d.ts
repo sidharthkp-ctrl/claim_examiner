@@ -24,7 +24,7 @@ export declare class ClaimsContextSelector extends LitElement {
     private _emitPolicyChanged;
     private _onClaimChange;
     private _onPolicyChange;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

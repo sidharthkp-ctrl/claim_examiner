@@ -1,6 +1,7 @@
 import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
+import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
 import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
@@ -14,8 +15,11 @@ export class ClaimsClaimOverviewPage extends LightDomElement {
   @property({ type: String }) claimId = ''
   @property({ type: String }) claimType = ''
   @property({ type: String }) policyId = ''
+  @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
 
   render() {
+    const product = claimProductFromAttr(this.claimProduct)
+
     return html`
       <div class="flex flex-col flex-1 min-h-0 overflow-hidden">
         <div class="claims-page">
@@ -37,12 +41,23 @@ export class ClaimsClaimOverviewPage extends LightDomElement {
               <claims-field-row label="Claim form"
                 ><claims-badge variant="success">98%</claims-badge></claims-field-row
               >
-              <claims-field-row label="Funeral assignment"
-                ><claims-badge variant="danger">Missing</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Rule check failures"
-                ><claims-badge variant="warning">2 — manner, funeral</claims-badge></claims-field-row
-              >
+              ${product === 'ti'
+                ? html`
+                    <claims-field-row label="Physician Statement"
+                      ><claims-badge variant="success">92%</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Medical expert (T-07)"
+                      ><claims-badge variant="warning">Pending</claims-badge></claims-field-row
+                    >
+                  `
+                : html`
+                    <claims-field-row label="Funeral assignment"
+                      ><claims-badge variant="danger">Missing</claims-badge></claims-field-row
+                    >
+                    <claims-field-row label="Rule check failures"
+                      ><claims-badge variant="warning">2 — manner, funeral</claims-badge></claims-field-row
+                    >
+                  `}
             </div>
           </claims-card>
 
@@ -86,20 +101,37 @@ export class ClaimsClaimOverviewPage extends LightDomElement {
               <claims-card title="Claim flags" icon=${MaterialIcons.flag}>
                 <div class="claims-fields-grid--2">
                   <claims-field-row label="Contestable period"
-                    ><claims-badge variant="warning">Active — 23 months</claims-badge></claims-field-row
+                    ><claims-badge variant="warning">Active</claims-badge></claims-field-row
                   >
-                  <claims-field-row label="ADB rider"
-                    ><claims-badge variant="info">Review required</claims-badge></claims-field-row
-                  >
-                  <claims-field-row label="Funeral assignment"
-                    ><claims-badge variant="warning">Pending docs</claims-badge></claims-field-row
-                  >
-                  <claims-field-row label="Minor beneficiary"
-                    ><claims-badge variant="success">Cleared</claims-badge></claims-field-row
-                  >
-                  <claims-field-row label="NRA / foreign payee"
-                    ><claims-badge variant="success">No — US citizen</claims-badge></claims-field-row
-                  >
+                  ${product === 'ti'
+                    ? html`
+                        <claims-field-row label="Mandatory medical review"
+                          ><claims-badge variant="warning">T-07 required</claims-badge></claims-field-row
+                        >
+                        <claims-field-row label="Quote validity"
+                          ><claims-badge variant="success">Valid</claims-badge></claims-field-row
+                        >
+                        <claims-field-row label="Life expectancy"
+                          ><claims-badge variant="warning">Pending expert</claims-badge></claims-field-row
+                        >
+                        <claims-field-row label="POA / representative"
+                          ><claims-badge variant="success">Policy owner</claims-badge></claims-field-row
+                        >
+                      `
+                    : html`
+                        <claims-field-row label="ADB rider"
+                          ><claims-badge variant="info">Review required</claims-badge></claims-field-row
+                        >
+                        <claims-field-row label="Funeral assignment"
+                          ><claims-badge variant="warning">Pending docs</claims-badge></claims-field-row
+                        >
+                        <claims-field-row label="Manner of death"
+                          ><claims-badge variant="danger">Mismatch</claims-badge></claims-field-row
+                        >
+                        <claims-field-row label="Minor beneficiary"
+                          ><claims-badge variant="success">Cleared</claims-badge></claims-field-row
+                        >
+                      `}
                 </div>
               </claims-card>
             </div>

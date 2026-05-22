@@ -1,23 +1,31 @@
 import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
+import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
 
 @customElement('claims-case-header')
 export class ClaimsCaseHeader extends LightDomElement {
   @property({ type: String }) caseId = ''
   @property({ type: String }) insuredName = ''
-  @property({ type: String }) dateOfDeath = ''
+  @property({ type: String }) eventDate = ''
+  @property({ type: String }) eventDateLabel = 'Date of death'
   @property({ type: Number }) claimCount = 0
+  @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
 
   render() {
+    const product = claimProductFromAttr(this.claimProduct)
     const fields = [
       { label: 'Case ID', value: this.caseId || '—' },
       { label: 'Insured', value: this.insuredName || '—' },
-      { label: 'Date of death', value: this.dateOfDeath || '—' },
+      { label: this.eventDateLabel, value: this.eventDate || '—' },
       { label: 'Claims in case', value: String(this.claimCount), color: '#185FA5' },
-      { label: 'Case status', value: 'Open — multi-claim', color: '#BA7517' },
+      {
+        label: 'Portal',
+        value: product === 'ti' ? 'Terminal Illness' : 'Death',
+        color: product === 'ti' ? '#534AB7' : '#0C447C',
+      },
       { label: 'Assigned examiner', value: 'Sarah M.' },
-      { label: 'SLA (case)', value: '8 days', color: '#3B6D11' },
+      { label: 'SLA (case)', value: product === 'ti' ? 'Ack pending' : '8 days', color: '#3B6D11' },
     ]
 
     return html`

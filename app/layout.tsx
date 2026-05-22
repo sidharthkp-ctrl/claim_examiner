@@ -34,10 +34,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="h-full overflow-hidden bg-background">
-      <body
-        className={`${geist.className} h-full overflow-hidden font-sans antialiased bg-background`}
-      >
+    <html lang="en" className="h-full bg-background">
+      <body className={`${geist.className} min-h-full font-sans antialiased bg-background`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
