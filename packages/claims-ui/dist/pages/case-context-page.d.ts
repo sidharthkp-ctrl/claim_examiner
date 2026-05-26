@@ -12,8 +12,9 @@ export declare class ClaimsCaseContextPage extends LightDomElement {
     eventDateLabel: string;
     claimsInCase: ClaimsSelectorItem[];
     claimProduct: ClaimProduct;
+    claimGroup: string;
     private _openClaim;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

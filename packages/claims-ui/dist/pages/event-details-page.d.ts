@@ -4,7 +4,7 @@ import '../components/claims-scope-banner.js';
 export declare class ClaimsEventDetailsPage extends LightDomElement {
     caseId: string;
     claimProduct: ClaimProduct;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

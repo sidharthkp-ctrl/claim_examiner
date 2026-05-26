@@ -18,6 +18,7 @@ export class ClaimsCaseContextPage extends LightDomElement {
   @property({ type: String }) eventDateLabel = 'Date of death'
   @property({ type: Array }) claimsInCase: ClaimsSelectorItem[] = []
   @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
+  @property({ type: String, attribute: 'claim-group' }) claimGroup = 'workbench'
 
   private _openClaim(claimId: string) {
     this.dispatchEvent(
@@ -42,6 +43,28 @@ export class ClaimsCaseContextPage extends LightDomElement {
             description="Shared for all claims in this case. Select a claim above to work claim-specific pages."
             .entityId=${this.caseId}
           ></claims-scope-banner>
+
+          ${this.claimGroup === 'intake'
+            ? html`
+                <div class="bg-teal-50 border border-teal-200 text-teal-900 rounded-xl p-4 mb-4 flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-lg shrink-0">!</div>
+                  <div>
+                    <h4 class="font-bold text-sm">Group 1 Intake Operations Active</h4>
+                    <p class="text-xs text-teal-700">Please verify initial intake documents (completeness check) and validate beneficiary SSN match on Claimant Details page before continuing.</p>
+                  </div>
+                </div>
+              `
+            : this.claimGroup === 'referral'
+              ? html`
+                  <div class="bg-purple-50 border border-purple-200 text-purple-900 rounded-xl p-4 mb-4 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold text-lg shrink-0">R</div>
+                    <div>
+                      <h4 class="font-bold text-sm">Group 3 Pre-Referral Audit Active</h4>
+                      <p class="text-xs text-purple-700">Audit complete case history and assemble the referral package to Pru on the Referral page.</p>
+                    </div>
+                  </div>
+                `
+              : null}
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <claims-stat-card label="Claims in case" value=${String(this.claimsInCase.length)}></claims-stat-card>

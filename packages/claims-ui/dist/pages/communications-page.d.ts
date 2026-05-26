@@ -6,7 +6,7 @@ import '../components/claims-icon.js';
 import '../components/claims-scope-banner.js';
 export declare class ClaimsCommunicationsPage extends LightDomElement {
     claimId: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

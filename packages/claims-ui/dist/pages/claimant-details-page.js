@@ -18,6 +18,7 @@ let ClaimsClaimantDetailsPage = class ClaimsClaimantDetailsPage extends LightDom
         super(...arguments);
         this.caseId = '';
         this.claimProduct = 'death';
+        this.claimGroup = 'workbench';
     }
     render() {
         const product = claimProductFromAttr(this.claimProduct);
@@ -89,6 +90,54 @@ let ClaimsClaimantDetailsPage = class ClaimsClaimantDetailsPage extends LightDom
                   >
                 </claims-card>
               `}
+
+          ${this.claimGroup === 'intake'
+            ? html `
+                <claims-card title="Group 1: Beneficiary Validation Checklist (Intake)" icon=${MaterialIcons.shieldCheck} .ai=${true}>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between border-b border-border pb-1.5">
+                      <span class="text-slate-700 font-medium">SSN Validation (SSDI matches)</span>
+                      <claims-badge variant="success">Verified (100% Match)</claims-badge>
+                    </div>
+                    <div class="flex items-center justify-between border-b border-border pb-1.5">
+                      <span class="text-slate-700 font-medium">OFAC Sanctions List Check</span>
+                      <claims-badge variant="success">Passed (Not Flagged)</claims-badge>
+                    </div>
+                    <div class="flex items-center justify-between border-b border-border pb-1.5">
+                      <span class="text-slate-700 font-medium">Spousal Marriage License Verification</span>
+                      <claims-badge variant="success">Document Verified</claims-badge>
+                    </div>
+                    <div class="flex items-center justify-between border-b border-border pb-1.5">
+                      <span class="text-slate-700 font-medium">Address Match (SSDI vs Claim Form)</span>
+                      <claims-badge variant="warning">Partial Match (91%)</claims-badge>
+                    </div>
+                    <div class="flex gap-2 mt-3.5">
+                      <claims-button variant="primary" size="sm">Force Approve Validation</claims-button>
+                      <claims-button size="sm">Flag Discrepancy</claims-button>
+                    </div>
+                  </div>
+                </claims-card>
+              `
+            : this.claimGroup === 'workbench'
+                ? html `
+                  <claims-card title="Group 2: Claimant Communication & Outreach (Workbench)" icon=${MaterialIcons.messageCircle}>
+                    <div class="space-y-2 text-[12px]">
+                      <p class="text-muted-foreground mb-2">Activities and outreach logs related to securing additional beneficiary declarations:</p>
+                      <claims-field-row label="Phone Interview scheduled">05/29/2026 - 10:00 AM</claims-field-row>
+                      <claims-field-row label="Sent Funeral Home Assignment form"><claims-badge variant="info">Waiting response</claims-badge></claims-field-row>
+                      <claims-field-row label="Claimant status"><claims-badge variant="success">Active outreach</claims-badge></claims-field-row>
+                    </div>
+                  </claims-card>
+                `
+                : html `
+                  <claims-card title="Group 3: Pre-Referral Audit Verification (Referral)" icon=${MaterialIcons.shield} .ai=${true}>
+                    <div class="space-y-2 text-[12px]">
+                      <p class="text-muted-foreground mb-2">Verification details compiled for the referral bundle:</p>
+                      <claims-field-row label="Claimant audit state"><claims-badge variant="success">Audited & Verified</claims-badge></claims-field-row>
+                      <claims-field-row label="SSDI discrepancy check"><claims-badge variant="success">Cleared</claims-badge></claims-field-row>
+                    </div>
+                  </claims-card>
+                `}
         </div>
 
         <claims-action-bar>
@@ -104,6 +153,9 @@ __decorate([
 __decorate([
     property({ type: String, attribute: 'claim-product' })
 ], ClaimsClaimantDetailsPage.prototype, "claimProduct", void 0);
+__decorate([
+    property({ type: String, attribute: 'claim-group' })
+], ClaimsClaimantDetailsPage.prototype, "claimGroup", void 0);
 ClaimsClaimantDetailsPage = __decorate([
     customElement('claims-claimant-details-page')
 ], ClaimsClaimantDetailsPage);

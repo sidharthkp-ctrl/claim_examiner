@@ -7,7 +7,7 @@ export declare class ClaimsCaseHeader extends LightDomElement {
     eventDateLabel: string;
     claimCount: number;
     claimProduct: ClaimProduct;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

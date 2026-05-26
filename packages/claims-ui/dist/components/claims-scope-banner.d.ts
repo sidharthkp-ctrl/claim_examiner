@@ -4,7 +4,7 @@ export declare class ClaimsScopeBanner extends LightDomElement {
     title: string;
     description: string;
     entityId: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

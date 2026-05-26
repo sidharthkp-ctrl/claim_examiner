@@ -5,7 +5,7 @@ export declare class ClaimsClaimHeader extends LightDomElement {
     claimStatus: string;
     policyId: string;
     policyLabel: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

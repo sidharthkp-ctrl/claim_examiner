@@ -4,7 +4,8 @@ import '../components/claims-badge.js';
 import '../components/claims-card.js';
 export declare class ClaimsPolicyInfoPage extends LightDomElement {
     claimProduct: ClaimProduct;
-    render(): import("lit-html").TemplateResult<1>;
+    claimGroup: string;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

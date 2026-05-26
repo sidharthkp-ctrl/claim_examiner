@@ -22,10 +22,12 @@ import './components/claims-context-selector.js';
  */
 export declare class ClaimsWorkbench extends LightDomElement {
     claimProduct: ClaimProduct;
+    claimGroup: string;
     private activePage;
     private caseContext;
     private selectedClaimId;
     private selectedPolicyId;
+    private hudExpanded;
     private get _product();
     private get _activeClaim();
     private get _activePolicy();
@@ -39,7 +41,8 @@ export declare class ClaimsWorkbench extends LightDomElement {
     private _handleClaimChanged;
     private _handlePolicyChanged;
     private _renderPage;
-    render(): import("lit-html").TemplateResult<1>;
+    private _renderGroupHud;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

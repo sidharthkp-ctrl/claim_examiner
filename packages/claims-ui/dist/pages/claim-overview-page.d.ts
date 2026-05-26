@@ -11,7 +11,7 @@ export declare class ClaimsClaimOverviewPage extends LightDomElement {
     claimType: string;
     policyId: string;
     claimProduct: ClaimProduct;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

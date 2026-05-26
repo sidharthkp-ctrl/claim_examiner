@@ -13,7 +13,7 @@ export declare class ClaimsIcon extends LightDomElement {
     name: string;
     size: keyof typeof sizeMap;
     className: string;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

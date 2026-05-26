@@ -7,10 +7,11 @@ import '../components/claims-decision-option.js';
 import '../components/claims-icon.js';
 export declare class ClaimsWorksheetPage extends LightDomElement {
     claimProduct: ClaimProduct;
+    claimGroup: string;
     private activeTab;
     private selectedDecision;
     private _onDecisionSelect;
-    render(): import("lit-html").TemplateResult<1>;
+    render(): import("lit").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {
