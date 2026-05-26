@@ -3,7 +3,7 @@ import { type ClaimProduct } from '../lib/claim-product.js';
 import '../components/claims-badge.js';
 export declare class ClaimsSlaBanner extends LightDomElement {
     claimProduct: ClaimProduct;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

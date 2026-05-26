@@ -130,18 +130,19 @@ const styles = css`
     line-height: 1;
   }
 
-  .cs-policy-tag {
+  .cs-policy-value {
     display: inline-flex;
     align-items: center;
-    background: var(--info-bg, #e6f1fb);
-    color: var(--primary, #185fa5);
-    border: 1px solid #b8d4ef;
-    border-radius: 0.25rem;
-    font-size: 11px;
+    background: var(--secondary, #f4f7fb);
+    border: 1px solid var(--border, #d8e2ec);
+    border-radius: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 12px;
     font-weight: 600;
-    padding: 0.2rem 0.55rem;
+    color: var(--primary-dark, #0c447c);
     white-space: nowrap;
-    flex-shrink: 0;
+    min-width: 120px;
+    font-family: inherit;
   }
 `
 
@@ -206,14 +207,9 @@ export class ClaimsContextSelector extends LitElement {
     if (this.selectedPolicyId) this._emitPolicyChanged(this.selectedPolicyId)
   }
 
-  private _onPolicyChange(e: Event) {
-    const select = e.target as HTMLSelectElement
-    this.selectedPolicyId = select.value
-    this._emitPolicyChanged(this.selectedPolicyId)
-  }
-
   render() {
     const activePolicy = this._activePolicies.find((p) => p.id === this.selectedPolicyId)
+    const policyDisplay = activePolicy?.id ?? '—'
 
     return html`
       <div class="cs-bar" role="toolbar" aria-label="Claim and policy selector">
@@ -243,25 +239,7 @@ export class ClaimsContextSelector extends LitElement {
         <span class="cs-sep" aria-hidden="true">|</span>
 
         <span class="cs-label">Policy</span>
-        <div class="cs-sel-wrap">
-          <select
-            id="policy-select"
-            aria-label="Select policy"
-            @change=${this._onPolicyChange}
-            ?disabled=${this._activePolicies.length === 0}
-          >
-            ${this._activePolicies.map(
-              (p) => html`
-                <option value=${p.id} ?selected=${p.id === this.selectedPolicyId}>
-                  ${p.id} — ${p.label}
-                </option>
-              `
-            )}
-          </select>
-          <span class="cs-caret" aria-hidden="true">▾</span>
-        </div>
-
-        ${activePolicy ? html`<span class="cs-policy-tag">${activePolicy.id}</span>` : ''}
+        <span class="cs-policy-value" aria-label="Policy number">${policyDisplay}</span>
       </div>
     `
   }

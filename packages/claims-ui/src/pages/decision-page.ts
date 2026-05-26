@@ -64,8 +64,7 @@ export class ClaimsDecisionPage extends LightDomElement {
   render() {
     return html`
       <div class="claims-page">
-        <div class="grid grid-cols-[1fr_minmax(280px,320px)] gap-2.5">
-          <div>
+        <div class="grid grid-cols-1 gap-2.5 max-w-3xl">
             <claims-card
               title="Examiner recommendation"
               icon=${MaterialIcons.gavel}
@@ -105,59 +104,15 @@ Manner discrepancy resolved — certificate shows Accidental confirmed. ADB ride
                 <claims-button variant="primary">Submit decision</claims-button>
               </div>
             </claims-card>
-          </div>
 
-          <div>
-            <div class="bg-secondary border border-border rounded-md p-3">
-              <div class="text-[11px] font-medium text-muted-foreground mb-1.5">
-                Decision checklist
-              </div>
-              <claims-field-row label="All review items resolved">
-                <claims-badge variant="warning">3 pending</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="State requirements verified">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Benefit calculation confirmed">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Contestable referral sent">
-                <claims-badge variant="warning">Pending Pru</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Funeral assignment validated">
-                <claims-badge variant="warning">Pending</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="NRA / foreign payee cleared">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Simultaneous death checked">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Misstatement of age cleared">
-                <claims-badge variant="success">Done — no discrepancy</claims-badge>
-              </claims-field-row>
-
-              <div class="text-[11px] font-medium text-muted-foreground mt-2.5 mb-1.5">
-                TPA authority limits
-              </div>
-              <div class="flex justify-between py-0.5">
-                <span class="text-[11px] text-muted-foreground">Death approve-pay</span>
-                <span class="text-[12px] font-medium">$100K aggregate</span>
-              </div>
-              <div class="flex justify-between py-0.5">
-                <span class="text-[11px] text-muted-foreground">TI approve-pay</span>
-                <span class="text-[12px] font-medium">$50K / $101K aggregate</span>
-              </div>
-              <div class="flex justify-between py-0.5">
-                <span class="text-[11px] text-muted-foreground">This claim</span>
-                <span class="text-[12px] font-medium text-[#A32D2D]">$492.7K — Pru required</span>
-              </div>
-              <div class="flex justify-between py-0.5">
-                <span class="text-[11px] text-muted-foreground">TI other deny</span>
-                <span class="text-[12px] font-medium">$0 — always Pru</span>
-              </div>
-            </div>
-          </div>
+            <claims-card title="TPA authority limits" icon=${MaterialIcons.shield}>
+              <claims-field-row label="Death approve-pay">$100K aggregate</claims-field-row>
+              <claims-field-row label="TI approve-pay">$50K / $101K aggregate</claims-field-row>
+              <claims-field-row label="This claim"
+                ><span class="text-[#A32D2D] font-medium">$492.7K — Pru required</span></claims-field-row
+              >
+              <claims-field-row label="TI other deny">$0 — always Pru</claims-field-row>
+            </claims-card>
         </div>
       </div>
     `

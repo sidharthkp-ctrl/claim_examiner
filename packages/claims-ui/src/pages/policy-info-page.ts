@@ -69,7 +69,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
 
             ${this.claimGroup === 'intake'
               ? html`
-                  <claims-card title="Group 1: Rider Verification (Intake)" icon=${MaterialIcons.shield} .ai=${true}>
+                  <claims-card title="Rider verification (intake)" icon=${MaterialIcons.shield} .ai=${true}>
                     <div class="space-y-2 text-[12px]">
                       <claims-field-row label="Active rider status"><claims-badge variant="success">Confirmed In-Force</claims-badge></claims-field-row>
                       <claims-field-row label="Rider premium verification"><claims-badge variant="success">Paid-Up</claims-badge></claims-field-row>
@@ -80,7 +80,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
                 `
               : this.claimGroup === 'workbench'
                 ? html`
-                    <claims-card title="Group 2: Financial Reserves (Workbench)" icon=${MaterialIcons.dollarSign}>
+                    <claims-card title="Financial reserves" icon=${MaterialIcons.dollarSign}>
                       <div class="space-y-3">
                         <p class="text-xs text-muted-foreground">Adjust examiner reserve and financial limits for this policy:</p>
                         <claims-field-row label="Current reserve amount"><span class="font-bold text-slate-800">$500,000.00</span></claims-field-row>
@@ -92,7 +92,7 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
                     </claims-card>
                   `
                 : html`
-                    <claims-card title="Group 3: Referral Policy Audit (Referral)" icon=${MaterialIcons.shieldCheck}>
+                    <claims-card title="Referral policy audit" icon=${MaterialIcons.shieldCheck}>
                       <div class="space-y-2 text-[12px]">
                         <claims-field-row label="Policy audit status"><claims-badge variant="success">100% Passed</claims-badge></claims-field-row>
                         <claims-field-row label="Pru-routing flag"><claims-badge variant="success">Ready</claims-badge></claims-field-row>

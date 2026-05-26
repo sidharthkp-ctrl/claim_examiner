@@ -9,7 +9,7 @@ export declare class ClaimsIntegrationCard extends LitElement {
     description: string;
     status: string;
     statusVariant: BadgeVariant;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

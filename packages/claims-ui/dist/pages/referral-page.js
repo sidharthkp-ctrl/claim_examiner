@@ -38,7 +38,7 @@ let ClaimsReferralPage = class ClaimsReferralPage extends LightDomElement {
               </claims-info-box>
             </claims-card>
 
-            <claims-card title="Referral package checklist" icon=${MaterialIcons.fileText}>
+            <claims-card title="Referral package" icon=${MaterialIcons.fileText}>
               <div class="space-y-2">
                 <label class="flex items-center gap-2 text-[12px]">
                   <input type="checkbox" checked class="rounded" />

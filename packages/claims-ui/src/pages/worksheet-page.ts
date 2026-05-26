@@ -100,9 +100,8 @@ export class ClaimsWorksheetPage extends LightDomElement {
 
     const finalDecision = this.claimGroup === 'intake'
       ? html`
-        <div class="grid grid-cols-1 xl:grid-cols-[1fr_minmax(280px,320px)] gap-2.5">
-          <div>
-            <claims-card title="Group 1: Initial Benefit Intake & Calculation" icon=${MaterialIcons.dollarSign} .ai=${true}>
+        <div class="grid grid-cols-1 gap-2.5 max-w-3xl">
+            <claims-card title="Initial benefit intake & calculation" icon=${MaterialIcons.dollarSign} .ai=${true}>
               <p class="text-xs text-muted-foreground mb-4">Initial benefits and withholding calculations performed during intake validation:</p>
               <claims-field-row label="Gross benefit amount">
                 <span class="font-bold text-slate-800">${product === 'ti' ? '$42,000.00' : '$500,000.00'}</span>
@@ -121,7 +120,7 @@ export class ClaimsWorksheetPage extends LightDomElement {
               </claims-field-row>
             </claims-card>
 
-            <claims-card title="Group 1: Intake Fast Track Validation" icon=${MaterialIcons.shield}>
+            <claims-card title="Intake fast track validation" icon=${MaterialIcons.shield}>
               <claims-field-row label="Fast track eligibility check">
                 <claims-badge variant="success">Eligible — Under $500K & Clean Certificate</claims-badge>
               </claims-field-row>
@@ -136,38 +135,12 @@ export class ClaimsWorksheetPage extends LightDomElement {
                 <claims-button variant="primary">Approve Intake & Route to Examiner</claims-button>
               </div>
             </claims-card>
-          </div>
-
-          <div>
-            <div class="bg-secondary border border-border rounded-md p-3">
-              <div class="text-[11px] font-medium text-muted-foreground mb-1.5 font-bold">Group 1 Intake Checklist</div>
-              <claims-field-row label="Completeness Check">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Beneficiary SSN Match">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Policy status In-force">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Tax check & exceptions">
-                <claims-badge variant="success">Verified</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Benefit calculation">
-                <claims-badge variant="success">Done</claims-badge>
-              </claims-field-row>
-              <claims-field-row label="Contestability review">
-                <claims-badge variant="warning">Flagged</claims-badge>
-              </claims-field-row>
-            </div>
-          </div>
         </div>
       `
       : this.claimGroup === 'referral'
         ? html`
-          <div class="grid grid-cols-1 xl:grid-cols-[1fr_minmax(280px,320px)] gap-2.5">
-            <div>
-              <claims-card title="Group 3: Pre-Referral Audit Overview" icon=${MaterialIcons.shieldCheck} .ai=${true}>
+          <div class="grid grid-cols-1 gap-2.5 max-w-3xl">
+              <claims-card title="Pre-referral audit overview" icon=${MaterialIcons.shieldCheck} .ai=${true}>
                 <p class="text-xs text-muted-foreground mb-4">Quality audit checks before compiling the final referral package:</p>
                 <claims-field-row label="Case Audit status">
                   <claims-badge variant="success">Passed Audit (100% Quality Score)</claims-badge>
@@ -180,7 +153,7 @@ export class ClaimsWorksheetPage extends LightDomElement {
                 </claims-field-row>
               </claims-card>
 
-              <claims-card title="Group 3: Update Recommendation & Submit" icon=${MaterialIcons.gavel}>
+              <claims-card title="Update recommendation & submit" icon=${MaterialIcons.gavel}>
                 <div class="space-y-3">
                   <claims-field-row label="Selected recommendation">
                     <span class="font-bold text-rose-700">Rescission Recommendation (Pru Referral)</span>
@@ -197,30 +170,10 @@ export class ClaimsWorksheetPage extends LightDomElement {
                   </div>
                 </div>
               </claims-card>
-            </div>
-
-            <div>
-              <div class="bg-secondary border border-border rounded-md p-3">
-                <div class="text-[11px] font-medium text-muted-foreground mb-1.5 font-bold">Group 3 Referral Checklist</div>
-                <claims-field-row label="Case context review">
-                  <claims-badge variant="success">Done</claims-badge>
-                </claims-field-row>
-                <claims-field-row label="Referral pack preparation">
-                  <claims-badge variant="success">Compiled (6 docs)</claims-badge>
-                </claims-field-row>
-                <claims-field-row label="Recommendation updated">
-                  <claims-badge variant="success">Rescission Rec</claims-badge>
-                </claims-field-row>
-                <claims-field-row label="Referral outcome status">
-                  <claims-badge variant="warning">Ready to Submit</claims-badge>
-                </claims-field-row>
-              </div>
-            </div>
           </div>
         `
         : html`
-          <div class="grid grid-cols-1 xl:grid-cols-[1fr_minmax(280px,320px)] gap-2.5">
-            <div>
+          <div class="grid grid-cols-1 gap-2.5 max-w-3xl">
               <claims-card
                 title="Examiner recommendation"
                 icon=${MaterialIcons.gavel}
@@ -272,68 +225,23 @@ export class ClaimsWorksheetPage extends LightDomElement {
                   <claims-button variant="primary">Submit decision</claims-button>
                 </div>
               </claims-card>
-            </div>
 
-            <div>
-              <div class="bg-secondary border border-border rounded-md p-3">
-                <div class="text-[11px] font-medium text-muted-foreground mb-1.5">Decision checklist</div>
-                <claims-field-row label="All review items resolved">
-                  <claims-badge variant="warning">3 pending</claims-badge>
-                </claims-field-row>
-                <claims-field-row label="State requirements verified">
-                  <claims-badge variant="success">Done</claims-badge>
-                </claims-field-row>
-                <claims-field-row label="Benefit calculation confirmed">
-                  <claims-badge variant="success">Done</claims-badge>
-                </claims-field-row>
-                <claims-field-row label="Contestable referral sent">
-                  <claims-badge variant="warning">Pending Pru</claims-badge>
-                </claims-field-row>
-                ${product === 'death'
-                  ? html`
-                      <claims-field-row label="Funeral assignment validated">
-                        <claims-badge variant="warning">Pending</claims-badge>
-                      </claims-field-row>
-                    `
-                  : html`
-                      <claims-field-row label="Medical expert findings (T-08)">
-                        <claims-badge variant="warning">Pending</claims-badge>
-                      </claims-field-row>
-                      <claims-field-row label="Acknowledgment SLA (T-24)">
-                        <claims-badge variant="success">On track</claims-badge>
-                      </claims-field-row>
-                    `}
-
-                <div class="text-[11px] font-medium text-muted-foreground mt-2.5 mb-1.5">
-                  TPA authority limits
-                </div>
+              <claims-card title="TPA authority limits" icon=${MaterialIcons.shield}>
                 ${product === 'ti'
                   ? html`
-                      <div class="flex justify-between py-0.5">
-                        <span class="text-[11px] text-muted-foreground">TI approve-pay</span>
-                        <span class="text-[12px] font-medium">$50K / $101K aggregate</span>
-                      </div>
-                      <div class="flex justify-between py-0.5">
-                        <span class="text-[11px] text-muted-foreground">This claim</span>
-                        <span class="text-[12px] font-medium text-[#1D9E75]">$41.9K — within TPA</span>
-                      </div>
-                      <div class="flex justify-between py-0.5">
-                        <span class="text-[11px] text-muted-foreground">TI other deny</span>
-                        <span class="text-[12px] font-medium">$0 — always Pru</span>
-                      </div>
+                      <claims-field-row label="TI approve-pay">$50K / $101K aggregate</claims-field-row>
+                      <claims-field-row label="This claim"
+                        ><span class="text-[#1D9E75] font-medium">$41.9K — within TPA</span></claims-field-row
+                      >
+                      <claims-field-row label="TI other deny">$0 — always Pru</claims-field-row>
                     `
                   : html`
-                      <div class="flex justify-between py-0.5">
-                        <span class="text-[11px] text-muted-foreground">Death approve-pay</span>
-                        <span class="text-[12px] font-medium">$100K aggregate</span>
-                      </div>
-                      <div class="flex justify-between py-0.5">
-                        <span class="text-[11px] text-muted-foreground">This claim</span>
-                        <span class="text-[12px] font-medium text-[#A32D2D]">$492.7K — Pru required</span>
-                      </div>
+                      <claims-field-row label="Death approve-pay">$100K aggregate</claims-field-row>
+                      <claims-field-row label="This claim"
+                        ><span class="text-[#A32D2D] font-medium">$492.7K — Pru required</span></claims-field-row
+                      >
                     `}
-              </div>
-            </div>
+              </claims-card>
           </div>
         `
 

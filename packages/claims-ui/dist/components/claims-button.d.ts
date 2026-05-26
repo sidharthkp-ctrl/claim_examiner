@@ -7,11 +7,11 @@ export declare class ClaimsButton extends LitElement {
     push: boolean;
     fullwidth: boolean;
     size: 'sm' | 'md';
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 export declare class ClaimsActionBar extends LitElement {
     static styles: import("lit").CSSResult;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

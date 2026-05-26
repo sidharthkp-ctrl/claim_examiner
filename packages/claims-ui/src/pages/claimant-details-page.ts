@@ -88,7 +88,7 @@ export class ClaimsClaimantDetailsPage extends LightDomElement {
 
           ${this.claimGroup === 'intake'
             ? html`
-                <claims-card title="Group 1: Beneficiary Validation Checklist (Intake)" icon=${MaterialIcons.shieldCheck} .ai=${true}>
+                <claims-card title="Beneficiary validation (intake)" icon=${MaterialIcons.shieldCheck} .ai=${true}>
                   <div class="space-y-3">
                     <div class="flex items-center justify-between border-b border-border pb-1.5">
                       <span class="text-slate-700 font-medium">SSN Validation (SSDI matches)</span>
@@ -115,7 +115,7 @@ export class ClaimsClaimantDetailsPage extends LightDomElement {
               `
             : this.claimGroup === 'workbench'
               ? html`
-                  <claims-card title="Group 2: Claimant Communication & Outreach (Workbench)" icon=${MaterialIcons.messageCircle}>
+                  <claims-card title="Claimant communication & outreach" icon=${MaterialIcons.messageCircle}>
                     <div class="space-y-2 text-[12px]">
                       <p class="text-muted-foreground mb-2">Activities and outreach logs related to securing additional beneficiary declarations:</p>
                       <claims-field-row label="Phone Interview scheduled">05/29/2026 - 10:00 AM</claims-field-row>
@@ -125,7 +125,7 @@ export class ClaimsClaimantDetailsPage extends LightDomElement {
                   </claims-card>
                 `
               : html`
-                  <claims-card title="Group 3: Pre-Referral Audit Verification (Referral)" icon=${MaterialIcons.shield} .ai=${true}>
+                  <claims-card title="Pre-referral audit verification" icon=${MaterialIcons.shield} .ai=${true}>
                     <div class="space-y-2 text-[12px]">
                       <p class="text-muted-foreground mb-2">Verification details compiled for the referral bundle:</p>
                       <claims-field-row label="Claimant audit state"><claims-badge variant="success">Audited & Verified</claims-badge></claims-field-row>

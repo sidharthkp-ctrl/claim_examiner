@@ -27,7 +27,6 @@ export declare class ClaimsWorkbench extends LightDomElement {
     private caseContext;
     private selectedClaimId;
     private selectedPolicyId;
-    private hudExpanded;
     private get _product();
     private get _activeClaim();
     private get _activePolicy();
@@ -39,10 +38,8 @@ export declare class ClaimsWorkbench extends LightDomElement {
     private _onOpenClaim;
     private _onPortalHome;
     private _handleClaimChanged;
-    private _handlePolicyChanged;
     private _renderPage;
-    private _renderGroupHud;
-    render(): import("lit").TemplateResult<1>;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {

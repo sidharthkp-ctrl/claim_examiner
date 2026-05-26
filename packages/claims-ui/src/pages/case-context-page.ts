@@ -49,7 +49,7 @@ export class ClaimsCaseContextPage extends LightDomElement {
                 <div class="bg-teal-50 border border-teal-200 text-teal-900 rounded-xl p-4 mb-4 flex items-center gap-3">
                   <div class="w-10 h-10 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-lg shrink-0">!</div>
                   <div>
-                    <h4 class="font-bold text-sm">Group 1 Intake Operations Active</h4>
+                    <h4 class="font-bold text-sm">Intake operations active</h4>
                     <p class="text-xs text-teal-700">Please verify initial intake documents (completeness check) and validate beneficiary SSN match on Claimant Details page before continuing.</p>
                   </div>
                 </div>
@@ -59,7 +59,7 @@ export class ClaimsCaseContextPage extends LightDomElement {
                   <div class="bg-purple-50 border border-purple-200 text-purple-900 rounded-xl p-4 mb-4 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold text-lg shrink-0">R</div>
                     <div>
-                      <h4 class="font-bold text-sm">Group 3 Pre-Referral Audit Active</h4>
+                      <h4 class="font-bold text-sm">Pre-referral audit active</h4>
                       <p class="text-xs text-purple-700">Audit complete case history and assemble the referral package to Pru on the Referral page.</p>
                     </div>
                   </div>
