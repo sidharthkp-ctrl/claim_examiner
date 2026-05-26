@@ -1,4 +1,7 @@
 import type { ClaimProduct } from './claim-product.js';
+import { type ClaimsBeneficiary } from './beneficiary-data.js';
+export type { ClaimsBeneficiary, BeneficiaryTaxCertification } from './beneficiary-data.js';
+export { beneficiaryFullName } from './beneficiary-data.js';
 /** A policy attached to a claim filing. */
 export interface ClaimsPolicy {
     id: string;
@@ -23,6 +26,7 @@ export interface ClaimsCaseContext {
     eventDate: string;
     eventDateLabel: string;
     claims: ClaimsSelectorItem[];
+    beneficiaries: ClaimsBeneficiary[];
 }
 /** Demo death case — aligns with death claim submission portal (S1–S15). */
 export declare const DEFAULT_DEATH_CASE: ClaimsCaseContext;

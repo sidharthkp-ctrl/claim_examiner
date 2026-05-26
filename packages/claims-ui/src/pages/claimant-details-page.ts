@@ -1,21 +1,30 @@
-import { html } from 'lit'
+import { html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
+import { beneficiaryFullName } from '../lib/beneficiary-data.js'
 import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
+import type { ClaimsBeneficiary } from '../lib/case-data.js'
 import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
 import '../components/claims-scope-banner.js'
+import '../components/claims-beneficiaries-section.js'
 
 @customElement('claims-claimant-details-page')
 export class ClaimsClaimantDetailsPage extends LightDomElement {
   @property({ type: String }) caseId = ''
+  @property({ type: Array }) beneficiaries: ClaimsBeneficiary[] = []
   @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
   @property({ type: String, attribute: 'claim-group' }) claimGroup = 'workbench'
 
+  private _filingParty() {
+    return this.beneficiaries.find((b) => b.isFilingParty)
+  }
+
   render() {
     const product = claimProductFromAttr(this.claimProduct)
+    const filingParty = this._filingParty()
 
     return html`
       <div class="flex flex-col flex-1 min-h-0 overflow-hidden">
@@ -24,8 +33,8 @@ export class ClaimsClaimantDetailsPage extends LightDomElement {
             scope="case"
             title="Claimant details"
             description=${product === 'ti'
-              ? 'Policy owner and contact from TI submission (About You, Contact Information).'
-              : 'Claimant, beneficiary, and contact from death submission (S4–S6).'}
+              ? 'Policy owner, beneficiaries, and contact from TI submission.'
+              : 'Claimant, all beneficiaries (S5–S6), and tax certification per beneficiary (S13).'}
             .entityId=${this.caseId}
           ></claims-scope-banner>
 
@@ -57,82 +66,107 @@ export class ClaimsClaimantDetailsPage extends LightDomElement {
                     ><claims-badge variant="success">Yes</claims-badge></claims-field-row
                   >
                 </claims-card>
+
+                <claims-beneficiaries-section
+                  title="Beneficiaries & tax (T-14)"
+                  description="Policy owner and irrevocable beneficiary — Section 4 consent tracked per bene."
+                  mode="full"
+                  .beneficiaries=${this.beneficiaries}
+                ></claims-beneficiaries-section>
               `
             : html`
-                <claims-card title="Claimant & beneficiary (S4–S6)" icon=${MaterialIcons.user}>
-                  <div class="claims-fields-grid--2">
-                    <claims-field-row label="Insured">John A. Smith</claims-field-row>
-                    <claims-field-row label="Date of death">02/28/2026</claims-field-row>
-                    <claims-field-row label="Filing party">Jane A. Smith</claims-field-row>
-                    <claims-field-row label="Role (S2)">Yes — beneficiary</claims-field-row>
-                    <claims-field-row label="Relationship">Spouse</claims-field-row>
-                    <claims-field-row label="Beneficiary on policy">Jane Smith — Primary 100%</claims-field-row>
-                    <claims-field-row label="Minor beneficiary (D-10)"
-                      ><claims-badge variant="success">No — age 42</claims-badge></claims-field-row
-                    >
-                    <claims-field-row label="Incorrect claimant (D-04)"
-                      ><claims-badge variant="success">No — matches record</claims-badge></claims-field-row
-                    >
-                  </div>
+                <claims-card title="Filing party (S2)" icon=${MaterialIcons.user}>
+                  ${filingParty
+                    ? html`
+                        <div class="claims-fields-grid--2">
+                          <claims-field-row label="Name">${beneficiaryFullName(filingParty)}</claims-field-row>
+                          <claims-field-row label="Role">Yes — beneficiary (filing claim)</claims-field-row>
+                          <claims-field-row label="Relationship">${filingParty.relationship}</claims-field-row>
+                          <claims-field-row label="Designation"
+                            >${filingParty.designation} — ${filingParty.sharePercent}%</claims-field-row
+                          >
+                          <claims-field-row label="Incorrect claimant (D-04)"
+                            ><claims-badge variant="success">No — matches record</claims-badge></claims-field-row
+                          >
+                        </div>
+                      `
+                    : html`
+                        <p class="text-[12px] text-muted-foreground">No filing party identified.</p>
+                      `}
                 </claims-card>
 
-                <claims-card title="Contact information (S5)" icon=${MaterialIcons.messageCircle}>
-                  <claims-field-row label="Phone">(512) 555-0198 — Mobile</claims-field-row>
-                  <claims-field-row label="Email">jane.smith@email.com</claims-field-row>
-                  <claims-field-row label="Address">456 Maple Dr, Austin, TX 78702</claims-field-row>
-                  <claims-field-row label="Outstanding outreach (D-03)"
-                    ><claims-badge variant="warning">Funeral assignment form</claims-badge></claims-field-row
-                  >
-                </claims-card>
+                <claims-beneficiaries-section
+                  title="Beneficiaries (S5–S6) & tax certification (S13)"
+                  description="All beneficiaries named on the policy with contact details and per-beneficiary tax certification."
+                  mode="full"
+                  .beneficiaries=${this.beneficiaries}
+                ></claims-beneficiaries-section>
               `}
 
-          ${this.claimGroup === 'intake'
+          ${this.claimGroup === 'intake' && product === 'death'
             ? html`
                 <claims-card title="Beneficiary validation (intake)" icon=${MaterialIcons.shieldCheck} .ai=${true}>
-                  <div class="space-y-3">
-                    <div class="flex items-center justify-between border-b border-border pb-1.5">
-                      <span class="text-slate-700 font-medium">SSN Validation (SSDI matches)</span>
-                      <claims-badge variant="success">Verified (100% Match)</claims-badge>
-                    </div>
-                    <div class="flex items-center justify-between border-b border-border pb-1.5">
-                      <span class="text-slate-700 font-medium">OFAC Sanctions List Check</span>
-                      <claims-badge variant="success">Passed (Not Flagged)</claims-badge>
-                    </div>
-                    <div class="flex items-center justify-between border-b border-border pb-1.5">
-                      <span class="text-slate-700 font-medium">Spousal Marriage License Verification</span>
-                      <claims-badge variant="success">Document Verified</claims-badge>
-                    </div>
-                    <div class="flex items-center justify-between border-b border-border pb-1.5">
-                      <span class="text-slate-700 font-medium">Address Match (SSDI vs Claim Form)</span>
-                      <claims-badge variant="warning">Partial Match (91%)</claims-badge>
-                    </div>
-                    <div class="flex gap-2 mt-3.5">
-                      <claims-button variant="primary" size="sm">Force Approve Validation</claims-button>
-                      <claims-button size="sm">Flag Discrepancy</claims-button>
-                    </div>
+                  <p class="text-[11px] text-muted-foreground mb-3">
+                    Per-beneficiary validation from intake (D-05, D-10):
+                  </p>
+                  ${this.beneficiaries.map(
+                    (b) => html`
+                      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border py-2 last:border-0">
+                        <span class="font-medium text-[12px]">${beneficiaryFullName(b)}</span>
+                        <div class="flex gap-1.5 flex-wrap">
+                          <claims-badge variant=${b.ssnVerified ? 'success' : 'warning'}
+                            >SSN ${b.ssnVerified ? 'verified' : 'pending'}</claims-badge
+                          >
+                          <claims-badge variant=${b.isMinor ? 'warning' : 'success'}
+                            >${b.isMinor ? 'Minor — guardian docs' : 'Not minor'}</claims-badge
+                          >
+                          <claims-badge variant=${b.tax.certified ? 'success' : 'warning'}
+                            >Tax ${b.tax.certified ? 'certified' : 'pending'}</claims-badge
+                          >
+                        </div>
+                      </div>
+                    `
+                  )}
+                  <div class="flex gap-2 mt-3.5">
+                    <claims-button variant="primary" size="sm">Force approve all</claims-button>
+                    <claims-button size="sm">Flag discrepancy</claims-button>
                   </div>
                 </claims-card>
               `
             : this.claimGroup === 'workbench'
               ? html`
                   <claims-card title="Claimant communication & outreach" icon=${MaterialIcons.messageCircle}>
-                    <div class="space-y-2 text-[12px]">
-                      <p class="text-muted-foreground mb-2">Activities and outreach logs related to securing additional beneficiary declarations:</p>
-                      <claims-field-row label="Phone Interview scheduled">05/29/2026 - 10:00 AM</claims-field-row>
-                      <claims-field-row label="Sent Funeral Home Assignment form"><claims-badge variant="info">Waiting response</claims-badge></claims-field-row>
-                      <claims-field-row label="Claimant status"><claims-badge variant="success">Active outreach</claims-badge></claims-field-row>
-                    </div>
+                    <p class="text-[11px] text-muted-foreground mb-2">
+                      Outreach targets by beneficiary (D-03):
+                    </p>
+                    ${this.beneficiaries.map(
+                      (b) => html`
+                        <claims-field-row label=${beneficiaryFullName(b)}
+                          >${b.phone} · ${b.email}</claims-field-row
+                        >
+                      `
+                    )}
+                    <claims-field-row label="Outstanding"
+                      ><claims-badge variant="warning">Funeral assignment form</claims-badge></claims-field-row
+                    >
                   </claims-card>
                 `
-              : html`
-                  <claims-card title="Pre-referral audit verification" icon=${MaterialIcons.shield} .ai=${true}>
-                    <div class="space-y-2 text-[12px]">
-                      <p class="text-muted-foreground mb-2">Verification details compiled for the referral bundle:</p>
-                      <claims-field-row label="Claimant audit state"><claims-badge variant="success">Audited & Verified</claims-badge></claims-field-row>
-                      <claims-field-row label="SSDI discrepancy check"><claims-badge variant="success">Cleared</claims-badge></claims-field-row>
-                    </div>
-                  </claims-card>
-                `}
+              : this.claimGroup === 'referral'
+                ? html`
+                    <claims-card title="Pre-referral audit verification" icon=${MaterialIcons.shield} .ai=${true}>
+                      <p class="text-[11px] text-muted-foreground mb-2">
+                        Beneficiary audit summary for referral bundle:
+                      </p>
+                      ${this.beneficiaries.map(
+                        (b) => html`
+                          <claims-field-row label=${beneficiaryFullName(b)}
+                            ><claims-badge variant="success">Audited</claims-badge></claims-field-row
+                          >
+                        `
+                      )}
+                    </claims-card>
+                  `
+                : nothing}
         </div>
 
         <claims-action-bar>

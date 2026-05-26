@@ -4,11 +4,12 @@ import { LightDomElement } from '../lib/light-dom.js'
 import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
 import { activitiesForProduct } from '../lib/examiner-activities.js'
 import { MaterialIcons } from '../lib/material-icons.js'
-import type { ClaimsSelectorItem } from '../lib/case-data.js'
+import type { ClaimsBeneficiary, ClaimsSelectorItem } from '../lib/case-data.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
 import '../components/claims-scope-banner.js'
+import '../components/claims-beneficiaries-section.js'
 
 @customElement('claims-case-context-page')
 export class ClaimsCaseContextPage extends LightDomElement {
@@ -17,6 +18,7 @@ export class ClaimsCaseContextPage extends LightDomElement {
   @property({ type: String }) eventDate = ''
   @property({ type: String }) eventDateLabel = 'Date of death'
   @property({ type: Array }) claimsInCase: ClaimsSelectorItem[] = []
+  @property({ type: Array }) beneficiaries: ClaimsBeneficiary[] = []
   @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
   @property({ type: String, attribute: 'claim-group' }) claimGroup = 'workbench'
 
@@ -68,6 +70,7 @@ export class ClaimsCaseContextPage extends LightDomElement {
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <claims-stat-card label="Claims in case" value=${String(this.claimsInCase.length)}></claims-stat-card>
+            <claims-stat-card label="Beneficiaries" value=${String(this.beneficiaries.length)} color="#185FA5"></claims-stat-card>
             <claims-stat-card label="Case age" value="0 days"></claims-stat-card>
             <claims-stat-card label="Open case flags" value="2" color="#A32D2D"></claims-stat-card>
           </div>
@@ -83,6 +86,14 @@ export class ClaimsCaseContextPage extends LightDomElement {
               >
             </div>
           </claims-card>
+
+          <claims-beneficiaries-section
+            title="Beneficiaries on case"
+            description="All named beneficiaries from submission — each includes tax certification (S13)."
+            mode="table"
+            .showTax=${false}
+            .beneficiaries=${this.beneficiaries}
+          ></claims-beneficiaries-section>
 
           <claims-card title="Claims filed under this case" icon=${MaterialIcons.files}>
             <div class="overflow-x-auto">

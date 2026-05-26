@@ -2,20 +2,32 @@ import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
+import type { ClaimsBeneficiary } from '../lib/case-data.js'
 import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-card.js'
+import '../components/claims-beneficiaries-section.js'
 
 @customElement('claims-policy-info-page')
 export class ClaimsPolicyInfoPage extends LightDomElement {
   @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
   @property({ type: String, attribute: 'claim-group' }) claimGroup = 'workbench'
+  @property({ type: Array }) beneficiaries: ClaimsBeneficiary[] = []
 
   render() {
     const product = claimProductFromAttr(this.claimProduct)
+    const payees = this.beneficiaries.filter((b) => b.sharePercent > 0 || b.designation !== 'Contingent')
 
     return html`
       <div class="claims-page">
+        <claims-beneficiaries-section
+          title="Beneficiary designations"
+          description="All beneficiaries on the selected policy with share and tax summary."
+          mode="table"
+          .showTax=${false}
+          .beneficiaries=${this.beneficiaries}
+        ></claims-beneficiaries-section>
+
         <div class="grid grid-cols-2 gap-2.5">
           <div>
             <claims-card title="Policy details" icon=${MaterialIcons.dollarSign}>
@@ -127,10 +139,15 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
                     >
                   </claims-card>
 
-                  <claims-card title="Beneficiary designations" icon=${MaterialIcons.users}>
-                    <claims-field-row label="Primary beneficiary">Jane Smith</claims-field-row>
-                    <claims-field-row label="Irrevocable beneficiary"
-                      ><claims-badge variant="neutral">No</claims-badge></claims-field-row
+                  <claims-card title="Irrevocable beneficiary (T-14)" icon=${MaterialIcons.users}>
+                    <claims-field-row label="Irrevocable on policy"
+                      ><claims-badge variant=${this.beneficiaries.some((b) => b.designation === 'Irrevocable')
+                        ? 'warning'
+                        : 'success'}
+                        >${this.beneficiaries.some((b) => b.designation === 'Irrevocable')
+                          ? 'Yes — Section 4 required'
+                          : 'No'}</claims-badge
+                      ></claims-field-row
                     >
                   </claims-card>
                 `
@@ -157,26 +174,27 @@ export class ClaimsPolicyInfoPage extends LightDomElement {
               >
             </claims-card>
 
-            <claims-card title="Beneficiary & special designations" icon=${MaterialIcons.users}>
-              <claims-field-row label="Primary beneficiary">Jane Smith — 100%</claims-field-row>
-              <claims-field-row label="Contingent beneficiary">Michael Smith (son)</claims-field-row>
-              <claims-field-row label="Irrevocable beneficiary"
-                ><claims-badge variant="neutral">No</claims-badge></claims-field-row
+            <claims-card title="Beneficiary flags (all payees)" icon=${MaterialIcons.users}>
+              <claims-field-row label="Payees with share"
+                ><claims-badge variant="info">${payees.length} of ${this.beneficiaries.length}</claims-badge></claims-field-row
               >
-              <claims-field-row label="Ex-spouse beneficiary"
-                ><claims-badge variant="neutral">No</claims-badge></claims-field-row
+              <claims-field-row label="Minor beneficiary (D-10)"
+                ><claims-badge variant=${this.beneficiaries.some((b) => b.isMinor) ? 'warning' : 'success'}
+                  >${this.beneficiaries.some((b) => b.isMinor) ? 'Yes — review guardian' : 'None'}</claims-badge
+                ></claims-field-row
               >
               <claims-field-row label="Divorce revocation check (D-09)"
                 ><claims-badge variant="neutral">N/A</claims-badge></claims-field-row
               >
-              <claims-field-row label="Minor beneficiary (D-10)"
-                ><claims-badge variant="success">No — age 42</claims-badge></claims-field-row
+              <claims-field-row label="Tax certification complete"
+                ><claims-badge variant=${this.beneficiaries.every((b) => b.tax.certified) ? 'success' : 'warning'}
+                  >${this.beneficiaries.filter((b) => b.tax.certified).length} / ${this.beneficiaries.length}</claims-badge
+                ></claims-field-row
               >
-              <claims-field-row label="FL/OK non-divorce statement"
-                ><claims-badge variant="neutral">N/A — TX policy</claims-badge></claims-field-row
-              >
-              <claims-field-row label="Incompetent/incapacitated bene"
-                ><claims-badge variant="neutral">No</claims-badge></claims-field-row
+              <claims-field-row label="NRA / foreign payee (D-15)"
+                ><claims-badge variant=${this.beneficiaries.some((b) => b.nra) ? 'warning' : 'success'}
+                  >${this.beneficiaries.some((b) => b.nra) ? 'Review required' : 'None'}</claims-badge
+                ></claims-field-row
               >
             </claims-card>
 

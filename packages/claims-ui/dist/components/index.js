@@ -8,3 +8,4 @@ export { ClaimsIntegrationCard } from './claims-integration-card.js';
 export { ClaimsFeedItem } from './claims-feed-item.js';
 export { ClaimsReviewItem } from './claims-review-item.js';
 export { ClaimsDecisionOption } from './claims-decision-option.js';
+export { ClaimsBeneficiariesSection } from './claims-beneficiaries-section.js';

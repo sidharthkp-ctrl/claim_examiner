@@ -14,6 +14,7 @@ import '../components/claims-badge.js';
 import '../components/claims-button.js';
 import '../components/claims-card.js';
 import '../components/claims-scope-banner.js';
+import '../components/claims-beneficiaries-section.js';
 let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement {
     constructor() {
         super(...arguments);
@@ -22,6 +23,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
         this.eventDate = '';
         this.eventDateLabel = 'Date of death';
         this.claimsInCase = [];
+        this.beneficiaries = [];
         this.claimProduct = 'death';
         this.claimGroup = 'workbench';
     }
@@ -69,6 +71,7 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <claims-stat-card label="Claims in case" value=${String(this.claimsInCase.length)}></claims-stat-card>
+            <claims-stat-card label="Beneficiaries" value=${String(this.beneficiaries.length)} color="#185FA5"></claims-stat-card>
             <claims-stat-card label="Case age" value="0 days"></claims-stat-card>
             <claims-stat-card label="Open case flags" value="2" color="#A32D2D"></claims-stat-card>
           </div>
@@ -84,6 +87,14 @@ let ClaimsCaseContextPage = class ClaimsCaseContextPage extends LightDomElement 
               >
             </div>
           </claims-card>
+
+          <claims-beneficiaries-section
+            title="Beneficiaries on case"
+            description="All named beneficiaries from submission — each includes tax certification (S13)."
+            mode="table"
+            .showTax=${false}
+            .beneficiaries=${this.beneficiaries}
+          ></claims-beneficiaries-section>
 
           <claims-card title="Claims filed under this case" icon=${MaterialIcons.files}>
             <div class="overflow-x-auto">
@@ -220,6 +231,9 @@ __decorate([
 __decorate([
     property({ type: Array })
 ], ClaimsCaseContextPage.prototype, "claimsInCase", void 0);
+__decorate([
+    property({ type: Array })
+], ClaimsCaseContextPage.prototype, "beneficiaries", void 0);
 __decorate([
     property({ type: String, attribute: 'claim-product' })
 ], ClaimsCaseContextPage.prototype, "claimProduct", void 0);

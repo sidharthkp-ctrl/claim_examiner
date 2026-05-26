@@ -14,6 +14,7 @@ import '../components/claims-button.js';
 import '../components/claims-card.js';
 import '../components/claims-timeline-item.js';
 import '../components/claims-scope-banner.js';
+import '../components/claims-beneficiaries-section.js';
 let ClaimsClaimOverviewPage = class ClaimsClaimOverviewPage extends LightDomElement {
     constructor() {
         super(...arguments);
@@ -22,6 +23,7 @@ let ClaimsClaimOverviewPage = class ClaimsClaimOverviewPage extends LightDomElem
         this.claimType = '';
         this.policyId = '';
         this.claimProduct = 'death';
+        this.beneficiaries = [];
     }
     render() {
         const product = claimProductFromAttr(this.claimProduct);
@@ -65,6 +67,14 @@ let ClaimsClaimOverviewPage = class ClaimsClaimOverviewPage extends LightDomElem
                   `}
             </div>
           </claims-card>
+
+          <claims-beneficiaries-section
+            title="Beneficiaries"
+            description="Payees on this claim — tax certification status per beneficiary."
+            mode="compact"
+            .showTax=${false}
+            .beneficiaries=${this.beneficiaries}
+          ></claims-beneficiaries-section>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 min-w-0">
             <div>
@@ -166,6 +176,9 @@ __decorate([
 __decorate([
     property({ type: String, attribute: 'claim-product' })
 ], ClaimsClaimOverviewPage.prototype, "claimProduct", void 0);
+__decorate([
+    property({ type: Array })
+], ClaimsClaimOverviewPage.prototype, "beneficiaries", void 0);
 ClaimsClaimOverviewPage = __decorate([
     customElement('claims-claim-overview-page')
 ], ClaimsClaimOverviewPage);

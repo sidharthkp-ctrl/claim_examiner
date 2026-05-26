@@ -2,12 +2,14 @@ import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { LightDomElement } from '../lib/light-dom.js'
 import { claimProductFromAttr, type ClaimProduct } from '../lib/claim-product.js'
+import type { ClaimsBeneficiary } from '../lib/case-data.js'
 import { MaterialIcons } from '../lib/material-icons.js'
 import '../components/claims-badge.js'
 import '../components/claims-button.js'
 import '../components/claims-card.js'
 import '../components/claims-timeline-item.js'
 import '../components/claims-scope-banner.js'
+import '../components/claims-beneficiaries-section.js'
 
 @customElement('claims-claim-overview-page')
 export class ClaimsClaimOverviewPage extends LightDomElement {
@@ -16,6 +18,7 @@ export class ClaimsClaimOverviewPage extends LightDomElement {
   @property({ type: String }) claimType = ''
   @property({ type: String }) policyId = ''
   @property({ type: String, attribute: 'claim-product' }) claimProduct: ClaimProduct = 'death'
+  @property({ type: Array }) beneficiaries: ClaimsBeneficiary[] = []
 
   render() {
     const product = claimProductFromAttr(this.claimProduct)
@@ -60,6 +63,14 @@ export class ClaimsClaimOverviewPage extends LightDomElement {
                   `}
             </div>
           </claims-card>
+
+          <claims-beneficiaries-section
+            title="Beneficiaries"
+            description="Payees on this claim — tax certification status per beneficiary."
+            mode="compact"
+            .showTax=${false}
+            .beneficiaries=${this.beneficiaries}
+          ></claims-beneficiaries-section>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 min-w-0">
             <div>

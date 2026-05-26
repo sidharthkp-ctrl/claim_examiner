@@ -108,6 +108,7 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
           .eventDate=${caseItem.eventDate}
           .eventDateLabel=${caseItem.eventDateLabel}
           .claimsInCase=${caseItem.claims}
+          .beneficiaries=${caseItem.beneficiaries}
           claim-product=${product}
           claim-group=${this.claimGroup}
         ></claims-case-context-page>`;
@@ -120,6 +121,7 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
             case 'claimant-details':
                 return html `<claims-claimant-details-page
           .caseId=${caseItem.id}
+          .beneficiaries=${caseItem.beneficiaries}
           claim-product=${product}
           claim-group=${this.claimGroup}
         ></claims-claimant-details-page>`;
@@ -135,11 +137,13 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
           .claimId=${claim?.id ?? ''}
           .claimType=${claim?.type ?? ''}
           .policyId=${policy?.id ?? ''}
+          .beneficiaries=${caseItem.beneficiaries}
           claim-product=${product}
           claim-group=${this.claimGroup}
         ></claims-claim-overview-page>`;
             case 'policy-info':
                 return html `<claims-policy-info-page
+          .beneficiaries=${caseItem.beneficiaries}
           claim-product=${product}
           claim-group=${this.claimGroup}
         ></claims-policy-info-page>`;
@@ -179,6 +183,7 @@ let ClaimsWorkbench = class ClaimsWorkbench extends LightDomElement {
           .eventDate=${caseItem.eventDate}
           .eventDateLabel=${caseItem.eventDateLabel}
           .claimsInCase=${caseItem.claims}
+          .beneficiaries=${caseItem.beneficiaries}
           claim-product=${product}
           claim-group=${this.claimGroup}
         ></claims-case-context-page>`;

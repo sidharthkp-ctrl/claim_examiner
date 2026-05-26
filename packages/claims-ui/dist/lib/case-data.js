@@ -1,9 +1,12 @@
+import { DEATH_CASE_BENEFICIARIES, TI_CASE_BENEFICIARIES, } from './beneficiary-data.js';
+export { beneficiaryFullName } from './beneficiary-data.js';
 /** Demo death case — aligns with death claim submission portal (S1–S15). */
 export const DEFAULT_DEATH_CASE = {
     id: 'CASE-20260420-00089',
     insuredName: 'John A. Smith',
     eventDate: '02/28/2026',
     eventDateLabel: 'Date of death',
+    beneficiaries: DEATH_CASE_BENEFICIARIES,
     claims: [
         {
             id: 'CLM-20260420-00123',
@@ -27,6 +30,7 @@ export const DEFAULT_TI_CASE = {
     insuredName: 'John A. Smith',
     eventDate: '03/10/2026',
     eventDateLabel: 'Date of diagnosis',
+    beneficiaries: TI_CASE_BENEFICIARIES,
     claims: [
         {
             id: 'CLM-20260518-00042',
