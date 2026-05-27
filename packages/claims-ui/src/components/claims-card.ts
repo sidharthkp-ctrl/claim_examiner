@@ -25,10 +25,10 @@ const cardStyles = css`
   .claims-card-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.625rem;
     min-width: 0;
     padding: 0.625rem 1rem;
-    background: linear-gradient(90deg, #e6f1fb 0%, #f0f7fd 100%);
+    background: #eef3f8;
     border-bottom: 1px solid var(--border, #d8e2ec);
     font-size: 13px;
     font-weight: 600;
@@ -36,8 +36,8 @@ const cardStyles = css`
   }
 
   .claims-card-header--ai {
-    background: linear-gradient(90deg, #eeedfe 0%, #e6f1fb 50%, #f3f0ff 100%);
-    border-bottom-color: var(--ai-border, #c4b5fd);
+    background: #eef3f8;
+    border-bottom-color: var(--border, #d8e2ec);
   }
 
   .claims-card-title {
@@ -49,19 +49,7 @@ const cardStyles = css`
   }
 
   .claims-ai-pill {
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    margin-left: auto;
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--purple, #534ab7);
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid var(--ai-border, #c4b5fd);
+    display: none;
   }
 
   .claims-card-body {
@@ -89,17 +77,29 @@ const cardStyles = css`
     line-height: 1;
   }
 
+  .header-icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    border: 1px solid var(--border, #d8e2ec);
+    flex-shrink: 0;
+    color: var(--primary-dark, #0c447c);
+  }
+
   .header-icon {
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
     font-style: normal;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.25rem;
     font-variation-settings:
       'FILL' 0,
       'wght' 400,
@@ -127,10 +127,9 @@ export class ClaimsCard extends LitElement {
                 class=${cn('claims-card-header', this.ai && 'claims-card-header--ai')}
               >
                 ${this.icon
-                  ? html`<span class="header-icon" aria-hidden="true">${this.icon}</span>`
+                  ? html`<span class="header-icon-box" aria-hidden="true"><span class="header-icon">${this.icon}</span></span>`
                   : html`<slot name="icon"></slot>`}
                 <span class="claims-card-title">${this.title}</span>
-                ${this.ai ? html`<span class="claims-ai-pill">AI Powered</span>` : ''}
               </div>
             `
           : ''}
@@ -313,18 +312,18 @@ const aiBoxStyles = css`
   }
 
   .banner {
-    background: linear-gradient(135deg, #f3f0ff 0%, #e6f1fb 55%, #ffffff 100%);
-    border: 1px solid var(--ai-border, #c4b5fd);
+    background: #ffffff;
+    border: 1.5px solid #2dd4bf;
     border-radius: var(--radius-lg, 0.625rem);
-    box-shadow: var(--shadow-card, 0 1px 3px rgba(24, 95, 165, 0.08));
-    padding: 1rem 1.25rem;
+    box-shadow: 0 1px 3px rgba(45, 212, 191, 0.08);
+    padding: 0.875rem 1rem;
   }
 
   .title {
     font-size: 13px;
-    font-weight: 600;
-    color: #534ab7;
-    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 0.375rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
